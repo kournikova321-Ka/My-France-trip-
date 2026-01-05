@@ -1,0 +1,7 @@
+{
+  "name": "帶馬克出去玩 ",
+  "description": "專為 5/22-6/3 法國行程設計，包含 La Rochelle、波爾多、瑞士邊境及巴黎的完整規劃。",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
