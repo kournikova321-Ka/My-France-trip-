@@ -3,500 +3,740 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#F9F8F4">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <title>Take Mark Out | Daily Money</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>MARK'S TRIP | FUDGE Style</title>
+    
+    <!-- 字體 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,600;1,600&family=Shippori+Mincho:wght@500&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Noto+Sans+TC:wght@300;400;500&family=Noto+Serif+TC:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         :root {
-            --bg-paper: #F4F1EA;
-            --text-main: #2C2C2C;
-            --fudge-navy: #1D2D44;
-            --fudge-red: #A63737;
+            /* FUDGE Coffee Palette */
+            --bg-paper: #F9F8F4;      
+            --coffee-dark: #4E342E;   
+            --coffee-mid: #795548;    
+            --coffee-light: #D7CCC8;  
+            
+            --brick-red: #A14E3F;     
+            --olive: #556B2F;         
+            --mustard: #D4AC0D;       
             --white: #FFFFFF;
-            --font-serif: 'Playfair Display', serif;
-            --font-mincho: 'Shippori Mincho', serif;
-            --font-sans: 'Noto Sans JP', sans-serif;
-            --nav-height: 65px;
+            
+            --font-serif-en: 'Playfair Display', serif;
+            --font-serif-cn: 'Noto Serif TC', serif;
+            --font-sans: 'Lato', 'Noto Sans TC', sans-serif;
+
+            --shadow-hard: 3px 3px 0px rgba(78, 52, 46, 0.2);
+            
+            --safe-top: env(safe-area-inset-top);
             --safe-bottom: env(safe-area-inset-bottom);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
+        
         body {
-            font-family: var(--font-sans); background-color: var(--bg-paper); color: var(--text-main);
-            margin: 0; padding: 0; height: 100vh; display: flex; flex-direction: column; overflow-x: hidden;
-            overscroll-behavior-y: none;
+            font-family: var(--font-sans);
+            background-color: var(--bg-paper);
+            color: var(--coffee-dark);
+            margin: 0; padding: 0;
+            height: 100vh;
+            display: flex; flex-direction: column;
+            overflow: hidden;
+            background-image: radial-gradient(#D7CCC8 1px, transparent 1px);
+            background-size: 20px 20px;
         }
 
-        /* HEADER */
+        /* --- Header --- */
         header {
-            background: var(--bg-paper); color: var(--fudge-navy); 
-            padding: 15px; padding-top: max(15px, env(safe-area-inset-top));
-            text-align: center; border-bottom: 2px solid var(--fudge-navy); 
-            position: sticky; top: 0; z-index: 100;
-        }
-        #pageTitle { font-family: var(--font-serif); font-weight: 600; font-size: 1.4rem; letter-spacing: 2px; }
-
-        /* CONTAINER */
-        .container { 
-            flex: 1; padding: 15px; overflow-y: auto; 
-            padding-bottom: calc(var(--nav-height) + 20px + var(--safe-bottom)); 
-            -webkit-overflow-scrolling: touch;
+            background: var(--bg-paper);
+            z-index: 50;
+            flex-shrink: 0;
+            border-bottom: 2px solid var(--coffee-dark);
+            padding-bottom: 5px;
         }
 
-        /* DASHBOARD */
-        .dashboard-card { 
-            background-color: var(--fudge-navy); color: var(--white); padding: 20px; margin-bottom: 20px; 
-            display: flex; justify-content: space-between; align-items: center; border-radius: 4px; 
-            box-shadow: 0 4px 10px rgba(29, 45, 68, 0.2);
+        /* Segment Bar */
+        .segment-bar {
+            padding-top: calc(10px + var(--safe-top));
+            padding-bottom: 15px;
+            padding-left: 15px;
+            padding-right: 15px;
+            display: flex; overflow-x: auto; gap: 15px; scrollbar-width: none;
         }
-        .dash-left .day-count { font-family: var(--font-serif); font-size: 2.2rem; margin-top: 5px; line-height: 1; }
-        .location-name { font-family: var(--font-serif); font-size: 1.2rem; letter-spacing: 1px; }
+        .segment-bar::-webkit-scrollbar { display: none; }
 
-        /* TIMELINE */
-        .timeline-scroll { 
-            display: flex; overflow-x: auto; gap: 10px; padding-bottom: 5px; 
-            scrollbar-width: none; scroll-snap-type: x mandatory; padding-right: 20px;
+        .seg-chip {
+            font-family: var(--font-serif-en);
+            color: var(--coffee-dark);
+            background: transparent;
+            padding: 8px 16px;
+            border: 1px solid var(--coffee-dark);
+            font-size: 0.95rem;
+            white-space: nowrap;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .timeline-scroll::-webkit-scrollbar { display: none; }
-        .timeline-node { 
-            background: var(--white); padding: 10px 0; border: 1px solid var(--fudge-navy); 
-            min-width: 90px; text-align: center; transition: all 0.2s; flex-shrink: 0; scroll-snap-align: start; 
+        .seg-chip.active {
+            background: var(--coffee-dark);
+            color: var(--white);
+            box-shadow: 4px 4px 0 var(--mustard);
+            transform: translate(-2px, -2px);
         }
-        .timeline-node.active { background: var(--fudge-navy); color: var(--white); transform: scale(1.05); box-shadow: 2px 2px 0px var(--fudge-red); font-weight: bold; border: none;}
-        .node-date { font-family: var(--font-serif); font-size: 0.8rem; display: block; margin-bottom: 2px; }
-        .node-title { font-size: 0.8rem; letter-spacing: 1px; }
 
-        /* ITINERARY CARD */
-        .date-header { margin: 25px 0 15px; text-align: center; border-bottom: 1px solid #ccc; line-height: 0.1em; font-family: var(--font-serif); color: var(--fudge-navy); font-weight: bold; }
-        .date-header span { background: var(--bg-paper); padding: 0 10px; }
+        /* Date Bar */
+        .date-bar {
+            background: transparent; padding: 10px 15px; display: flex; overflow-x: auto; gap: 12px; scrollbar-width: none;
+        }
+        .date-bar::-webkit-scrollbar { display: none; }
+
+        .date-pill {
+            min-width: 50px; height: 50px; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: var(--white); border: 1px solid var(--coffee-light); color: var(--coffee-mid); cursor: pointer; transition: all 0.2s;
+        }
+        .date-pill.active {
+            border: 1px solid var(--coffee-dark); background: var(--coffee-dark); color: var(--white); box-shadow: 2px 2px 0 var(--coffee-mid);
+        }
+        .dp-day { font-family: var(--font-serif-en); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px;}
+        .dp-date { font-family: var(--font-serif-en); font-size: 1rem; font-weight: 700; line-height: 1; }
+
+        /* --- Main Content --- */
+        #main-container {
+            flex: 1; overflow-y: auto; scroll-behavior: smooth;
+            padding: 25px 20px; padding-bottom: 120px;
+        }
+
+        /* Day Hero */
+        .day-hero { 
+            display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; 
+            border-bottom: 4px double var(--coffee-dark); padding-bottom: 10px;
+        }
+        .day-info h2 { margin: 0; font-family: var(--font-serif-en); font-size: 2.2rem; color: var(--coffee-dark); letter-spacing: -1px; }
+        .day-info p { margin: 5px 0 0 0; color: var(--coffee-mid); font-family: var(--font-serif-cn); font-size: 0.95rem; font-style: italic; }
         
-        .itinerary-card { 
-            background: var(--white); margin-bottom: 15px; border: 1px solid #ddd; border-left: 4px solid var(--fudge-navy); 
-            padding: 15px; position: relative; border-radius: 2px;
+        .weather-btn {
+            background: var(--coffee-dark); color: var(--white); padding: 6px 12px; border: none; text-decoration: none; 
+            font-family: var(--font-serif-en); font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; gap: 6px; text-transform: uppercase;
         }
-        .card-time { font-family: var(--font-serif); color: var(--fudge-red); font-weight: bold; font-size: 1rem; display: block; margin-bottom: 5px; }
-        .card-title { font-family: var(--font-mincho); font-size: 1.1rem; font-weight: bold; margin-bottom: 5px; line-height: 1.4; color: var(--text-main); }
-        .transport-info { background: #f4f4f4; padding: 6px 10px; font-size: 0.85rem; color: #555; display: inline-block; margin-top: 5px; border-radius: 4px;}
-        .important-note { color: #d9534f; border: 1px solid #d9534f; padding: 10px; margin-top: 10px; font-size: 0.85rem; font-weight: bold; background: #fff5f5; }
-        
-        .expand-btn { position: absolute; right: 15px; bottom: 15px; width: 32px; height: 32px; border: 1px solid var(--fudge-navy); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; color: var(--fudge-navy); transition: 0.2s;}
-        .expand-btn.rotated { background: var(--fudge-navy); color: white; transform: rotate(45deg); }
-        .card-details { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc; font-size: 0.95rem; line-height: 1.6; }
-        .card-details.show { display: block; }
-        .card-actions { position: absolute; top: 10px; right: 10px; display: flex; gap: 15px; padding: 5px; }
-        .icon-btn { color: #ccc; font-size: 1rem; }
-        
-        /* SUMMARY & TICKET */
-        .summary-box { 
-            background: var(--white); border: 1px solid var(--fudge-navy); padding: 25px 15px; 
-            text-align: center; margin-bottom: 25px; box-shadow: 4px 4px 0px #ccc; 
+        .weather-btn:hover { opacity: 0.9; }
+
+        /* Cards */
+        .card {
+            background: var(--white); border: 1px solid var(--coffee-dark); padding: 20px; margin-bottom: 20px;
+            box-shadow: var(--shadow-hard); position: relative; 
         }
-        .summary-title { font-family: var(--font-serif); color: #888; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 5px; }
-        .summary-amount { font-family: var(--font-serif); font-size: 2.2rem; color: var(--fudge-navy); font-weight: bold; }
         
-        .ticket-item { 
-            background: var(--white); border: 1px solid #ccc; margin-bottom: 12px; padding: 12px; 
-            display: flex; flex-direction: column; transition: 0.2s; border-left: 5px solid var(--fudge-red);
-            border-radius: 4px;
+        .card-tag {
+            position: absolute; top: -10px; left: 20px;
+            background: var(--coffee-dark); color: var(--white);
+            font-family: var(--font-serif-en); font-size: 0.7rem; padding: 2px 8px;
+            text-transform: uppercase; letter-spacing: 1px;
         }
-        .ticket-item.bought { border-left-color: #ddd; opacity: 0.6; background: #fafafa; }
-        .ticket-item.bought .t-name { text-decoration: line-through; color: #888; }
-        .t-row-top { display: flex; align-items: flex-start; margin-bottom: 10px; }
-        .t-check { width: 28px; height: 28px; margin-right: 12px; accent-color: var(--fudge-navy); cursor: pointer; flex-shrink: 0; }
-        .t-info { flex: 1; min-width: 0; }
-        .t-name { font-weight: bold; font-size: 1rem; margin-bottom: 2px; display: block; line-height: 1.3; }
-        .t-note { font-size: 0.8rem; color: #888; }
-        .t-row-btm { display: flex; justify-content: flex-end; align-items: center; gap: 8px; border-top: 1px dashed #eee; padding-top: 8px; }
-        .currency-btn { padding: 6px 0; width: 45px; text-align: center; border: 1px solid #999; background: #eee; cursor: pointer; font-size: 0.8rem; font-weight: bold; border-radius: 4px;}
-        .currency-btn.eur { background: var(--fudge-navy); color: white; border-color: var(--fudge-navy); }
-        .currency-btn.twd { background: var(--fudge-red); color: white; border-color: var(--fudge-red); }
-        .price-input { width: 90px; padding: 8px; text-align: right; border: 1px solid #ccc; font-size: 16px; border-radius: 4px; -webkit-appearance: none; }
+        .card.type-spot .card-tag { background: var(--olive); }
+        .card.type-transport .card-tag { background: var(--brick-red); }
+        .card.type-food .card-tag { background: var(--mustard); color: var(--coffee-dark); }
 
-        /* EXPENSE DAILY LIST */
-        .list-item { background: var(--white); padding: 15px; margin-bottom: 8px; border: 1px solid #eee; display: flex; align-items: center; justify-content: space-between; border-radius: 4px; }
-        .list-item.checked span { text-decoration: line-through; color: #bbb; }
-        .list-item input[type="checkbox"] { width: 24px; height: 24px; margin-right: 15px; accent-color: var(--fudge-navy); }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-top: 5px;}
+        .time-badge {
+            font-family: var(--font-serif-en); font-size: 1.1rem; font-weight: 700; color: var(--coffee-dark);
+            background: transparent; padding: 0; border-bottom: 2px solid var(--mustard); display: inline-block; margin-bottom: 10px;
+        }
+        .card-title { font-family: var(--font-serif-cn); font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; line-height: 1.4; padding-right: 20px; color: var(--coffee-dark); }
+        .card-desc { font-family: var(--font-serif-cn); font-size: 0.95rem; color: #5D4037; line-height: 1.6; }
 
-        .daily-group { background: var(--white); border: 1px solid #ddd; margin-bottom: 20px; border-radius: 4px; overflow: hidden; }
-        .daily-head { background: #f4f4f4; padding: 10px 15px; font-weight: bold; color: var(--fudge-navy); display: flex; justify-content: space-between; align-items: center; }
-        .expense-row { padding: 12px 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .ex-amt { text-align: right; }
-        .ex-eur { font-weight: bold; color: var(--fudge-navy); display: block; font-size: 1.1rem; }
-        .ex-twd { font-size: 0.8rem; color: #999; }
+        .details-box { display: none; margin-top: 20px; padding-top: 15px; border-top: 1px dotted var(--coffee-dark); animation: fadeIn 0.3s; }
+        .details-box.show { display: block; }
+        
+        .action-buttons { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+        .btn { 
+            padding: 8px 16px; border: none; background: var(--coffee-dark); color: var(--white);
+            font-family: var(--font-serif-en); font-size: 0.8rem; text-decoration: none; font-weight: 700; 
+            text-transform: uppercase; display: flex; align-items: center; gap: 6px; transition: all 0.2s;
+        }
+        .btn:active { opacity: 0.8; }
+        .btn-map { background: var(--olive); color: var(--white); }
+        .btn-ticket { background: var(--brick-red); color: var(--white); }
+        
+        .card-controls { position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; }
+        .icon-btn { color: #BBB; cursor: pointer; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;}
+        .icon-btn:hover { color: var(--brick-red); }
+        .expand-toggle { color: var(--coffee-dark); border: 1px solid var(--coffee-dark); border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;}
 
-        /* INPUT AREA */
-        .input-area { background: var(--white); padding: 15px; border: 1px solid #ddd; margin-bottom: 20px; border-radius: 4px; }
-        .row { display: flex; gap: 10px; margin-bottom: 10px; }
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; font-size: 16px; border-radius: 4px; -webkit-appearance: none; background: #fafafa; }
-        button.add-btn { width: 100%; padding: 12px; background: var(--fudge-navy); color: white; border: none; cursor: pointer; font-weight: bold; letter-spacing: 1px; border-radius: 4px; }
-        button.add-btn:active { opacity: 0.8; transform: scale(0.98); }
+        .transport-info { 
+            background: #EFEBE9; border-left: 3px solid var(--brick-red); border-radius: 0; padding: 10px; margin-top: 15px; 
+            font-family: var(--font-sans); font-size: 0.85rem; color: #5D4037; display: flex; align-items: center; gap: 8px; 
+        }
 
-        /* BOTTOM NAV */
-        .bottom-nav { 
-            position: fixed; bottom: 0; left: 0; width: 100%; height: var(--nav-height); 
-            background: var(--white); border-top: 1px solid #ddd; 
-            display: flex; justify-content: space-around; align-items: center; 
-            z-index: 200; padding-bottom: var(--safe-bottom);
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        /* Forms */
+        .add-item-form { background: transparent; border: 2px dashed var(--coffee-mid); padding: 20px; margin-top: 30px; }
+        .form-row { display: flex; gap: 10px; margin-bottom: 15px; }
+        .form-input { 
+            flex: 1; padding: 10px 0; border: none; border-bottom: 1px solid #999; background: transparent; border-radius: 0;
+            font-family: var(--font-serif-cn); font-size: 1rem; color: var(--coffee-dark);
+        }
+        .form-input:focus { outline: none; border-bottom: 1px solid var(--coffee-dark); }
+        .add-btn { 
+            width: 100%; background: var(--coffee-dark); color: var(--white); padding: 14px; border-radius: 0; border: none; 
+            font-family: var(--font-serif-en); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; cursor: pointer;
+        }
+
+        /* Bookings */
+        .budget-header {
+            background: var(--coffee-dark); color: var(--white); padding: 20px; border-radius: 0; text-align: center; margin-bottom: 30px; 
+            box-shadow: 5px 5px 0 var(--mustard); border: 1px solid var(--coffee-dark);
+        }
+        .budget-header input { color: var(--white); border-bottom: 1px solid var(--white); }
+
+        .booking-item {
+            background: var(--white); padding: 15px; border-radius: 0; margin-bottom: 15px; 
+            box-shadow: 2px 2px 0 #D7CCC8; border: 1px solid var(--coffee-dark); display: flex; flex-direction: column; gap: 10px; 
+            border-left: 5px solid var(--coffee-dark);
+        }
+        .booking-item.type-transport { border-left-color: var(--brick-red); }
+        .booking-item.type-hotel { border-left-color: var(--olive); }
+        .booking-item.checked { opacity: 0.5; text-decoration: line-through;}
+
+        .mini-btn {
+            background: var(--brick-red); color: var(--white); padding: 2px 6px; font-size: 0.6rem; text-decoration: none; 
+            display: inline-block; margin-left: 5px; font-family: var(--font-serif-en);
+            text-transform: uppercase; font-weight: 700; vertical-align: middle;
+        }
+
+        /* 雙幣輸入框 */
+        .dual-input-row {
+            display: flex; align-items: flex-end; justify-content: space-between; 
+            padding-top: 10px; border-top: 1px dashed #ccc; gap: 10px;
+        }
+        .currency-input-group {
+            display: flex; flex-direction: column; align-items: flex-start; flex: 1;
+        }
+        .currency-label {
+            font-size: 0.7rem; font-family: var(--font-serif-en); color: #888; font-weight: 700; margin-bottom: 2px;
+        }
+        .bk-input {
+            width: 100%; border: none; border-bottom: 1px solid #D7CCC8; 
+            background: #F9F9F9; text-align: right; font-weight: 700; padding: 5px;
+            color: var(--coffee-dark); font-family: var(--font-sans); font-size: 1rem;
+        }
+        .bk-input:focus { outline: none; border-bottom: 1px solid var(--brick-red); background: #FFF; }
+
+        /* Converter Box */
+        .converter-box {
+            background: var(--coffee-dark); color: var(--white); padding: 20px; margin-bottom: 30px;
+            border: 1px solid var(--coffee-dark); box-shadow: 5px 5px 0 #9E9E9E;
+        }
+        .conv-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        .conv-input {
+            background: var(--bg-paper); border: none; padding: 8px; width: 100px; text-align: right; 
+            font-family: 'Playfair Display'; font-weight: 700; font-size: 1.2rem; color: var(--coffee-dark);
+        }
+        .rate-input {
+            width: 50px; background: transparent; border: none; border-bottom: 1px solid #fff; color: #fff; text-align: center; font-size: 0.9rem; font-weight: bold;
+        }
+
+        /* Expenses Daily Group */
+        .daily-group { margin-bottom: 25px; }
+        .daily-header {
+            background: var(--coffee-mid); color: var(--white);
+            padding: 8px 12px; font-family: var(--font-serif-en); font-weight: 700; font-size: 0.9rem;
+            display: flex; justify-content: space-between; align-items: center;
+            border-left: 5px solid var(--mustard);
+            margin-bottom: 5px;
+        }
+        .expense-item {
+            background:white; padding:15px; margin-bottom:0; border:1px solid var(--coffee-dark); border-top:none;
+            display:flex; justify-content:space-between; align-items:center; box-shadow: 2px 2px 0 #eee;
+        }
+        .expense-item:first-of-type { border-top: 1px solid var(--coffee-dark); }
+        .exp-date-display { color: #888; font-size: 0.8rem; margin-right: 10px; font-family: var(--font-serif-en); }
+        
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); 
+            border-top: 3px solid var(--coffee-dark); display: flex; justify-content: space-around; 
+            padding: 15px 0 calc(15px + var(--safe-bottom)) 0; z-index: 100;
         }
         .nav-item { 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            flex: 1; height: 100%; color: #aaa; font-size: 0.65rem; letter-spacing: 1px; 
-            -webkit-tap-highlight-color: transparent;
+            display: flex; flex-direction: column; align-items: center; color: #999; font-size: 0.7rem; cursor: pointer; padding: 5px; flex: 1; 
+            transition: all 0.2s;
         }
-        .nav-item i { font-size: 1.4rem; margin-bottom: 4px; }
-        .nav-item.active { color: var(--fudge-navy); font-weight: bold; }
+        .nav-item i { font-size: 1.2rem; margin-bottom: 6px; }
+        .nav-item span { font-family: var(--font-serif-en); font-weight: 700; letter-spacing: 1px; text-transform: uppercase;}
+        .nav-item.active { color: var(--coffee-dark); transform: translateY(-3px); }
 
-        .page { display: none; padding-bottom: 20px;}
-        .page.active { display: block; animation: fadeIn 0.3s; }
+        .section-view { display: none; padding-bottom: 20px; }
+        .section-view.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* MODALS & FAB */
-        .fab { position: fixed; bottom: calc(var(--nav-height) + 15px + var(--safe-bottom)); right: 20px; width: 55px; height: 55px; background: var(--fudge-navy); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 300; cursor: pointer; transition: 0.2s; }
-        .fab:active { transform: scale(0.9); }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 400; justify-content: center; align-items: center; backdrop-filter: blur(2px); }
-        .modal.show { display: flex; }
-        .modal-box { background: white; padding: 25px; width: 85%; max-width: 400px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body>
 
-<header><div id="pageTitle">TAKE MARK OUT</div></header>
+<!-- Header -->
+<header id="app-header">
+    <div class="segment-bar" id="segment-bar"></div>
+    <div class="date-bar" id="date-bar"></div>
+</header>
 
-<div class="container">
+<div id="main-container">
     
-    <div id="itinerary" class="page active">
-        <div class="dashboard-card">
-            <div class="dash-left"><div style="font-family:var(--font-serif);font-style:italic;">Countdown</div><div class="day-count" id="tripDayCounter">--</div></div>
-            <div class="dash-right"><span class="location-name" id="weatherCity">Paris</span><div id="weatherInfo"><i class="fa-solid fa-spinner fa-spin"></i></div></div>
-        </div>
-        <div class="timeline-scroll">
-            <div class="timeline-node active" onclick="filterPhase('flight', this)"><span class="node-date">05/21</span>Flight</div>
-            <div class="timeline-node" onclick="filterPhase('lily', this)"><span class="node-date">05/22</span>La Rochelle</div>
-            <div class="timeline-node" onclick="filterPhase('bordeaux', this)"><span class="node-date">05/25</span>Bordeaux</div>
-            <div class="timeline-node" onclick="filterPhase('changyu', this)"><span class="node-date">05/26</span>Kœstlach</div>
-            <div class="timeline-node" onclick="filterPhase('paris', this)"><span class="node-date">05/30</span>Paris</div>
-        </div>
-        <div id="itinerary-list"></div>
-        <div style="text-align:center; margin-top:20px; padding:15px; border:1px dashed #ccc; color:#888; cursor:pointer; border-radius:4px;" onclick="openAddModal()">+ ADD EVENT</div>
-        <div style="text-align:center; margin-top:40px;"><span style="text-decoration:underline; color:#ccc; font-size:0.75rem; cursor:pointer;" onclick="resetAllData()">RESET APP DATA</span></div>
-    </div>
-
-    <div id="tickets" class="page">
-        <div class="summary-box">
-            <div class="summary-title">PRE-TRIP PAID (已付交通)</div>
-            <div class="summary-amount">NT$ <span id="ticketTotalTwd">0</span></div>
-            <div style="font-size:0.8rem; color:#888; margin-top:5px;">(Only Checked Items Calculated)</div>
-        </div>
+    <!-- VIEW 1: 行程表 -->
+    <div id="view-itinerary" class="section-view active">
+        <div id="day-content"></div>
         
-        <div class="input-area">
-            <h4 style="margin-top:0; color:var(--fudge-navy);">ADD TICKET</h4>
-            <div class="row"><input type="text" id="tName" placeholder="Ticket Name / Route"></div>
-            <div class="row">
-                <input type="number" id="tPrice" style="flex:1" placeholder="Price">
-                <select id="tCur" style="flex:0.6"><option value="TWD">NT$</option><option value="EUR">€</option></select>
-            </div>
-            <button class="add-btn" onclick="addTicket()">ADD TICKET</button>
-        </div>
-
-        <div id="ticket-list"></div>
-    </div>
-
-    <div id="expense" class="page">
-        <div class="summary-box">
-            <div class="summary-title">TRIP SPENDING (旅程中花費)</div>
-            <div class="summary-amount">€ <span id="grandTotalEur">0</span></div>
-            <div style="font-size:0.9rem; color:#666; margin-top:5px;">≈ NT$ <span id="grandTotalTwd">0</span></div>
-        </div>
-        <div class="input-area">
-            <h4 style="margin-top:0; color:var(--fudge-navy);">ADD DAILY EXPENSE</h4>
-            <div class="row">
-                <select id="exDay">
-                    <option value="05/21">05/21 (Tue) Flight</option>
-                    <option value="05/22">05/22 (Wed) La Rochelle</option>
-                    <option value="05/23">05/23 (Thu) La Rochelle</option>
-                    <option value="05/24">05/24 (Fri) La Rochelle</option>
-                    <option value="05/25">05/25 (Sat) Bordeaux</option>
-                    <option value="05/26">05/26 (Sun) To Kœstlach</option>
-                    <option value="05/27">05/27 (Mon) Kœstlach</option>
-                    <option value="05/28">05/28 (Tue) Kœstlach</option>
-                    <option value="05/29">05/29 (Wed) Kœstlach</option>
-                    <option value="05/30">05/30 (Thu) Paris</option>
-                    <option value="05/31">05/31 (Fri) Paris</option>
-                    <option value="06/01">06/01 (Sat) Paris</option>
-                    <option value="06/02">06/02 (Sun) Paris</option>
-                    <option value="06/03">06/03 (Mon) Return</option>
+        <div class="add-item-form">
+            <h4 style="margin:0 0 15px 0; font-family:var(--font-serif-en); text-transform:uppercase; color:var(--coffee-dark);">+ Add Schedule</h4>
+            <div class="form-row">
+                <input type="text" id="new-time" class="form-input" placeholder="TIME (e.g. 10:00)" style="flex:1;">
+                <select id="new-type" class="form-input" style="flex:1; border:none; border-bottom:1px solid #999; border-radius:0;">
+                    <option value="spot">Spot</option>
+                    <option value="food">Food</option>
+                    <option value="transport">Transport</option>
                 </select>
             </div>
-            <div class="row"><input type="text" id="exName" style="flex:2" placeholder="Item (e.g. Dinner)"></div>
-            <div class="row">
-                <input type="number" id="exAmt" style="flex:1" placeholder="€ Amount" oninput="updPreview()">
-                <div id="previewTwd" style="align-self:center; margin-left:10px; color:var(--fudge-red); font-weight:bold; font-size:0.9rem;"></div>
-            </div>
-            <button class="add-btn" onclick="addExpense()">ADD EXPENSE</button>
+            <div class="form-row"><input type="text" id="new-title" class="form-input" placeholder="TITLE (地點名稱)"></div>
+            <div class="form-row"><input type="text" id="new-desc" class="form-input" placeholder="NOTE (備註)"></div>
+            <div class="form-row"><input type="text" id="new-loc" class="form-input" placeholder="LOCATION (Google Maps)"></div>
+            <button class="add-btn" onclick="addItemToDay()">Confirm</button>
         </div>
-        <div id="expense-list"></div>
     </div>
 
-    <div id="checklist" class="page">
-        <div class="input-area">
-            <h4 style="margin-top:0;">CHECKLIST</h4>
-            <div class="row"><input type="text" id="newCheck" placeholder="Item..."><button class="add-btn" style="width:auto;background:var(--fudge-red);" onclick="addCheck()">ADD</button></div>
+    <!-- VIEW 2: 預訂 (Bookings) -->
+    <div id="view-bookings" class="section-view">
+        <div class="budget-header">
+            <div style="opacity:0.9; margin-bottom:5px; font-family:var(--font-serif-en); letter-spacing:1px; color:var(--white);">TOTAL BUDGET</div>
+            <div id="total-budget" style="font-size:1.8rem; font-weight:700; font-family:'Playfair Display'; line-height:1.2; color:var(--white);">
+                NT$ 0<br><span style="font-size:1.2rem; opacity:0.8;">€ 0.00</span>
+            </div>
+            
+            <div style="margin-top:15px; font-size:0.8rem; border-top:1px solid rgba(255,255,255,0.3); padding-top:10px; color:var(--white);">
+                Rate: 1 € = <input type="number" id="bk-rate" value="35" class="rate-input" onchange="renderBookings()"> NT$
+            </div>
         </div>
-        <div id="check-list-container"></div>
+
+        <div id="booking-list"></div>
         
-        <div class="input-area" style="margin-top:30px;">
-            <h4 style="margin-top:0;">WISH LIST</h4>
-            <div class="row"><input type="text" id="newWish" placeholder="Item..."><input type="text" id="newWishNote" placeholder="Note"><button class="add-btn" style="width:auto;background:var(--fudge-red);" onclick="addWish()">ADD</button></div>
+        <div style="margin-top:40px; border-top:2px solid var(--coffee-dark); padding-top:20px;">
+            <div style="display:flex; gap:15px; margin-bottom:15px;">
+                <select id="new-bk-type" class="form-input" style="flex:1;"><option value="transport">Transport</option><option value="hotel">Hotel</option></select>
+                <input type="text" id="new-bk-name" class="form-input" placeholder="NAME" style="flex:2;">
+            </div>
+            <button class="add-btn" onclick="addBooking()">ADD TO LIST</button>
         </div>
-        <div id="wish-list-container"></div>
+    </div>
+
+    <!-- VIEW 3: 記帳 (Cost) -->
+    <div id="view-money" class="section-view">
+        <h2 style="font-family:var(--font-serif-en); letter-spacing:1px; margin-top:0; color:var(--coffee-dark);">MONEY & COST</h2>
+        
+        <!-- Currency Converter -->
+        <div class="converter-box">
+            <div style="font-family:var(--font-serif-en); text-transform:uppercase; margin-bottom:15px; border-bottom:1px solid rgba(255,255,255,0.3); padding-bottom:5px; display:flex; justify-content:space-between;">
+                <span>Instant Converter</span>
+                <span style="font-size:0.8rem;">Rate: <input type="number" id="conv-rate" value="35" class="rate-input" onchange="convert('rate')"></span>
+            </div>
+            <div class="conv-row">
+                <span style="font-weight:bold;">EUR €</span>
+                <input type="number" id="conv-eur" class="conv-input" placeholder="0" onkeyup="convert('eur')">
+            </div>
+            <div class="conv-row">
+                <span style="font-weight:bold;">TWD $</span>
+                <input type="number" id="conv-twd" class="conv-input" placeholder="0" onkeyup="convert('twd')">
+            </div>
+        </div>
+
+        <!-- Total Stats -->
+        <div style="background:var(--white); padding:20px; border:1px solid var(--coffee-dark); box-shadow:var(--shadow-hard); margin-bottom:20px;">
+            <div style="color:#5D4037; margin-bottom:5px; font-family:var(--font-serif-en); text-transform:uppercase;">Grand Total Spent</div>
+            <div id="expense-total" style="font-size:2rem; font-weight:700; color:var(--coffee-dark); font-family:'Playfair Display';">€0.00</div>
+        </div>
+
+        <!-- Input Area -->
+        <div style="margin-bottom:20px;">
+            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <input type="date" id="exp-date" class="form-input" style="flex:1; border:1px solid var(--coffee-mid); padding:8px;">
+            </div>
+            <div style="display:flex; gap:15px; margin-bottom:15px;">
+                <input type="text" id="exp-name" class="form-input" placeholder="ITEM" style="flex:2;">
+                <input type="number" id="exp-amt" class="form-input" placeholder="€" style="flex:1;">
+            </div>
+            <button class="add-btn" onclick="addExpense()">RECORD EXPENSE</button>
+        </div>
+
+        <div id="expense-list" style="margin-top:30px;"></div>
     </div>
 
 </div>
 
 <nav class="bottom-nav">
-    <div class="nav-item active" onclick="goPage('itinerary',this)"><i class="fa-solid fa-map"></i>PLAN</div>
-    <div class="nav-item" onclick="goPage('tickets',this)"><i class="fa-solid fa-ticket"></i>TICKETS</div>
-    <div class="nav-item" onclick="goPage('expense',this)"><i class="fa-solid fa-wallet"></i>MONEY</div>
-    <div class="nav-item" onclick="goPage('checklist',this)"><i class="fa-solid fa-list-check"></i>LISTS</div>
+    <div class="nav-item active" onclick="switchView('itinerary', this)"><i class="fas fa-map"></i><span>Plan</span></div>
+    <div class="nav-item" onclick="switchView('bookings', this)"><i class="fas fa-check-square"></i><span>Book</span></div>
+    <div class="nav-item" onclick="switchView('money', this)"><i class="fas fa-coins"></i><span>Cost</span></div>
 </nav>
 
-<div class="fab" onclick="toggleCalc()"><i class="fa-solid fa-calculator"></i></div>
-
-<div class="modal" id="addModal">
-    <div class="modal-box">
-        <h3>Edit Event</h3>
-        <input type="hidden" id="editId">
-        <div style="margin-bottom:10px"><label>Time</label><input type="text" id="addTime"></div>
-        <div style="margin-bottom:10px"><label>Title</label><input type="text" id="addTitle"></div>
-        <div style="margin-bottom:10px"><label>Desc</label><textarea id="addDesc" rows="3" style="width:100%;border:1px solid #ccc;padding:10px;"></textarea></div>
-        <div style="margin-bottom:10px"><label>Type</label><select id="addType"><option>Transport</option><option>Attraction</option><option>Accommodation</option><option>Food</option></select></div>
-        <div style="display:flex;gap:10px;margin-top:20px;">
-            <button style="flex:1;padding:12px;border:none;background:#eee;border-radius:4px;" onclick="document.getElementById('addModal').classList.remove('show')">Cancel</button>
-            <button style="flex:1;padding:12px;border:none;background:var(--fudge-navy);color:white;border-radius:4px;" onclick="saveEvent()">Save</button>
-        </div>
-    </div>
-</div>
-
-<div class="modal" id="calcModal">
-    <div class="modal-box" style="width:320px;">
-        <div style="background:#eee;padding:15px;text-align:right;font-family:monospace;font-size:1.5rem;margin-bottom:10px;border-radius:4px;">
-            <div id="eurD">€ 0</div><div style="font-size:1rem;color:#888;">= NT$ <span id="twdD">0</span></div>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
-            <button onclick="cal(1)" style="padding:15px;border:1px solid #ccc;border-radius:4px;font-size:1.2rem;">1</button><button onclick="cal(2)" style="padding:15px;border:1px solid #ccc;border-radius:4px;font-size:1.2rem;">2</button><button onclick="cal(3)" style="padding:15px;border:1px solid #ccc;border-radius:4px;font-size:1.2rem;">3</button>
-            <button onclick="cal(4)" style="padding:15px;border:1px solid #ccc;border-radius:4px;font-size:1.2rem;">4</button><button onclick="cal(5)" style="padding:15px;border:1px solid #ccc;border-radius:4px;font-size:1.2rem;">5</button><button onclick="cal(6)" style="padding:15px;border:1px solid #ccc;border-radius:4px;font-size:1.2rem;">6</button>
-            <button onclick="cal(7)" style="padding:15px;border:1px solid #ccc;border-radius:4px;font-size:1.2rem;">7</button><button onclick="cal(8)" style="padding:15px;border:1px solid #ccc;border-radius:4px;font-size:1.2rem;">8</button><button onclick="cal(9)" style="padding:15px;border:1px solid #ccc;border-radius:4px;font-size:1.2rem;">9</button>
-            <button onclick="cal('.')" style="padding:15px;border:1px solid #ccc;border-radius:4px;font-size:1.2rem;">.</button><button onclick="cal(0)" style="padding:15px;border:1px solid #ccc;border-radius:4px;font-size:1.2rem;">0</button><button onclick="cal('c')" style="background:var(--fudge-red);color:white;border:none;border-radius:4px;font-size:1.2rem;">C</button>
-        </div>
-        <button onclick="toggleCalc()" style="width:100%;margin-top:15px;padding:12px;background:#333;color:white;border:none;border-radius:4px;">CLOSE</button>
-    </div>
-</div>
-
 <script>
-// --- DATA ---
-const defItin = [
-    {id:1, group:'flight', time:'5/21 23:30', type:'Transport', title:'Flight: TPE -> Paris', desc:'長榮 BR87 (約 13.5hr)。', location:'Taoyuan Airport'},
-    {id:2, group:'flight', time:'5/22 07:55', type:'Transport', title:'Arrival Paris (CDG)', desc:'抵達巴黎。轉往 Gare Montparnasse。', location:'CDG Airport'},
-    {id:3, group:'lily', time:'5/22 Morning', type:'Transport', title:'Paris -> La Rochelle', desc:'TGV 高鐵前往。', location:'Gare Montparnasse'},
-    {id:4, group:'lily', time:'5/22-25', type:'Accommodation', title:'Chez Lily (精確地址)', desc:'地址：11 Bis Rue Louise Pinchon, 17000 La Rochelle', location:'11 Bis Rue Louise Pinchon, 17000 La Rochelle'},
-    {id:5, group:'bordeaux', time:'5/25 Morning', type:'Transport', title:'La Rochelle -> Bordeaux', desc:'搭乘 Intercités 火車。', location:'Gare de Bordeaux-Saint-Jean'},
-    {id:6, group:'bordeaux', time:'5/25 Afternoon', type:'Attraction', title:'Dune du Pilat', desc:'歐洲最高沙丘。', location:'Dune du Pilat'},
-    {id:7, group:'bordeaux', time:'5/25 Evening', type:'Attraction', title:'Grand Théâtre', desc:'波爾多市區夜景。', location:'Grand Théâtre de Bordeaux'},
-    {id:8, group:'changyu', time:'5/26 10:00', type:'Transport', title:'To Airport (BOD)', desc:'⚠️ 請提早 3 小時抵達機場。', note:'提早 3 小時', location:'Bordeaux Airport'},
-    {id:9, group:'changyu', time:'5/26 13:00', type:'Transport', title:'Flight: Bordeaux -> Basel', desc:'EasyJet。注意行李規定。', location:'Basel Airport'},
-    {id:10, group:'changyu', time:'5/26 15:00', type:'Transport', title:'Transfer to Saint-Louis', desc:'搭接駁車至 Gare de Saint-Louis，常郁接送。', location:'Gare de Saint-Louis'},
-    {id:11, group:'changyu', time:'5/26-30', type:'Accommodation', title:'Chez Changyu (精確地址)', desc:'地址：10 Rue du Chalet, 68480 Kœstlach', location:'10 Rue du Chalet, 68480 Kœstlach'},
-    {id:12, group:'paris', time:'5/30 Noon', type:'Transport', title:'Basel -> Paris', desc:'TGV Lyria。', location:'Gare de Lyon'},
-    {id:13, group:'paris', time:'5/30-6/3', type:'Accommodation', title:'Paris Stay', desc:'巴黎市區觀光。', location:'Paris'},
-    {id:14, group:'paris', time:'5/31', type:'Attraction', title:'Louvre Museum', desc:'羅浮宮。', location:'Louvre Museum'},
-    {id:15, group:'paris', time:'6/3 20:00', type:'Transport', title:'To Airport (CDG)', desc:'長榮 BR88 (23:30)。\n⚠️ 退稅人多，請提早 4 小時抵達。', note:'提早 4 小時退稅', location:'CDG Airport'}
-];
+    /* ================= 初始資料 ================= */
+    const segments = [
+        { id: 'tpe', name: 'Taipei', dates: [0] }, 
+        { id: 'lr', name: 'La Rochelle', dates: [1, 2, 3] },
+        { id: 'bod', name: 'Bordeaux', dates: [4] },
+        { id: 'ksl', name: 'Kœstlach', dates: [5, 6, 7, 8] },
+        { id: 'par', name: 'Paris', dates: [9, 10, 11, 12, 13] }
+    ];
 
-const defTickets = [
-    { id:1, name:'5/21-6/3 長榮台北巴黎來回', note:'長榮官網', price:0, cur:'TWD', checked:false },
-    { id:2, name:'5/22 巴黎 -> La Rochelle', note:'SNCF Connect', price:0, cur:'EUR', checked:false },
-    { id:3, name:'5/25 La Rochelle -> 波爾多', note:'確認車種', price:0, cur:'EUR', checked:false },
-    { id:4, name:'5/26 波爾多 -> 巴塞爾', note:'EasyJet', price:0, cur:'EUR', checked:false },
-    { id:5, name:'5/30 巴塞爾 -> 巴黎', note:'TGV Lyria', price:0, cur:'EUR', checked:false }
-];
+    const defaultItinerary = [
+        { date: "5/21", day: "Wed", city: "Taipei", items: [
+            { time: "23:30", type: "transport", title: "飛往巴黎 (TPE -> CDG)", desc: "長榮航空 BR87", details: "提前3小時到機場。", link: "https://www.evaair.com/zh-tw/index.html", linkText: "EVA AIR", location: "Taoyuan International Airport" }
+        ]},
+        { date: "5/22", day: "Thu", city: "La Rochelle", items: [
+            { time: "07:45", type: "transport", title: "抵達巴黎戴高樂", desc: "入境法國，前往車站。", location: "Charles de Gaulle Airport" },
+            { time: "PM", type: "transport", title: "前往 La Rochelle", desc: "SNCF 火車前往莉莉家。", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location: "Gare de La Rochelle" }
+        ]},
+        { date: "5/23", day: "Fri", city: "La Rochelle", items: [{time:"全天", type:"spot", title:"老港口探索", desc:"Vieux Port、水族館。", location:"Vieux Port La Rochelle"}] },
+        { date: "5/24", day: "Sat", city: "La Rochelle", items: [{time:"全天", type:"spot", title:"週末市集", desc:"體驗法式生活。", location:"Marché de La Rochelle"}] },
+        { date: "5/25", day: "Sun", city: "Bordeaux", items: [
+            { time: "AM", type: "transport", title: "前往波爾多", desc: "SNCF 火車", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location:"Gare de Bordeaux-Saint-Jean" },
+            { time: "PM", type: "spot", title: "比拉沙丘", desc: "Dune du Pilat", location:"Dune du Pilat" },
+            { time: "Eve", type: "spot", title: "市區晚餐", desc: "聖凱瑟琳街、大劇院。", location:"Grand Théâtre de Bordeaux" }
+        ]},
+        { date: "5/26", day: "Mon", city: "Basel", items: [
+            { time: "AM", type: "spot", title: "波爾多早晨", desc: "前往機場。", location:"Bordeaux" },
+            { time: "PM", type: "transport", title: "飛往巴塞爾", desc: "EasyJet (BOD->BSL)", link: "https://www.easyjet.com/en", linkText: "EasyJet", location: "EuroAirport Basel-Mulhouse-Freiburg" },
+            { time: "Eve", type: "spot", title: "抵達常郁家", desc: "Kœstlach", location:"10 Rue du Chalet, 68480 Kœstlach" }
+        ]},
+        { date: "5/27", day: "Tue", city: "Koestlach", items: [{time:"全天", type:"spot", title:"鄉村生活", desc:"三國邊境探索。", location:"10 Rue du Chalet, 68480 Kœstlach"}] },
+        { date: "5/28", day: "Wed", city: "Basel", items: [{time:"全天", type:"spot", title:"巴塞爾漫遊", desc:"美術館、萊茵河。", location:"Kunstmuseum Basel"}] },
+        { date: "5/29", day: "Thu", city: "Colmar", items: [{time:"全天", type:"spot", title:"Colmar 童話小鎮", desc:"霍爾的移動城堡。", location:"Colmar"}] },
+        { date: "5/30", day: "Fri", city: "Paris", items: [
+            { time: "AM", type: "transport", title: "前往巴黎", desc: "Basel -> Paris (TGV)", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location: "Gare de Lyon" },
+            { time: "PM", type: "spot", title: "巴黎鐵塔", desc: "塞納河畔。", location:"Eiffel Tower" }
+        ]},
+        { date: "5/31", day: "Sat", city: "Paris", items: [{time:"全天", type:"spot", title:"羅浮宮", desc:"博物館日。", location:"Louvre Museum"}] },
+        { date: "6/1", day: "Sun", city: "Paris", items: [{time:"全天", type:"spot", title:"瑪黑區", desc:"購物時尚。", location:"Le Marais"}] },
+        { date: "6/2", day: "Mon", city: "Paris", items: [{time:"全天", type:"spot", title:"蒙馬特", desc:"聖心堂。", location:"Sacré-Cœur"}] },
+        { date: "6/3", day: "Tue", city: "Taipei", items: [
+            { time: "PM", type: "spot", title: "最後衝刺", desc: "補貨、退稅。", location:"Paris" },
+            { time: "23:30", type: "transport", title: "返程 (CDG -> TPE)", desc: "長榮 BR88。", location: "Charles de Gaulle Airport" }
+        ]}
+    ];
 
-const cityConf = { 'flight':{n:'Paris',lat:48.85,lon:2.35}, 'lily':{n:'La Rochelle',lat:46.16,lon:-1.15}, 'bordeaux':{n:'Bordeaux',lat:44.84,lon:-0.58}, 'changyu':{n:'Kœstlach',lat:47.50,lon:7.27}, 'paris':{n:'Paris',lat:48.85,lon:2.35} };
-let curPhase='flight', itinData=[], tickData=[], expData=[], checkData=[], wishData=[];
+    const defaultBookings = [
+        { type: 'transport', name: '5/21-6/3 長榮台北巴黎來回', note: '長榮官網', price: 0, checked: false, link:'https://www.evaair.com/zh-tw/index.html' },
+        { type: 'transport', name: '5/22 巴黎 -> La Rochelle', note: 'SNCF', price: 0, checked: false, link:'https://www.sncf-connect.com/en-en/' },
+        { type: 'transport', name: '5/25 La Rochelle -> 波爾多', note: 'SNCF', price: 0, checked: false, link:'https://www.sncf-connect.com/en-en/' },
+        { type: 'hotel',     name: '5/25 波爾多住宿', note: 'Booking.com', price: 0, checked: false, link:'https://www.booking.com' },
+        { type: 'transport', name: '5/26 波爾多 -> 巴塞爾', note: 'EasyJet', price: 0, checked: false, link:'https://www.easyjet.com/en' },
+        { type: 'transport', name: '5/30 巴塞爾 -> 巴黎', note: 'SNCF', price: 0, checked: false, link:'https://www.sncf-connect.com/en-en/' },
+        { type: 'hotel',     name: '5/30-6/3 巴黎住宿', note: 'Booking.com', price: 0, checked: false, link:'https://www.booking.com' }
+    ];
 
-// --- INIT ---
-window.onload = function() {
-    itinData = JSON.parse(localStorage.getItem('mt_itin_v15')) || defItin;
-    tickData = JSON.parse(localStorage.getItem('mt_tick_v15')) || defTickets;
-    expData = JSON.parse(localStorage.getItem('mt_exp_v15')) || [];
-    checkData = JSON.parse(localStorage.getItem('mt_check_v15')) || ['Passport','EUR Cash','Credit Card','Adapter','Toothbrush','SIM Card'];
-    wishData = JSON.parse(localStorage.getItem('mt_wish_v15')) || [];
+    let currentItinerary = [];
+    let currentDayIndex = 0;
+
+    /* ================= 系統邏輯 ================= */
     
-    saveAll();
-    filterPhase('flight', document.querySelector('.timeline-node'));
-    renderTickets(); renderExpense(); renderLists(); calDay();
-}
-
-function saveAll(){
-    localStorage.setItem('mt_itin_v15', JSON.stringify(itinData));
-    localStorage.setItem('mt_tick_v15', JSON.stringify(tickData));
-    localStorage.setItem('mt_exp_v15', JSON.stringify(expData));
-    localStorage.setItem('mt_check_v15', JSON.stringify(checkData));
-    localStorage.setItem('mt_wish_v15', JSON.stringify(wishData));
-}
-function resetAllData(){ if(confirm('Reset all?')) { localStorage.clear(); location.reload(); } }
-
-function goPage(id, el){
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-    el.classList.add('active');
-}
-
-// --- ITINERARY ---
-function filterPhase(ph, el){
-    curPhase=ph; 
-    if(el){ document.querySelectorAll('.timeline-node').forEach(n=>n.classList.remove('active')); el.classList.add('active'); }
-    // Weather
-    const c = cityConf[ph]||cityConf['flight'];
-    document.getElementById('weatherCity').innerText=c.n;
-    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lon}&current_weather=true`).then(r=>r.json()).then(d=>{document.getElementById('weatherInfo').innerText=`${d.current_weather.temperature}°C`});
-    
-    // Render Cards
-    const list = document.getElementById('itinerary-list'); list.innerHTML='';
-    const items = itinData.filter(i=>i.group===ph).sort((a,b)=>a.time.localeCompare(b.time));
-    let lastD='';
-    items.forEach(i=>{
-        const d = i.time.split(' ')[0];
-        if(d!==lastD){ list.innerHTML+=`<div class="date-header"><span>${d}</span></div>`; lastD=d; }
-        const map = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(i.location)}`;
-        const cal = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(i.title)}&details=${encodeURIComponent(i.desc)}`;
-        list.innerHTML+=`
-        <div class="itinerary-card">
-            <div class="card-actions"><i class="fa-solid fa-pen icon-btn" onclick="editEvt(${i.id})"></i><i class="fa-solid fa-trash icon-btn" style="color:#d9534f" onclick="delEvt(${i.id})"></i></div>
-            <span class="card-time">${i.time}</span>
-            <div class="card-title">${i.title}</div>
-            <div class="transport-info" style="display:${(i.type=='Transport')?'inline-block':'none'}"><i class="fa-solid fa-plane"></i> Transport</div>
-            <div class="important-note" style="display:${i.note?'block':'none'}">⚠️ ${i.note}</div>
-            <div class="expand-btn" onclick="this.classList.toggle('rotated');this.nextElementSibling.classList.toggle('show')"><i class="fa-solid fa-plus"></i></div>
-            <div class="card-details">
-                <p style="white-space:pre-line">${i.desc}</p>
-                <a href="${map}" target="_blank" style="color:#4F8A8B;font-weight:bold;margin-right:10px;"><i class="fa-solid fa-location-dot"></i> MAP</a>
-                <a href="${cal}" target="_blank" style="color:#A63737;font-weight:bold;"><i class="fa-regular fa-calendar-plus"></i> REMIND</a>
-            </div>
-        </div>`;
-    });
-}
-function openAddModal(){ document.getElementById('addModal').classList.add('show'); document.getElementById('editId').value=''; document.getElementById('addTime').value=''; document.getElementById('addTitle').value=''; document.getElementById('addDesc').value=''; }
-function editEvt(id){ const i=itinData.find(x=>x.id==id); if(i){ document.getElementById('editId').value=i.id; document.getElementById('addTime').value=i.time; document.getElementById('addTitle').value=i.title; document.getElementById('addDesc').value=i.desc; document.getElementById('addType').value=i.type; document.getElementById('addModal').classList.add('show'); } }
-function saveEvent(){
-    const id=document.getElementById('editId').value, t=document.getElementById('addTime').value, tt=document.getElementById('addTitle').value, d=document.getElementById('addDesc').value, tp=document.getElementById('addType').value;
-    if(!t||!tt)return;
-    if(id){ const idx=itinData.findIndex(x=>x.id==id); if(idx>-1){ itinData[idx].time=t; itinData[idx].title=tt; itinData[idx].desc=d; itinData[idx].type=tp; } }
-    else { itinData.push({id:Date.now(), group:curPhase, time:t, title:tt, desc:d, type:tp}); }
-    saveAll(); document.getElementById('addModal').classList.remove('show'); filterPhase(curPhase);
-}
-function delEvt(id){ if(confirm('Delete?')){ itinData=itinData.filter(x=>x.id!=id); saveAll(); filterPhase(curPhase); } }
-
-// --- TICKETS ---
-function renderTickets(){
-    const con = document.getElementById('ticket-list'); con.innerHTML='';
-    let total=0;
-    // Sort: Unchecked first
-    tickData.sort((a,b)=>Number(a.checked)-Number(b.checked));
-    
-    tickData.forEach((t, i)=>{
-        if(t.checked) total += (t.cur==='EUR' ? parseFloat(t.price)*35 : parseFloat(t.price));
-        con.innerHTML += `
-        <div class="ticket-item ${t.checked?'bought':''}">
-            <div class="t-row-top">
-                <input type="checkbox" class="t-check" onchange="togTick(${i},this.checked)" ${t.checked?'checked':''}>
-                <div class="t-info"><span class="t-name">${t.name}</span><span class="t-note">${t.note}</span></div>
-                <i class="fa-solid fa-trash" style="color:#ccc;cursor:pointer;" onclick="delTick(${i})"></i>
-            </div>
-            <div class="t-row-btm">
-                <div class="currency-btn ${t.cur.toLowerCase()}" onclick="togCur(${i})">${t.cur=='EUR'?'€':'NT$'}</div>
-                <input type="number" class="price-input" value="${t.price}" onchange="updTickPrice(${i},this.value)">
-            </div>
-        </div>`;
-    });
-    document.getElementById('ticketTotalTwd').innerText = Math.round(total).toLocaleString();
-}
-function addTicket(){ const n=document.getElementById('tName').value, p=document.getElementById('tPrice').value||0, c=document.getElementById('tCur').value; if(!n)return; tickData.push({name:n, note:'', price:p, cur:c, checked:false}); document.getElementById('tName').value=''; document.getElementById('tPrice').value=''; saveAll(); renderTickets(); }
-function togTick(i,v){ tickData[i].checked=v; saveAll(); renderTickets(); }
-function togCur(i){ tickData[i].cur = tickData[i].cur==='EUR'?'TWD':'EUR'; saveAll(); renderTickets(); }
-function updTickPrice(i,v){ tickData[i].price=v; saveAll(); renderTickets(); }
-function delTick(i){ if(confirm('Remove?')){ tickData.splice(i,1); saveAll(); renderTickets(); } }
-
-// --- MONEY (Daily Date Sorted) ---
-function renderExpense(){
-    const con = document.getElementById('expense-list'); con.innerHTML='';
-    let tot=0;
-    
-    // Group by unique date strings
-    const grouped = {};
-    expData.forEach(e => {
-        if(!grouped[e.day]) grouped[e.day] = [];
-        grouped[e.day].push(e);
-        tot += parseFloat(e.amount);
-    });
-
-    // Sort dates
-    const sortedDates = Object.keys(grouped).sort();
-
-    sortedDates.forEach(dateKey => {
-        let sub = 0, html = '';
-        grouped[dateKey].forEach(e => {
-            sub += parseFloat(e.amount);
-            const realIdx = expData.findIndex(x=>x.id==e.id);
-            html += `<div class="expense-row">
-                <div>${e.name}</div>
-                <div class="ex-amt"><span class="ex-eur">€ ${e.amount}</span><span class="ex-twd">NT$ ${Math.round(e.amount*35)}</span></div>
-                <i class="fa-solid fa-trash" style="color:#eee;margin-left:10px;cursor:pointer;" onclick="delExp(${realIdx})"></i>
-            </div>`;
-        });
+    function init() {
+        // Init Itinerary
+        const storedItin = localStorage.getItem('mark_trip_itinerary_v5');
+        if (storedItin) {
+            currentItinerary = JSON.parse(storedItin);
+        } else {
+            currentItinerary = defaultItinerary;
+            localStorage.setItem('mark_trip_itinerary_v5', JSON.stringify(currentItinerary));
+        }
         
-        con.innerHTML += `
-            <div class="daily-group">
-                <div class="daily-head">
-                    <span>${dateKey}</span>
-                    <span style="font-size:0.9rem;color:var(--fudge-red);">Day Total: € ${sub.toFixed(1)}</span>
-                </div>
-                ${html}
+        // Init Date Input to Today
+        document.getElementById('exp-date').valueAsDate = new Date();
+
+        renderSegmentBar();
+        selectSegment(0); 
+        renderBookings();
+        renderExpenses();
+    }
+
+    /* --- 行程表渲染 --- */
+    function renderSegmentBar() {
+        const bar = document.getElementById('segment-bar');
+        bar.innerHTML = '';
+        segments.forEach((seg, idx) => {
+            const chip = document.createElement('div');
+            chip.className = `seg-chip ${idx === 0 ? 'active' : ''}`;
+            chip.innerText = seg.name;
+            chip.onclick = () => selectSegment(idx);
+            bar.appendChild(chip);
+        });
+    }
+    function selectSegment(segIdx) {
+        document.querySelectorAll('.seg-chip').forEach((el, i) => el.classList.toggle('active', i === segIdx));
+        renderDateBar(segIdx);
+        switchDay(segments[segIdx].dates[0]);
+    }
+    function renderDateBar(segIdx) {
+        const bar = document.getElementById('date-bar');
+        bar.innerHTML = '';
+        const dayIndices = segments[segIdx].dates;
+        dayIndices.forEach((dayIdx) => {
+            const d = currentItinerary[dayIdx];
+            const pill = document.createElement('div');
+            pill.className = `date-pill ${dayIdx === currentDayIndex ? 'active' : ''}`;
+            pill.id = `date-pill-${dayIdx}`;
+            pill.onclick = () => switchDay(dayIdx);
+            pill.innerHTML = `<div class="dp-day">${d.day}</div><div class="dp-date">${d.date}</div>`;
+            bar.appendChild(pill);
+        });
+    }
+    function switchDay(idx) {
+        currentDayIndex = idx;
+        document.querySelectorAll('.date-pill').forEach(el => el.classList.remove('active'));
+        const activePill = document.getElementById(`date-pill-${idx}`);
+        if(activePill) {
+            activePill.classList.add('active');
+            activePill.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+        }
+        renderDay(idx);
+    }
+    function renderDay(idx) {
+        const data = currentItinerary[idx];
+        const container = document.getElementById('day-content');
+        const weatherUrl = `https://www.google.com/search?q=weather+${data.city}`;
+        let segName = "";
+        segments.forEach(s => { if(s.dates.includes(idx)) segName = s.name; });
+        let html = `
+            <div class="day-hero">
+                <div class="day-info"><h2>${data.city}</h2><p> ${segName}</p></div>
+                <a href="${weatherUrl}" target="_blank" class="weather-btn"><i class="fas fa-sun"></i> Weather</a>
             </div>`;
-    });
+        data.items.forEach((item, itemIdx) => {
+            const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.location || item.title)}`;
+            let btnHtml = `<a href="${mapUrl}" target="_blank" class="btn btn-map"><i class="fas fa-map-marker-alt"></i> MAP</a>`;
+            if (item.link) btnHtml += `<a href="${item.link}" target="_blank" class="btn btn-ticket"><i class="fas fa-ticket-alt"></i> ${item.linkText}</a>`;
+            html += `
+                <div class="card type-${item.type}">
+                    <div class="card-tag">${item.type}</div>
+                    <div class="card-controls">
+                        <div class="icon-btn delete" onclick="deleteItemFromDay(${idx}, ${itemIdx})"><i class="fas fa-trash"></i></div>
+                        <div class="expand-toggle" onclick="toggleDetails(this)"><i class="fas fa-plus"></i></div>
+                    </div>
+                    <div class="card-header">
+                        <div>
+                            <div class="time-badge">${item.time}</div>
+                            <div class="card-title">${item.title}</div>
+                            <div class="card-desc">${item.desc}</div>
+                        </div>
+                    </div>
+                    ${(item.type==='transport' && item.details) ? `<div class="transport-info"><i class="fas fa-info-circle"></i> ${item.details}</div>` : ''}
+                    <div class="details-box">
+                        ${(item.details && item.type!=='transport') ? `<p style="color:#5D4037; margin-bottom:10px;">${item.details}</p>` : ''}
+                        <div class="action-buttons">${btnHtml}</div>
+                    </div>
+                </div>`;
+        });
+        container.innerHTML = html;
+    }
+    function toggleDetails(btn) {
+        const box = btn.closest('.card').querySelector('.details-box');
+        const icon = btn.querySelector('.expand-toggle i');
+        if (box.classList.contains('show')) { box.classList.remove('show'); icon.className = 'fas fa-plus'; }
+        else { box.classList.add('show'); icon.className = 'fas fa-minus'; }
+    }
+    function addItemToDay() {
+        const time = document.getElementById('new-time').value || "TBD";
+        const type = document.getElementById('new-type').value;
+        const title = document.getElementById('new-title').value;
+        const desc = document.getElementById('new-desc').value || "";
+        const loc = document.getElementById('new-loc').value || title;
+        if (!title) { alert("請輸入標題"); return; }
+        currentItinerary[currentDayIndex].items.push({time, type, title, desc, location: loc, details: ""});
+        localStorage.setItem('mark_trip_itinerary_v5', JSON.stringify(currentItinerary));
+        document.getElementById('new-title').value = ""; document.getElementById('new-desc').value = ""; document.getElementById('new-loc').value = "";
+        renderDay(currentDayIndex);
+    }
+    function deleteItemFromDay(dayIdx, itemIdx) {
+        if (!confirm("Delete?")) return;
+        currentItinerary[dayIdx].items.splice(itemIdx, 1);
+        localStorage.setItem('mark_trip_itinerary_v5', JSON.stringify(currentItinerary));
+        renderDay(dayIdx);
+    }
 
-    document.getElementById('grandTotalEur').innerText=tot.toFixed(1);
-    document.getElementById('grandTotalTwd').innerText=Math.round(tot*35).toLocaleString();
-}
-function addExpense(){ const n=document.getElementById('exName').value, a=document.getElementById('exAmt').value, d=document.getElementById('exDay').value; if(!n||!a)return; expData.push({id:Date.now(), day:d, name:n, amount:a}); document.getElementById('exName').value=''; document.getElementById('exAmt').value=''; updPreview(); saveAll(); renderExpense(); }
-function delExp(i){ expData.splice(i,1); saveAll(); renderExpense(); }
-function updPreview(){ const v=document.getElementById('exAmt').value; document.getElementById('previewTwd').innerText=v?`≈ NT$ ${Math.round(v*35)}`:''; }
-
-// --- LISTS ---
-function renderLists(){
-    const cc=document.getElementById('check-list-container'); cc.innerHTML='';
-    checkData.forEach((c,i)=>cc.innerHTML+=`<div class="list-item"><label style="display:flex;align-items:center;width:100%"><input type="checkbox"> ${c}</label></div>`);
+    /* --- Bookings Logic --- */
+    function getBookings() { return localStorage.getItem('mark_trip_bookings_v5') ? JSON.parse(localStorage.getItem('mark_trip_bookings_v5')) : defaultBookings; }
+    function saveBookings(data) { localStorage.setItem('mark_trip_bookings_v5', JSON.stringify(data)); renderBookings(); }
     
-    const wc=document.getElementById('wish-list-container'); wc.innerHTML='';
-    wishData.forEach((w,i)=>wc.innerHTML+=`<div class="list-item ${w.checked?'checked':''}"><div style="display:flex;align-items:center;"><input type="checkbox" onchange="togWish(${i},this.checked)" ${w.checked?'checked':''}><div><b>${w.name}</b><br><small>${w.note}</small></div></div><i class="fa-solid fa-trash" style="color:#ccc;cursor:pointer;" onclick="delWish(${i})"></i></div>`);
-}
-function addCheck(){ const v=document.getElementById('newCheck').value; if(v){ checkData.push(v); document.getElementById('newCheck').value=''; saveAll(); renderLists(); } }
-function addWish(){ const n=document.getElementById('newWish').value, no=document.getElementById('newWishNote').value; if(n){ wishData.push({name:n, note:no, checked:false}); document.getElementById('newWish').value=''; saveAll(); renderLists(); } }
-function togWish(i,v){ wishData[i].checked=v; saveAll(); renderLists(); }
-function delWish(i){ wishData.splice(i,1); saveAll(); renderLists(); }
+    function handleBookingInput(idx, type, val) {
+        const list = getBookings();
+        const rate = parseFloat(document.getElementById('bk-rate').value) || 35;
+        let twdVal, eurVal;
 
-// --- CALC & TRIP ---
-function calDay(){ const d=Math.floor((new Date()-new Date(2025,4,21))/86400000); document.getElementById('tripDayCounter').innerText = d>0 ? `Day ${d}` : `T${d}`; }
-let cv=''; function toggleCalc(){document.getElementById('calcModal').classList.toggle('show');}
-function cal(v){ if(v=='c'){cv='';}else{if(v=='.'&&cv.includes('.'))return;cv+=v;} document.getElementById('eurD').innerText='€ '+cv; document.getElementById('twdD').innerText=Math.round((parseFloat(cv)||0)*35); }
+        if (type === 'eur') {
+            eurVal = val;
+            twdVal = Math.round(val * rate);
+            document.getElementById(`twd-input-${idx}`).value = twdVal;
+        } else {
+            twdVal = val;
+            eurVal = (val / rate).toFixed(2);
+            document.getElementById(`eur-input-${idx}`).value = eurVal;
+        }
+        
+        list[idx].price = twdVal; // Store base as TWD
+        saveBookings(list);
+    }
 
+    function renderBookings() {
+        const list = getBookings();
+        const container = document.getElementById('booking-list');
+        container.innerHTML = '';
+        let totalTwd = 0;
+        const rate = parseFloat(document.getElementById('bk-rate').value) || 35;
+
+        list.forEach((item, idx) => {
+            totalTwd += parseInt(item.price || 0); // price stores TWD
+            let eurVal = (item.price / rate).toFixed(2);
+            let btnHtml = item.link ? `<a href="${item.link}" target="_blank" class="mini-btn">LINK <i class="fas fa-external-link-alt"></i></a>` : '';
+            
+            container.innerHTML += `
+                <div class="booking-item type-${item.type} ${item.checked ? 'checked' : ''}">
+                    <div style="display:flex; gap:12px; align-items:flex-start;">
+                        <input type="checkbox" style="width:20px; height:20px; margin-top:3px; accent-color:#4E342E;" ${item.checked ? 'checked' : ''} onchange="toggleBooking(${idx})">
+                        <div style="flex:1;">
+                            <div style="font-family:var(--font-serif-en); font-size:0.7rem; color:#888; text-transform:uppercase;">${item.type} ${btnHtml}</div>
+                            <div style="font-weight:700; font-family:var(--font-serif-cn); color:#4E342E;">${item.name}</div>
+                            <div style="font-size:0.85rem; color:#6D7248; margin-top:2px;">${item.note}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="dual-input-row">
+                        <div class="currency-input-group">
+                            <span class="currency-label">EUR €</span>
+                            <input type="number" id="eur-input-${idx}" class="bk-input" value="${eurVal}" oninput="handleBookingInput(${idx}, 'eur', this.value)" placeholder="0">
+                        </div>
+                        <div style="color:#D7CCC8;">↔</div>
+                        <div class="currency-input-group">
+                            <span class="currency-label">NT$</span>
+                            <input type="number" id="twd-input-${idx}" class="bk-input" value="${item.price}" oninput="handleBookingInput(${idx}, 'twd', this.value)" placeholder="0">
+                        </div>
+                    </div>
+                    
+                    <div style="text-align:right; margin-top:5px;">
+                        <i class="fas fa-trash" style="color:#BBB; cursor:pointer;" onclick="delBooking(${idx})"></i>
+                    </div>
+                </div>`;
+        });
+        document.getElementById('total-budget').innerHTML = `NT$ ${totalTwd.toLocaleString()}<br><span style="font-size:1.2rem; opacity:0.8;">€ ${(totalTwd/rate).toFixed(2)}</span>`;
+    }
+    
+    function toggleBooking(idx) { let l = getBookings(); l[idx].checked = !l[idx].checked; saveBookings(l); }
+    
+    function addBooking() {
+        const type = document.getElementById('new-bk-type').value;
+        const name = document.getElementById('new-bk-name').value;
+        if(!name) return;
+        let l = getBookings(); l.push({ type, name, note: 'Added', price: 0, checked: false });
+        document.getElementById('new-bk-name').value = ''; saveBookings(l);
+    }
+    function delBooking(idx) { if(confirm('Remove?')) { let l = getBookings(); l.splice(idx, 1); saveBookings(l); } }
+
+    /* --- Money & Converter --- */
+    function convert(source) {
+        const eurInput = document.getElementById('conv-eur');
+        const twdInput = document.getElementById('conv-twd');
+        const rate = parseFloat(document.getElementById('conv-rate').value) || 35;
+        
+        if (source === 'eur') {
+            twdInput.value = Math.round(eurInput.value * rate);
+        } else if (source === 'twd') {
+            eurInput.value = (twdInput.value / rate).toFixed(2);
+        } else if (source === 'rate') {
+             if(eurInput.value) twdInput.value = Math.round(eurInput.value * rate);
+        }
+    }
+
+    function renderExpenses() {
+        let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v5')) || [];
+        const list = document.getElementById('expense-list');
+        list.innerHTML = '';
+        let total = 0;
+        
+        // Sort Date Descending
+        exps.sort((a,b) => new Date(b.date || 0) - new Date(a.date || 0));
+
+        // Grouping
+        const grouped = exps.reduce((acc, curr) => {
+            const d = curr.date || 'Undated';
+            if(!acc[d]) acc[d] = { total: 0, items: [] };
+            acc[d].items.push(curr);
+            acc[d].total += parseFloat(curr.amount);
+            return acc;
+        }, {});
+
+        // Render Groups
+        Object.keys(grouped).forEach(date => {
+            const group = grouped[date];
+            const div = document.createElement('div');
+            div.className = 'daily-group';
+            div.innerHTML = `<div class="daily-header"><span>${date}</span><span>Daily: €${group.total.toFixed(2)}</span></div>`;
+            
+            group.items.forEach(e => {
+                total += parseFloat(e.amount);
+                // Find original index for deletion (simple approach)
+                const origIdx = exps.indexOf(e);
+                div.innerHTML += `
+                    <div class="expense-item">
+                        <div style="display:flex; flex-direction:column;">
+                            <span style="font-family:var(--font-serif-cn); font-weight:700;">${e.name}</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span style="font-weight:700; font-family:'Playfair Display';">€${e.amount}</span>
+                            <i class="fas fa-trash" style="color:#BBB; cursor:pointer;" onclick="delExpense(${origIdx})"></i>
+                        </div>
+                    </div>`;
+            });
+            list.appendChild(div);
+        });
+
+        document.getElementById('expense-total').innerText = '€' + total.toFixed(2);
+    }
+
+    function addExpense() {
+        const date = document.getElementById('exp-date').value;
+        const name = document.getElementById('exp-name').value;
+        const amt = document.getElementById('exp-amt').value;
+        if(!name || !amt) return;
+        let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v5')) || [];
+        
+        // Use today if no date selected
+        const finalDate = date || new Date().toISOString().split('T')[0];
+        
+        exps.push({ date: finalDate, name: name, amount: amt });
+        localStorage.setItem('mark_trip_expenses_v5', JSON.stringify(exps));
+        document.getElementById('exp-name').value = ''; document.getElementById('exp-amt').value = ''; 
+        renderExpenses();
+    }
+
+    function delExpense(i) { 
+        if(confirm('Remove?')) { 
+            let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v5')); 
+            exps.splice(i, 1); 
+            localStorage.setItem('mark_trip_expenses_v5', JSON.stringify(exps)); 
+            renderExpenses(); 
+        } 
+    }
+
+    function switchView(id, btn) {
+        document.querySelectorAll('.section-view').forEach(el => el.classList.remove('active'));
+        document.getElementById('view-' + id).classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('app-header').style.display = (id === 'itinerary') ? 'block' : 'none';
+    }
+
+    window.onload = init;
 </script>
 </body>
 </html>
