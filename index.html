@@ -1,63 +1,638 @@
-
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>帶馬克出去玩</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>Take Mark Out | FUDGE Edition</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --muji-bg: #FDFBF7;
-            --muji-brown: #8D6E63;
-            --muji-blue: #1E3A5F;
-            --muji-text: #453A36;
-        }
-        body {
-            font-family: 'Noto Sans TC', sans-serif;
-            background-color: var(--muji-bg);
-            color: var(--muji-text);
-            -webkit-tap-highlight-color: transparent;
-            overscroll-behavior-y: none; /* 防止手機瀏覽器下拉重新整理 */
-        }
-        .serif { font-family: 'Noto Serif TC', serif; }
-        .bg-custom-blue { background-color: var(--muji-blue); }
-        .text-custom-blue { color: var(--muji-blue); }
-        .bg-custom-brown { background-color: var(--muji-brown); }
-        .text-custom-brown { color: var(--muji-brown); }
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        
-        .safe-area-top { padding-top: env(safe-area-inset-top); }
-        .safe-area-bottom { padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)); }
+            /* FUDGE Magazine Color Palette */
+            --bg-paper: #F4F1EA;       /* 米白色雜誌紙質感 */
+            --text-main: #2C2C2C;      /* 深炭灰，非純黑 */
+            --fudge-navy: #1D2D44;     /* 經典海軍藍 */
+            --fudge-red: #A63737;      /* 磚紅色 (Accent) */
+            --fudge-beige: #E0D8CC;    /* 深米色線條 */
+            --white: #FFFFFF;
+            
+            /* Fonts */
+            --font-serif: 'Playfair Display', serif; /* 英文標題 */
+            --font-mincho: 'Shippori Mincho', serif; /* 中文標題/優雅文字 */
+            --font-sans: 'Noto Sans JP', sans-serif; /* 易讀內文 */
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            --bottom-nav-height: 70px;
         }
-        .animate-fadeIn { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-paper);
+            color: var(--text-main);
+            margin: 0; padding: 0; height: 100vh;
+            display: flex; flex-direction: column; overflow-x: hidden;
+            overscroll-behavior-y: none;
+        }
+
+        /* Header - Magazine Masthead Style */
+        header {
+            background-color: var(--bg-paper);
+            color: var(--fudge-navy);
+            padding: 20px 20px 15px 20px;
+            padding-top: max(20px, env(safe-area-inset-top));
+            text-align: center;
+            position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid var(--fudge-navy);
+        }
+        #pageTitle {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
         
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        .container { 
+            flex: 1; padding: 20px; overflow-y: auto; max-width: 600px; margin: 0 auto; width: 100%; 
+            padding-bottom: calc(var(--bottom-nav-height) + 30px); 
         }
-        .animate-slideUp { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        /* Dashboard - Clean & Sharp */
+        .dashboard-card {
+            background-color: var(--fudge-navy);
+            color: var(--white);
+            padding: 25px;
+            margin-bottom: 30px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-radius: 2px; /* Less rounded, more print-like */
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+        }
+        .dash-left h4 { 
+            font-family: var(--font-serif); 
+            font-weight: 400; margin: 0; opacity: 0.8; letter-spacing: 1px; font-style: italic;
+        }
+        .dash-left .day-count { 
+            font-family: var(--font-serif); 
+            font-size: 2.2rem; font-weight: 700; margin-top: 5px; 
+        }
+        .dash-right { text-align: right; }
+        .dash-right .location-name { 
+            font-family: var(--font-serif); font-size: 1.4rem; letter-spacing: 1px;
+        }
+        .weather-info { font-family: var(--font-sans); font-size: 0.9rem; font-weight: 300; margin-top: 5px;}
+
+        /* Timeline Scroll - Tags Style */
+        .timeline-scroll { 
+            display: flex; overflow-x: auto; gap: 10px; padding: 0 5px 25px 5px; 
+            scrollbar-width: none; scroll-snap-type: x mandatory;
+        }
+        .timeline-scroll::-webkit-scrollbar { display: none; }
+        
+        .timeline-node {
+            background: var(--white); 
+            color: var(--text-main); 
+            padding: 10px 15px;
+            border: 1px solid var(--fudge-navy);
+            min-width: 110px; text-align: center; cursor: pointer;
+            transition: all 0.3s ease; flex-shrink: 0; scroll-snap-align: start;
+            border-radius: 0; /* FUDGE style is sharp */
+        }
+        .timeline-node.active {
+            background: var(--fudge-navy); 
+            color: var(--white); 
+            box-shadow: 3px 3px 0px var(--fudge-red); /* Pop Accent */
+            transform: translateY(-2px);
+        }
+        .node-date { 
+            font-family: var(--font-serif); font-size: 0.8rem; margin-bottom: 3px; display: block; font-style: italic;
+        }
+        .node-title { 
+            font-family: var(--font-sans); font-size: 0.85rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
+        }
+
+        /* Date Header - Editorial Style */
+        .date-header {
+            margin: 30px 0 15px 0; 
+            text-align: center;
+            position: relative;
+        }
+        .date-header span {
+            background: var(--bg-paper);
+            padding: 0 15px;
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--fudge-navy);
+            position: relative;
+            z-index: 1;
+        }
+        .date-header::before {
+            content: '';
+            position: absolute; left: 0; top: 50%; width: 100%; height: 1px;
+            background: var(--fudge-beige); z-index: 0;
+        }
+
+        /* Itinerary Cards - Minimalist */
+        .itinerary-card {
+            background: var(--white); 
+            margin-bottom: 20px; 
+            border: 1px solid #ddd;
+            border-left: 4px solid var(--fudge-navy);
+            padding: 20px; 
+            position: relative; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            transition: transform 0.2s;
+        }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; padding-right: 50px; }
+        .card-time { 
+            font-family: var(--font-serif); 
+            color: var(--fudge-red); 
+            font-weight: 700; font-size: 1rem;
+            margin-bottom: 5px; display: block;
+        }
+        .card-title { 
+            font-family: var(--font-mincho); 
+            font-size: 1.1rem; font-weight: 600; margin: 5px 0; color: var(--text-main); line-height: 1.4;
+        }
+        
+        .transport-info { 
+            display: inline-flex; align-items: center; gap: 15px; 
+            font-size: 0.8rem; color: #666; margin-top: 8px; 
+            background: #F0F0F0; padding: 5px 10px; 
+            font-family: var(--font-sans);
+        }
+        .transport-info i { color: var(--fudge-navy); }
+        
+        .important-note { 
+            border: 1px solid var(--fudge-red); 
+            color: var(--fudge-red);
+            background: transparent;
+            padding: 10px; margin-top: 12px; 
+            font-size: 0.85rem; font-family: var(--font-mincho);
+        }
+
+        /* Buttons */
+        .card-actions { position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; }
+        .icon-btn { color: #ccc; cursor: pointer; font-size: 0.9rem; transition: color 0.2s;}
+        .icon-btn.edit:hover { color: var(--fudge-navy); }
+        .icon-btn.del:hover { color: var(--fudge-red); }
+
+        .expand-btn { 
+            background: transparent; color: var(--fudge-navy); 
+            border: 1px solid var(--fudge-navy);
+            width: 28px; height: 28px; 
+            border-radius: 50%; 
+            display: flex; justify-content: center; align-items: center; 
+            cursor: pointer; position: absolute; right: 20px; bottom: 20px; 
+            transition: all 0.3s;
+        }
+        .expand-btn.rotated { background: var(--fudge-navy); color: var(--white); transform: rotate(45deg); }
+        
+        .card-details { 
+            display: none; margin-top: 20px; padding-top: 15px; 
+            border-top: 1px solid #eee; 
+            font-family: var(--font-mincho); font-size: 0.95rem; line-height: 1.8; color: #444; 
+        }
+        .card-details.show { display: block; }
+        
+        /* Action Buttons - Flat Style */
+        .action-btn { 
+            display: inline-block; margin-top: 15px; padding: 8px 15px; 
+            background: var(--text-main); color: var(--white); text-decoration: none; 
+            font-family: var(--font-sans); font-size: 0.8rem; letter-spacing: 1px;
+            margin-right: 8px; border: none; cursor: pointer; text-transform: uppercase;
+        }
+        .action-btn.map { background: #4F8A8B; }
+        .action-btn.flight { background: var(--fudge-navy); }
+        .action-btn.calendar { background: var(--fudge-red); }
+
+        /* Expense & Check & Wish */
+        .page { display: none; animation: fadeIn 0.4s ease-out; }
+        .page.active { display: block; }
+        
+        .expense-summary { 
+            background: var(--white); padding: 30px; 
+            border: 1px solid var(--fudge-navy); 
+            text-align: center; margin-bottom: 30px;
+            box-shadow: 5px 5px 0px var(--fudge-beige);
+        }
+        .expense-summary h4 { font-family: var(--font-serif); letter-spacing: 1px; text-transform: uppercase; margin: 0 0 10px 0; font-size: 0.9rem; color: #888; }
+        .expense-summary .total-eur { font-family: var(--font-serif); font-size: 2.5rem; color: var(--fudge-navy); font-weight: 700; }
+        .expense-summary .total-twd { font-family: var(--font-sans); font-size: 1rem; color: #888; margin-top: 5px; }
+
+        .input-group { background: var(--white); padding: 20px; border: 1px solid #ddd; margin-bottom: 25px; }
+        .input-row { display: flex; gap: 10px; margin-bottom: 15px; }
+        input, select, textarea { 
+            width: 100%; padding: 12px; 
+            border: 1px solid #ccc; border-radius: 0; 
+            font-family: var(--font-sans); font-size: 1rem; -webkit-appearance: none;
+            background: #FAFAFA;
+        }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--fudge-navy); background: #fff; }
+
+        .daily-expense-block { background: transparent; margin-bottom: 25px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        .daily-expense-header { 
+            padding: 10px 0; display: flex; justify-content: space-between; align-items: center; 
+            font-family: var(--font-serif); color: var(--fudge-navy); font-weight: 700; font-size: 1.1rem;
+        }
+        .daily-total { font-family: var(--font-sans); font-size: 0.9rem; color: var(--fudge-red); }
+
+        .list-item { 
+            background: var(--white); padding: 15px; margin-bottom: 8px; 
+            border: 1px solid #eee; display: flex; align-items: center; justify-content: space-between; 
+        }
+        .expense-eur { font-family: var(--font-serif); font-weight: 700; color: var(--fudge-navy); font-size: 1.1rem; }
+        .expense-twd { font-family: var(--font-sans); font-size: 0.8rem; color: #999; }
+        
+        .list-item.checked span { text-decoration: line-through; color: #bbb; }
+        .list-item input[type="checkbox"] { width: 20px; height: 20px; margin-right: 15px; accent-color: var(--fudge-navy); }
+
+        /* Bottom Nav */
+        .bottom-nav { 
+            position: fixed; bottom: 0; left: 0; width: 100%; height: var(--bottom-nav-height); 
+            background: var(--white); border-top: 1px solid #ddd;
+            display: flex; justify-content: space-around; align-items: center; z-index: 200; 
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        .nav-item { 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            flex: 1; height: 100%; color: #aaa; text-decoration: none; cursor: pointer; 
+            font-family: var(--font-sans); font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase;
+        }
+        .nav-item i { font-size: 1.2rem; margin-bottom: 6px; }
+        .nav-item.active { color: var(--fudge-navy); }
+
+        /* Fab */
+        .fab-calc { 
+            position: fixed; bottom: 85px; right: 20px; width: 50px; height: 50px; 
+            background: var(--fudge-navy); color: var(--white); 
+            border-radius: 50%; display: flex; justify-content: center; align-items: center; 
+            box-shadow: 0 4px 10px rgba(29, 45, 68, 0.4); cursor: pointer; z-index: 300; 
+            font-size: 1.2rem; transition: transform 0.2s; 
+        }
+        
+        /* Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 400; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .modal.show { display: flex; }
+        .modal-content { 
+            background: var(--white); padding: 30px; width: 90%; max-width: 400px; max-height: 90vh; overflow-y: auto; 
+            border: 1px solid var(--fudge-navy); box-shadow: 10px 10px 0px rgba(29, 45, 68, 0.1);
+        }
+        .modal-content h3 { font-family: var(--font-serif); color: var(--fudge-navy); margin-top: 0; }
+        
+        .add-btn-block { 
+            width: 100%; padding: 15px; 
+            background: transparent; border: 1px dashed var(--fudge-navy); 
+            color: var(--fudge-navy); font-family: var(--font-serif);
+            text-align: center; cursor: pointer; margin-top: 20px; 
+            transition: all 0.2s;
+        }
+        .add-btn-block:active { background: rgba(29, 45, 68, 0.05); }
+        
+        .reset-section { margin-top: 40px; text-align: center; padding-bottom: 20px; }
+        .reset-link { font-family: var(--font-sans); color: #bbb; text-decoration: underline; font-size: 0.75rem; cursor: pointer; letter-spacing: 1px;}
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
-<script type="importmap">
-{
-  "imports": {
-    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3",
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
 </head>
-<body class="overflow-x-hidden">
-    <div id="root"></div>
-<script type="module" src="/index.tsx"></script>
+<body>
+
+    <header>
+        <div id="pageTitle">TAKE MARK OUT</div>
+    </header>
+
+    <div class="container">
+        <div id="itinerary" class="page active">
+            <div class="dashboard-card">
+                <div class="dash-left">
+                    <h4 id="dayStatusText">Countdown</h4>
+                    <div class="day-count" id="tripDayCounter">--</div>
+                </div>
+                <div class="dash-right">
+                    <span class="location-name" id="weatherCity">Paris</span>
+                    <div class="weather-info" id="weatherInfo"><i class="fa-solid fa-spinner fa-spin"></i></div>
+                </div>
+            </div>
+
+            <div class="timeline-scroll">
+                <div class="timeline-node active" onclick="filterPhase('flight', this)">
+                    <span class="node-date">05/21</span>
+                    <span class="node-title">FLIGHT</span>
+                </div>
+                <div class="timeline-node" onclick="filterPhase('lily', this)">
+                    <span class="node-date">05/22-25</span>
+                    <span class="node-title">LA ROCHELLE</span>
+                </div>
+                <div class="timeline-node" onclick="filterPhase('bordeaux', this)">
+                    <span class="node-date">05/25-26</span>
+                    <span class="node-title">BORDEAUX</span>
+                </div>
+                <div class="timeline-node" onclick="filterPhase('changyu', this)">
+                    <span class="node-date">05/26-30</span>
+                    <span class="node-title">KŒSTLACH</span>
+                </div>
+                <div class="timeline-node" onclick="filterPhase('paris', this)">
+                    <span class="node-date">05/30-06/03</span>
+                    <span class="node-title">PARIS</span>
+                </div>
+            </div>
+
+            <div id="itinerary-list"></div>
+            
+            <div class="add-btn-block" onclick="openAddModal()">
+                <i class="fa-solid fa-plus"></i> ADD EVENT
+            </div>
+            <div class="reset-section"><span class="reset-link" onclick="resetAllData()">RESET SYSTEM DATA</span></div>
+        </div>
+
+        <div id="expense" class="page">
+            <div class="expense-summary">
+                <h4>TOTAL EXPENDITURE</h4>
+                <div class="total-eur">€ <span id="grandTotalEur">0</span></div>
+                <div class="total-twd">≈ NT$ <span id="grandTotalTwd">0</span></div>
+            </div>
+            <div class="input-group">
+                <select id="expenseDay">
+                    <option value="flight">Flight (5/21)</option>
+                    <option value="lily">La Rochelle (5/22-25)</option>
+                    <option value="bordeaux">Bordeaux (5/25-26)</option>
+                    <option value="changyu">Kœstlach (5/26-30)</option>
+                    <option value="paris">Paris (5/30-6/3)</option>
+                    <option value="other">Other</option>
+                </select>
+                <div class="input-row">
+                    <input type="text" id="expenseName" style="flex:2" placeholder="Item Name">
+                </div>
+                <div class="input-row">
+                    <input type="number" id="expenseAmount" style="flex:1" placeholder="€ Amount" oninput="updatePreview()">
+                    <div id="twdPreview" class="twd-preview" style="color:var(--fudge-red);"></div>
+                </div>
+                <button onclick="addExpense()" class="action-btn" style="width:100%; background:var(--fudge-navy);">ADD RECORD</button>
+            </div>
+            <div id="expenseListArea"></div>
+        </div>
+
+        <div id="checklist" class="page">
+            <div class="input-group">
+                <h3 style="margin-top:0; font-family:var(--font-serif); color:var(--fudge-navy);">CHECKLIST</h3>
+                <div class="input-row">
+                    <input type="text" id="newCheckItem" placeholder="New Item...">
+                    <button onclick="addCheckItem()" class="action-btn" style="width:auto; margin:0; background:var(--fudge-red);">ADD</button>
+                </div>
+            </div>
+            <div id="checklist-container"></div>
+        </div>
+
+        <div id="wishlist" class="page">
+            <div class="input-group">
+                <h3 style="margin-top:0; font-family:var(--font-serif); color:var(--fudge-navy);">WISHLIST</h3>
+                <div class="input-row">
+                    <input type="text" id="wishItem" style="flex:2" placeholder="Item...">
+                    <input type="text" id="wishNote" style="flex:1" placeholder="Note">
+                </div>
+                <button onclick="addWish()" class="action-btn" style="width:100%; background:var(--fudge-red);">ADD TO LIST</button>
+            </div>
+            <div id="wishlist-container"></div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="switchTab('itinerary', this)"><i class="fa-solid fa-map"></i><span>Plan</span></div>
+        <div class="nav-item" onclick="switchTab('expense', this)"><i class="fa-solid fa-wallet"></i><span>Money</span></div>
+        <div class="nav-item" onclick="switchTab('checklist', this)"><i class="fa-solid fa-check-double"></i><span>Check</span></div>
+        <div class="nav-item" onclick="switchTab('wishlist', this)"><i class="fa-solid fa-heart"></i><span>Wish</span></div>
+    </nav>
+
+    <div class="fab-calc" onclick="toggleCalc()"><i class="fa-solid fa-calculator"></i></div>
+
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <h3 id="modalTitle">EDIT / ADD</h3>
+            <input type="hidden" id="editId">
+            <div style="margin-bottom:15px;"><label>TIME (e.g. 5/26 10:00)</label><input type="text" id="addTime"></div>
+            <div style="margin-bottom:15px;"><label>TITLE (EN/FR)</label><input type="text" id="addTitle"></div>
+            <div style="margin-bottom:15px;"><label>NOTE (中文)</label><textarea id="addDesc" rows="4"></textarea></div>
+            <div style="margin-bottom:15px;"><label>LINK (Optional)</label><input type="text" id="addLink"></div>
+            <div style="margin-bottom:15px;"><label>TYPE</label>
+                <select id="addType"><option>Transport</option><option>Attraction</option><option>Accommodation</option><option>Food</option><option>Shopping</option></select>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button class="action-btn" style="flex:1; background:#ccc; color:#333;" onclick="document.getElementById('addModal').classList.remove('show')">CANCEL</button>
+                <button class="action-btn" style="flex:1; background:var(--fudge-navy);" onclick="saveNewEvent()">SAVE</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="calcModal">
+        <div class="modal-content" style="max-width:320px;">
+            <h3>EUR to TWD (1:35)</h3>
+            <div style="background:#eee; padding:15px; text-align:right; font-family:'Courier New', monospace; margin-bottom:15px; font-weight:bold; font-size:1.2rem;">
+                <div id="eurDisplay">€ 0</div>
+                <div style="color:#888; font-size:0.9rem;">= NT$ <span id="twdDisplay">0</span></div>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px;">
+                <button class="calc-btn" onclick="appendCalc('1')">1</button><button class="calc-btn" onclick="appendCalc('2')">2</button><button class="calc-btn" onclick="appendCalc('3')">3</button>
+                <button class="calc-btn" onclick="appendCalc('4')">4</button><button class="calc-btn" onclick="appendCalc('5')">5</button><button class="calc-btn" onclick="appendCalc('6')">6</button>
+                <button class="calc-btn" onclick="appendCalc('7')">7</button><button class="calc-btn" onclick="appendCalc('8')">8</button><button class="calc-btn" onclick="appendCalc('9')">9</button>
+                <button class="calc-btn" onclick="appendCalc('.')">.</button><button class="calc-btn" onclick="appendCalc('0')">0</button><button class="calc-btn" onclick="clearCalc()" style="background:var(--fudge-red); color:white;">C</button>
+                <button class="calc-btn close" onclick="toggleCalc()" style="background:#ccc; color:#333;">CLOSE</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- V10 Data (Precise Address) ---
+        const defaultItinerary = [
+            // 1. Flight (5/21)
+            { id: 1, group: 'flight', time: '5/21 23:30', type: 'Transport', title: 'Vol: Taipei -> Paris', desc: '長榮航空 BR87 (航程約 13.5 小時)。\n建議穿著寬鬆衣物，機上乾燥請注意保濕。', price: 'NT$ 35,000+', duration: '13h 30m', link: 'https://www.evaair.com/zh-tw/index.html', linkText: 'EVA Air', location: 'Taoyuan Airport' },
+            { id: 2, group: 'flight', time: '5/22 07:55', type: 'Transport', title: 'Arrivée à Paris (CDG)', desc: '⚠️ 預計抵達時間 (當地 5/22 早上)。\n入境後，請搭乘 RER B 或計程車前往 Gare Montparnasse (蒙帕納斯車站) 轉乘高鐵。', location: 'CDG Airport' },
+            
+            // 2. Lily (La Rochelle) (5/22-25)
+            { id: 3, group: 'lily', time: '5/22 Morning', type: 'Transport', title: 'Paris -> La Rochelle', desc: '從蒙帕納斯車站 (Gare Montparnasse) 搭乘 TGV 前往 La Rochelle。\n建議提早 20 分鐘抵達車站確認月台。', price: '€ 50-90', duration: '2h 30m', link: 'https://www.sncf-connect.com/', linkText: 'SNCF', location: 'Gare Montparnasse' },
+            { id: 4, group: 'lily', time: '5/22-25', type: 'Accommodation', title: 'Chez Lily (精確地址)', desc: '地址：11 Bis Rue Louise Pinchon, 17000 La Rochelle\n住在莉莉家。\n行程重點：La Rochelle 舊港漫遊、海鮮大餐、放鬆休息調時差。', location: '11 Bis Rue Louise Pinchon, 17000 La Rochelle, France' },
+
+            // 3. Bordeaux (5/25-26)
+            { id: 5, group: 'bordeaux', time: '5/25 Morning', type: 'Transport', title: 'La Rochelle -> Bordeaux', desc: '搭乘 Intercités 火車前往波爾多。\n抵達 Bordeaux Saint-Jean 車站後，先找地方或住宿點寄放行李。', price: '€ 20-40', duration: '2h 15m', link: 'https://www.sncf-connect.com/', linkText: 'SNCF', location: 'Gare de Bordeaux-Saint-Jean' },
+            { id: 6, group: 'bordeaux', time: '5/25 Afternoon', type: 'Attraction', title: 'Dune du Pilat', desc: '歐洲最高的沙丘，景色壯觀。\n交通方式：從波爾多搭火車到 Arcachon，再轉乘 Baïa Line 1 巴士直達沙丘入口。', price: '€ 15', duration: '1h 30m', location: 'Dune du Pilat' },
+            { id: 7, group: 'bordeaux', time: '5/25 Evening', type: 'Attraction', title: 'Grand Théâtre & Rue Sainte-Catherine', desc: '回到波爾多市區。\n欣賞大劇院 (Grand Théâtre) 夜景，並在聖凱瑟琳街 (Rue Sainte-Catherine) 逛街晚餐。', location: 'Grand Théâtre de Bordeaux' },
+            
+            // 4. Changyu (5/26-30)
+            { id: 8, group: 'changyu', time: '5/26 10:00', type: 'Transport', title: 'To Bordeaux Airport (BOD)', desc: '前往機場。\n可搭乘 30′Direct 機場巴士或路面電車 A 線。\n⚠️ 警告：請務必提早 3 小時抵達機場，安檢可能較久。', price: '€ 8', duration: '40m', note: '請提早 3 小時到機場', location: 'Bordeaux Airport' },
+            { id: 9, group: 'changyu', time: '5/26 13:00', type: 'Transport', title: 'Vol: Bordeaux -> Basel', desc: '搭乘 EasyJet 飛往巴塞爾 (BSL)。\n請確認手提行李尺寸符合規定。', price: '€ 50-100', duration: '1h 30m', link: 'https://www.easyjet.com/en', linkText: 'EasyJet', location: 'Basel Airport' },
+            { id: 10, group: 'changyu', time: '5/26 15:00', type: 'Transport', title: 'Transfer to Saint-Louis', desc: '抵達 Basel-Mulhouse 機場後，搭乘接駁巴士前往 Gare de Saint-Louis。\n常郁會在此開車接送。', location: 'Gare de Saint-Louis' },
+            { id: 11, group: 'changyu', time: '5/26-30', type: 'Accommodation', title: 'Chez Changyu (精確地址)', desc: '地址：10 Rue du Chalet, 68480 Kœstlach\n住在常郁家。\n行程重點：探索阿爾薩斯 (Alsace) 地區小鎮、巴塞爾周邊觀光。', location: '10 Rue du Chalet, 68480 Kœstlach, France' },
+
+            // 5. Paris (5/30-6/3)
+            { id: 12, group: 'paris', time: '5/30 Morning', type: 'Transport', title: 'Transfer to Basel SBB', desc: '由常郁接送至 Basel SBB 火車站。', location: 'Basel SBB' },
+            { id: 13, group: 'paris', time: '5/30 Noon', type: 'Transport', title: 'Basel -> Paris', desc: '搭乘 TGV Lyria 高速列車 (Basel SBB -> Paris Gare de Lyon)。\n車程約 3 小時，沿途風景優美。', price: '€ 60-120', duration: '3h 04m', link: 'https://www.sncf-connect.com/', linkText: 'SNCF TGV', location: 'Gare de Lyon' },
+            { id: 14, group: 'paris', time: '5/30-6/3', type: 'Accommodation', title: 'Séjour à Paris', desc: '抵達巴黎，前往飯店 Check-in。\n開始巴黎市區行程。', location: 'Paris' },
+            { id: 15, group: 'paris', time: '5/31', type: 'Attraction', title: 'Musée du Louvre', desc: '羅浮宮。\n必看三寶：蒙娜麗莎、勝利女神、維納斯。\n建議事先網上購票預約時段。', price: '€ 17', duration: '3-4h', link: 'https://www.louvre.fr/en', linkText: 'Ticket', location: 'Louvre Museum' },
+            { id: 16, group: 'paris', time: '6/2', type: 'Shopping', title: 'Shopping Day', desc: '最後採買日。\n推薦：老佛爺百貨 (Galeries Lafayette) 買精品，Citypharma 買藥妝。', location: 'Galeries Lafayette' },
+            
+            // 6. Return (6/3)
+            { id: 19, group: 'paris', time: '6/3 20:00', type: 'Transport', title: 'To Airport (CDG)', desc: '前往戴高樂機場 (CDG)。\n班機：長榮 BR88 (23:30)。\n⚠️ 警告：機場退稅人潮眾多，請務必提早 4 小時抵達辦理。', price: '€ 11', duration: '1h', note: '提早 4 小時到機場退稅', location: 'CDG Airport' }
+        ];
+
+        const cityConfig = { 'flight': {n:'Paris',lat:48.85,lon:2.35}, 'lily': {n:'La Rochelle',lat:46.16,lon:-1.15}, 'bordeaux': {n:'Bordeaux',lat:44.84,lon:-0.58}, 'changyu': {n:'Saint-Louis',lat:47.58,lon:7.56}, 'paris': {n:'Paris',lat:48.85,lon:2.35} };
+        const labelMap = { 'flight':'Flight', 'lily':'La Rochelle', 'bordeaux':'Bordeaux', 'changyu':'Kœstlach', 'paris':'Paris', 'other':'Other' };
+
+        let currentPhase = 'flight';
+        let tripData = [];
+
+        // V10 Database
+        const STORAGE_KEY_ITINERARY = 'markTripItinerary_v10';
+        const STORAGE_KEY_WISH = 'markTripWishlist';
+        const STORAGE_KEY_EXPENSE = 'markTripExpenses';
+        const STORAGE_KEY_CHECK_LIST = 'markTripChecks_List';
+        const STORAGE_KEY_CHECK_STATUS = 'markTripChecks_Status';
+
+        window.onload = function() {
+            const stored = localStorage.getItem(STORAGE_KEY_ITINERARY);
+            if (stored) { tripData = JSON.parse(stored); } else { tripData = defaultItinerary; saveData(); }
+            filterPhase('flight', document.querySelector('.timeline-node'));
+            renderChecklist(); renderExpenses(); renderWishlist(); calculateTripDay();
+        };
+
+        function saveData() { localStorage.setItem(STORAGE_KEY_ITINERARY, JSON.stringify(tripData)); }
+        function resetAllData() { if(confirm('Reset all data?')) { localStorage.clear(); location.reload(); } }
+
+        function switchTab(pageId, navEl) {
+            document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            if(navEl) navEl.classList.add('active');
+        }
+
+        function filterPhase(phase, el) {
+            currentPhase = phase;
+            if(el) { document.querySelectorAll('.timeline-node').forEach(t => t.classList.remove('active')); el.classList.add('active'); }
+            updateDashboard(phase); renderItinerary();
+        }
+
+        function renderItinerary() {
+            const list = document.getElementById('itinerary-list'); list.innerHTML = '';
+            const items = tripData.filter(i => i.group === currentPhase).sort((a,b) => a.time.localeCompare(b.time));
+            let lastDate = '';
+            items.forEach(item => {
+                const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.location)}`;
+                const googleCalLink = generateCalendarLink(item);
+                const currentDate = item.time.split(' ')[0]; 
+                if (currentDate !== lastDate) { list.innerHTML += `<div class="date-header"><span>${currentDate}</span></div>`; lastDate = currentDate; }
+                list.innerHTML += `
+                    <div class="itinerary-card">
+                        <div class="card-actions">
+                            <i class="fa-solid fa-pen icon-btn edit" onclick="editItem(${item.id})"></i>
+                            <i class="fa-solid fa-trash icon-btn del" onclick="deleteItem(${item.id})"></i>
+                        </div>
+                        <div class="card-header"><div><span class="card-time">${item.time}</span><div class="card-title">${item.title}</div></div></div>
+                        <span class="card-type" style="float:right; margin-top:-20px; font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; background:var(--bg-paper); padding:2px 5px;">${item.type}</span>
+                        ${(item.type === 'Transport' || item.price || item.duration) ? `<div class="transport-info">${item.duration ? `<span><i class="fa-regular fa-clock"></i> ${item.duration}</span>` : ''}${item.price ? `<span><i class="fa-solid fa-tag"></i> ${item.price}</span>` : ''}</div>` : ''}
+                        ${item.note ? `<div class="important-note"><i class="fa-solid fa-triangle-exclamation"></i> ${item.note}</div>` : ''}
+                        <div class="expand-btn" onclick="this.classList.toggle('rotated'); this.nextElementSibling.classList.toggle('show');"><i class="fa-solid fa-plus"></i></div>
+                        <div class="card-details">
+                            <p style="white-space: pre-line;">${item.desc}</p>
+                            ${item.link ? `<a href="${item.link}" target="_blank" class="action-btn flight"><i class="fa-solid fa-link"></i> ${item.linkText || 'Link'}</a>` : ''}
+                            <a href="${mapLink}" target="_blank" class="action-btn map"><i class="fa-solid fa-location-dot"></i> Map</a>
+                            <a href="${googleCalLink}" target="_blank" class="action-btn calendar"><i class="fa-regular fa-calendar-plus"></i> Remind</a>
+                        </div>
+                    </div>`;
+            });
+            if(items.length===0) list.innerHTML = '<div style="text-align:center;color:#999;padding:20px;font-family:var(--font-serif);font-style:italic;">No events planned yet.</div>';
+        }
+
+        // --- Edit / Add Functions ---
+        function openAddModal() { 
+            document.getElementById('modalTitle').innerText = 'ADD EVENT';
+            document.getElementById('editId').value = '';
+            document.getElementById('addTime').value=''; 
+            document.getElementById('addTitle').value=''; 
+            document.getElementById('addDesc').value=''; 
+            document.getElementById('addLink').value='';
+            document.getElementById('addModal').classList.add('show'); 
+        }
+
+        function editItem(id) {
+            const item = tripData.find(i => i.id === id);
+            if (!item) return;
+            document.getElementById('modalTitle').innerText = 'EDIT EVENT';
+            document.getElementById('editId').value = item.id;
+            document.getElementById('addTime').value = item.time;
+            document.getElementById('addTitle').value = item.title;
+            document.getElementById('addDesc').value = item.desc;
+            document.getElementById('addLink').value = item.link || '';
+            document.getElementById('addType').value = item.type;
+            document.getElementById('addModal').classList.add('show');
+        }
+
+        function saveNewEvent() {
+            const id = document.getElementById('editId').value;
+            const t = document.getElementById('addTime').value;
+            const tt = document.getElementById('addTitle').value;
+            const d = document.getElementById('addDesc').value;
+            const l = document.getElementById('addLink').value;
+            const tp = document.getElementById('addType').value;
+
+            if(!t || !tt) return alert('Time & Title required');
+
+            if (id) {
+                const index = tripData.findIndex(i => i.id == id);
+                if (index !== -1) {
+                    tripData[index].time = t;
+                    tripData[index].title = tt;
+                    tripData[index].desc = d;
+                    tripData[index].link = l;
+                    tripData[index].type = tp;
+                    tripData[index].location = tt; 
+                }
+            } else {
+                tripData.push({
+                    id: Date.now(), 
+                    group: currentPhase, 
+                    time: t, type: tp, title: tt, desc: d, link: l, location: tt
+                });
+            }
+            saveData(); 
+            document.getElementById('addModal').classList.remove('show'); 
+            renderItinerary();
+        }
+
+        function deleteItem(id) { if(confirm('Delete?')) { tripData = tripData.filter(i => i.id !== id); saveData(); renderItinerary(); } }
+
+        function generateCalendarLink(item) {
+            const baseUrl = "https://www.google.com/calendar/render?action=TEMPLATE";
+            const text = `&text=${encodeURIComponent(item.title)}`;
+            const details = `&details=${encodeURIComponent(item.desc)}`;
+            const location = `&location=${encodeURIComponent(item.location)}`;
+            return `${baseUrl}${text}${details}${location}`;
+        }
+
+        // --- Checklist / Wishlist / Expense / Utils ---
+        let defaultChecks=['Passport','EUR Cash','Credit Card','Adapter','Toothbrush','SIM Card','Tickets'];
+        function renderChecklist(){let l=JSON.parse(localStorage.getItem(STORAGE_KEY_CHECK_LIST))||defaultChecks,s=JSON.parse(localStorage.getItem(STORAGE_KEY_CHECK_STATUS))||{},c=document.getElementById('checklist-container');c.innerHTML='';l.forEach((i,x)=>c.innerHTML+=`<div class="list-item"><label style="display:flex;align-items:center;width:100%"><input type="checkbox" onchange="saveCheck(${x},this.checked)" ${s[x]?'checked':''}><span>${i}</span></label></div>`);}
+        function saveCheck(i,v){let s=JSON.parse(localStorage.getItem(STORAGE_KEY_CHECK_STATUS))||{};s[i]=v;localStorage.setItem(STORAGE_KEY_CHECK_STATUS,JSON.stringify(s));}
+        function addCheckItem(){const v=document.getElementById('newCheckItem').value;if(!v)return;let l=JSON.parse(localStorage.getItem(STORAGE_KEY_CHECK_LIST))||defaultChecks;l.push(v);localStorage.setItem(STORAGE_KEY_CHECK_LIST,JSON.stringify(l));document.getElementById('newCheckItem').value='';renderChecklist();}
+
+        function renderWishlist(){const l=JSON.parse(localStorage.getItem(STORAGE_KEY_WISH))||[],c=document.getElementById('wishlist-container');c.innerHTML='';l.forEach((i,x)=>{c.innerHTML+=`<div class="list-item ${i.checked?'checked':''}"><div style="display:flex;align-items:center;"><input type="checkbox" onchange="toggleWish(${x},this.checked)" ${i.checked?'checked':''}><div><span style="font-weight:bold;display:block;">${i.name}</span><span style="font-size:0.8rem;color:#888;">${i.note||''}</span></div></div><i class="fa-solid fa-trash" style="color:#ddd;cursor:pointer;" onclick="deleteWish(${x})"></i></div>`});}
+        function addWish(){const n=document.getElementById('wishItem').value,no=document.getElementById('wishNote').value;if(!n)return;const l=JSON.parse(localStorage.getItem(STORAGE_KEY_WISH))||[];l.push({name:n,note:no,checked:false});localStorage.setItem(STORAGE_KEY_WISH,JSON.stringify(l));document.getElementById('wishItem').value='';renderWishlist();}
+        function toggleWish(i,v){const l=JSON.parse(localStorage.getItem(STORAGE_KEY_WISH))||[];l[i].checked=v;localStorage.setItem(STORAGE_KEY_WISH,JSON.stringify(l));renderWishlist();}
+        function deleteWish(i){const l=JSON.parse(localStorage.getItem(STORAGE_KEY_WISH))||[];l.splice(i,1);localStorage.setItem(STORAGE_KEY_WISH,JSON.stringify(l));renderWishlist();}
+
+        function updatePreview() { const val = parseFloat(document.getElementById('expenseAmount').value); if (!isNaN(val)) { document.getElementById('twdPreview').innerText = `≈ NT$ ${Math.round(val * 35).toLocaleString()}`; } else { document.getElementById('twdPreview').innerText = ''; } }
+        function addExpense(){ const n=document.getElementById('expenseName').value, a=document.getElementById('expenseAmount').value, d=document.getElementById('expenseDay').value; if(!n||!a)return; const l = JSON.parse(localStorage.getItem(STORAGE_KEY_EXPENSE))||[]; l.push({id:Date.now(), day: d, name:n, amount:a}); localStorage.setItem(STORAGE_KEY_EXPENSE, JSON.stringify(l)); renderExpenses(); document.getElementById('expenseName').value=''; document.getElementById('expenseAmount').value=''; document.getElementById('twdPreview').innerText=''; }
+        function renderExpenses(){ const l = JSON.parse(localStorage.getItem(STORAGE_KEY_EXPENSE))||[], c=document.getElementById('expenseListArea'); c.innerHTML=''; let total=0; const keys = ['flight', 'lily', 'bordeaux', 'changyu', 'paris', 'other']; const grouped = {}; l.forEach(item => { if(!grouped[item.day]) grouped[item.day] = []; grouped[item.day].push(item); total += parseFloat(item.amount); }); keys.forEach(key => { if (grouped[key] && grouped[key].length > 0) { let dailySum = 0; let itemsHtml = ''; grouped[key].forEach(i => { const amt = parseFloat(i.amount); dailySum += amt; itemsHtml += `<div class="list-item"><span>${i.name}</span><div style="display:flex; align-items:center;"><div class="expense-item-right" style="margin-right:15px;"><span class="expense-eur">€ ${amt}</span><span class="expense-twd">NT$ ${Math.round(amt*35).toLocaleString()}</span></div><i class="fa-solid fa-trash" style="color:#ddd; cursor:pointer;" onclick="deleteExpense(${i.id})"></i></div></div>`; }); c.innerHTML += `<div class="daily-expense-block"><div class="daily-expense-header"><span>${labelMap[key]}</span><span class="daily-total">Subtotal: € ${dailySum.toFixed(1)}</span></div>${itemsHtml}</div>`; } }); document.getElementById('grandTotalEur').innerText = total.toFixed(1); document.getElementById('grandTotalTwd').innerText = Math.round(total*35).toLocaleString(); }
+        function deleteExpense(id){const l=JSON.parse(localStorage.getItem(STORAGE_KEY_EXPENSE))||[]; const newL = l.filter(i => i.id !== id); localStorage.setItem(STORAGE_KEY_EXPENSE, JSON.stringify(newL)); renderExpenses();}
+
+        function updateDashboard(phase){const c=cityConfig[phase]||cityConfig['flight'];document.getElementById('weatherCity').innerText=c.n;fetch(`https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lon}&current_weather=true`).then(r=>r.json()).then(d=>{document.getElementById('weatherInfo').innerHTML=`<i class="fa-solid fa-cloud"></i> ${d.current_weather.temperature}°C`}).catch(()=>document.getElementById('weatherInfo').innerText='N/A');}
+        function calculateTripDay(){const diff=Math.floor((new Date()-new Date(new Date().getFullYear(),4,21))/86400000)+1;document.getElementById('tripDayCounter').innerText=diff>0?`Day ${diff}`:`T-${Math.abs(diff)}`;}
+        let curE='';function toggleCalc(){document.getElementById('calcModal').classList.toggle('show')}
+        function appendCalc(v){if(v==='.'&&curE.includes('.'))return;curE+=v;updC();}function clearCalc(){curE='';updC();}
+        function updC(){document.getElementById('eurDisplay').innerText='€ '+(curE||'0');document.getElementById('twdDisplay').innerText=((parseFloat(curE)||0)*35).toFixed(0);}
+    </script>
 </body>
 </html>
