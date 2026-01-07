@@ -51,7 +51,6 @@
 
         /* --- Header: Stripe Pattern --- */
         header {
-            /* 模仿照片的綠藍條紋 */
             background: repeating-linear-gradient(
                 45deg,
                 var(--tc-green),
@@ -72,7 +71,7 @@
             padding-left: 15px;
             padding-right: 15px;
             display: flex; overflow-x: auto; gap: 10px; scrollbar-width: none;
-            background: rgba(255,255,255,0.9); /* 半透明白底讓條紋透出一點 */
+            background: rgba(255,255,255,0.9);
             backdrop-filter: blur(5px);
             border-bottom: var(--border-width) solid var(--tc-green);
         }
@@ -90,7 +89,7 @@
             cursor: pointer;
             transition: all 0.2s;
             border: var(--border-width) solid var(--tc-green);
-            box-shadow: 3px 3px 0 var(--tc-blue); /* 撞色陰影 */
+            box-shadow: 3px 3px 0 var(--tc-blue);
         }
         .seg-chip.active {
             background: var(--tc-green);
@@ -143,7 +142,7 @@
             box-shadow: 2px 2px 0 var(--tc-green);
         }
 
-        /* Cards - Strong Visuals */
+        /* Cards */
         .card {
             background: var(--white); border-radius: var(--radius-card); padding: 22px; margin-bottom: 20px;
             position: relative; border: var(--border-width) solid var(--tc-green);
@@ -155,7 +154,7 @@
             background: var(--tc-green); color: var(--white);
             font-family: var(--font-header); font-size: 0.75rem; padding: 6px 14px; border-radius: var(--radius-btn);
             text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
-            border: 2px solid var(--white); /* Cutout effect */
+            border: 2px solid var(--white);
         }
         .card.type-transport .card-tag { background: var(--tc-brown); }
         .card.type-spot .card-tag { background: var(--tc-blue); }
@@ -170,7 +169,6 @@
         .card-title { font-family: var(--font-header); font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; color: var(--black); padding-right: 60px; }
         .card-desc { font-size: 1rem; color: #555; line-height: 1.5; font-weight: 500; }
 
-        /* Meta Row */
         .card-meta-row {
             display: flex; gap: 15px; margin-top: 12px; padding-top: 12px; border-top: 2px dashed #DDD;
         }
@@ -183,7 +181,6 @@
         .details-box { display: none; margin-top: 15px; padding-top: 15px; border-top: var(--border-width) solid var(--tc-bg); animation: fadeIn 0.3s; }
         .details-box.show { display: block; }
         
-        /* Buttons - Rounded & Bold */
         .action-buttons { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
         .btn { 
             padding: 10px 20px; border-radius: var(--radius-btn); border: none;
@@ -206,7 +203,6 @@
             border: 2px solid #FFE0B2;
         }
 
-        /* Forms - Rounded */
         .add-item-form { background: var(--white); border-radius: var(--radius-card); padding: 20px; margin-top: 30px; border: var(--border-width) dashed var(--tc-blue); }
         .form-row { display: flex; gap: 10px; margin-bottom: 12px; }
         .form-input { 
@@ -235,7 +231,6 @@
             background: var(--white); padding: 20px; border-radius: var(--radius-card); margin-bottom: 15px; 
             box-shadow: 4px 4px 0 #E0E0E0; border: var(--border-width) solid var(--tc-green); display: flex; flex-direction: column; gap: 12px; 
         }
-        /* Stripe accent on left */
         .booking-item::after {
             content: ''; position: absolute; top: 20px; left: 0; bottom: 20px; width: 6px; 
             background: var(--tc-green); border-radius: 0 4px 4px 0;
@@ -273,11 +268,15 @@
             border-radius: var(--radius-card); border: var(--border-width) solid var(--tc-green);
             box-shadow: 6px 6px 0 var(--tc-green);
         }
+        .conv-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
         .conv-input {
             background: rgba(255,255,255,0.25); border: none; padding: 10px; width: 120px; text-align: right; border-radius: 15px;
             font-family: var(--font-header); font-weight: 700; font-size: 1.4rem; color: var(--white);
         }
-        
+        .rate-input {
+            width: 50px; background: transparent; border: none; border-bottom: 2px solid rgba(255,255,255,0.5); color: #fff; text-align: center; font-size: 0.9rem; font-weight: bold;
+        }
+
         /* Expenses */
         .expense-item {
             background: var(--white); padding: 18px; margin-bottom: 12px; border-radius: var(--radius-card); 
@@ -494,14 +493,15 @@
         ]}
     ];
 
+    // Pre-filled with estimated prices (TWD)
     const defaultBookings = [
-        { type: 'transport', name: 'Flight Taipei-Paris', note: 'EVA AIR', price: 0, checked: false, link:'https://www.evaair.com/zh-tw/index.html' },
-        { type: 'transport', name: 'Train to La Rochelle', note: 'SNCF', price: 0, checked: false, link:'https://www.sncf-connect.com/en-en/' },
-        { type: 'transport', name: 'Train to Bordeaux', note: 'SNCF', price: 0, checked: false, link:'https://www.sncf-connect.com/en-en/' },
-        { type: 'hotel',     name: 'Bordeaux Hotel', note: 'Booking.com', price: 0, checked: false, link:'https://www.booking.com' },
-        { type: 'transport', name: 'Flight to Basel', note: 'EasyJet', price: 0, checked: false, link:'https://www.easyjet.com/en' },
-        { type: 'transport', name: 'Train to Paris', note: 'SNCF', price: 0, checked: false, link:'https://www.sncf-connect.com/en-en/' },
-        { type: 'hotel',     name: 'Paris Hotel', note: 'Booking.com', price: 0, checked: false, link:'https://www.booking.com' }
+        { type: 'transport', name: 'Flight Taipei-Paris', note: 'EVA AIR (Round Trip)', price: 42000, checked: false, link:'https://www.evaair.com/zh-tw/index.html' },
+        { type: 'transport', name: 'Train to La Rochelle', note: 'SNCF (TGV)', price: 2500, checked: false, link:'https://www.sncf-connect.com/en-en/' },
+        { type: 'transport', name: 'Train to Bordeaux', note: 'SNCF (Intercités)', price: 1200, checked: false, link:'https://www.sncf-connect.com/en-en/' },
+        { type: 'hotel',     name: 'Bordeaux Hotel', note: 'Booking.com (1 Night)', price: 4500, checked: false, link:'https://www.booking.com' },
+        { type: 'transport', name: 'Flight to Basel', note: 'EasyJet (+Luggage)', price: 2800, checked: false, link:'https://www.easyjet.com/en' },
+        { type: 'transport', name: 'Train to Paris', note: 'SNCF (TGV Lyria)', price: 3800, checked: false, link:'https://www.sncf-connect.com/en-en/' },
+        { type: 'hotel',     name: 'Paris Hotel', note: 'Booking.com (4 Nights)', price: 28000, checked: false, link:'https://www.booking.com' }
     ];
 
     const defaultChecklist = [
@@ -516,10 +516,14 @@
     /* ================= 系統邏輯 ================= */
     
     function init() {
-        // Init Itinerary
-        const storedItin = localStorage.getItem('mark_trip_itinerary_tiny_bold');
-        if (storedItin) currentItinerary = JSON.parse(storedItin);
-        else { currentItinerary = defaultItinerary; localStorage.setItem('mark_trip_itinerary_tiny_bold', JSON.stringify(currentItinerary)); }
+        // Init Itinerary (v7 to force refresh of booking data)
+        const storedItin = localStorage.getItem('mark_trip_itinerary_v7');
+        if (storedItin) {
+            currentItinerary = JSON.parse(storedItin);
+        } else {
+            currentItinerary = defaultItinerary;
+            localStorage.setItem('mark_trip_itinerary_v7', JSON.stringify(currentItinerary));
+        }
         
         document.getElementById('exp-date').valueAsDate = new Date();
 
@@ -604,18 +608,16 @@
                         <div class="icon-btn delete" onclick="deleteItemFromDay(${idx}, ${itemIdx})"><i class="fas fa-trash"></i></div>
                     </div>
                     <div class="card-header">
-                        <div>
-                            <div class="time-badge">${item.time}</div>
-                            <div class="card-title">${item.title}</div>
-                            <div class="card-desc">${item.desc}</div>
-                        </div>
+                        <div class="time-badge">${item.time}</div>
+                        <div class="card-title">${item.title}</div>
+                        <div class="card-desc">${item.desc}</div>
                     </div>
                     ${(item.type==='transport' && item.details) ? `<div class="transport-info"><i class="fas fa-info-circle"></i> ${item.details}</div>` : ''}
                     
                     ${metaHtml}
 
                     <div class="details-box">
-                        ${(item.details && item.type!=='transport') ? `<p style="color:#555; margin-bottom:10px;">${item.details}</p>` : ''}
+                        ${(item.details && item.type!=='transport') ? `<p style="color:#5D4037; margin-bottom:10px;">${item.details}</p>` : ''}
                         <div class="action-buttons">${btnHtml}</div>
                     </div>
                 </div>`;
@@ -639,7 +641,7 @@
 
         if (!title) { alert("Please enter a title"); return; }
         currentItinerary[currentDayIndex].items.push({time, type, title, desc, location: loc, details: "", duration: dur, cost: cst});
-        localStorage.setItem('mark_trip_itinerary_tiny_bold', JSON.stringify(currentItinerary));
+        localStorage.setItem('mark_trip_itinerary_v7', JSON.stringify(currentItinerary));
         
         document.getElementById('new-title').value = ""; 
         document.getElementById('new-desc').value = ""; 
@@ -652,13 +654,13 @@
     function deleteItemFromDay(dayIdx, itemIdx) {
         if (!confirm("Delete?")) return;
         currentItinerary[dayIdx].items.splice(itemIdx, 1);
-        localStorage.setItem('mark_trip_itinerary_tiny_bold', JSON.stringify(currentItinerary));
+        localStorage.setItem('mark_trip_itinerary_v7', JSON.stringify(currentItinerary));
         renderDay(dayIdx);
     }
 
-    /* --- Bookings Logic (Improved) --- */
-    function getBookings() { return localStorage.getItem('mark_trip_bookings_tiny_bold') ? JSON.parse(localStorage.getItem('mark_trip_bookings_tiny_bold')) : defaultBookings; }
-    function saveBookings(data) { localStorage.setItem('mark_trip_bookings_tiny_bold', JSON.stringify(data)); renderBookings(); }
+    /* --- Bookings Logic (Dual Currency) --- */
+    function getBookings() { return localStorage.getItem('mark_trip_bookings_v7') ? JSON.parse(localStorage.getItem('mark_trip_bookings_v7')) : defaultBookings; }
+    function saveBookings(data) { localStorage.setItem('mark_trip_bookings_v7', JSON.stringify(data)); renderBookings(); }
     
     function handleBookingInput(idx, type, val) {
         const list = getBookings();
@@ -696,7 +698,7 @@
                     <div style="display:flex; gap:12px; align-items:flex-start;">
                         <input type="checkbox" style="width:20px; height:20px; margin-top:3px; accent-color:#1E5638;" ${item.checked ? 'checked' : ''} onchange="toggleBooking(${idx})">
                         <div style="flex:1;">
-                            <div style="font-family:var(--font-header); font-size:0.7rem; color:#888; text-transform:uppercase;">${item.type} ${btnHtml}</div>
+                            <div style="font-family:var(--font-ui); font-size:0.7rem; color:#888; text-transform:uppercase;">${item.type} ${btnHtml}</div>
                             <div style="font-weight:700; color:#1E5638; font-family:var(--font-main);">${item.name}</div>
                             <div style="font-size:0.85rem; color:#6D7248; margin-top:2px;">${item.note}</div>
                         </div>
@@ -747,7 +749,7 @@
     }
 
     function renderExpenses() {
-        let exps = JSON.parse(localStorage.getItem('mark_trip_tiny_expenses_bold')) || [];
+        let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v7')) || [];
         const list = document.getElementById('expense-list');
         list.innerHTML = '';
         let total = 0;
@@ -764,6 +766,7 @@
         Object.keys(grouped).forEach(date => {
             const group = grouped[date];
             const div = document.createElement('div');
+            div.className = 'daily-group';
             div.innerHTML = `<div class="daily-header"><span>${date}</span><span>Daily: €${group.total.toFixed(2)}</span></div>`;
             
             group.items.forEach(e => {
@@ -789,17 +792,17 @@
         const name = document.getElementById('exp-name').value;
         const amt = document.getElementById('exp-amt').value;
         if(!name || !amt) return;
-        let exps = JSON.parse(localStorage.getItem('mark_trip_tiny_expenses_bold')) || [];
+        let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v7')) || [];
         const finalDate = date || new Date().toISOString().split('T')[0];
         exps.push({ date: finalDate, name: name, amount: amt });
-        localStorage.setItem('mark_trip_tiny_expenses_bold', JSON.stringify(exps));
+        localStorage.setItem('mark_trip_expenses_v7', JSON.stringify(exps));
         document.getElementById('exp-name').value = ''; document.getElementById('exp-amt').value = ''; renderExpenses();
     }
-    function delExpense(i) { if(confirm('Remove?')) { let exps = JSON.parse(localStorage.getItem('mark_trip_tiny_expenses_bold')); exps.splice(i, 1); localStorage.setItem('mark_trip_tiny_expenses_bold', JSON.stringify(exps)); renderExpenses(); } }
+    function delExpense(i) { if(confirm('Remove?')) { let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v7')); exps.splice(i, 1); localStorage.setItem('mark_trip_expenses_v7', JSON.stringify(exps)); renderExpenses(); } }
 
     /* --- Checklist Logic --- */
-    function getChecklist() { return localStorage.getItem('mark_trip_tiny_checklist_bold') ? JSON.parse(localStorage.getItem('mark_trip_tiny_checklist_bold')) : defaultChecklist; }
-    function saveChecklist(data) { localStorage.setItem('mark_trip_tiny_checklist_bold', JSON.stringify(data)); renderChecklist(); }
+    function getChecklist() { return localStorage.getItem('mark_trip_checklist_v7') ? JSON.parse(localStorage.getItem('mark_trip_checklist_v7')) : defaultChecklist; }
+    function saveChecklist(data) { localStorage.setItem('mark_trip_checklist_v7', JSON.stringify(data)); renderChecklist(); }
 
     function renderChecklist() {
         const list = getChecklist();
