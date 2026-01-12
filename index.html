@@ -74,14 +74,17 @@
 
         .seg-chip {
             font-family: var(--font-header); color: var(--tc-green); background: var(--white);
-            padding: 10px 20px; border-radius: var(--radius-btn); font-size: 0.8rem;
+            padding: 10px 18px; border-radius: var(--radius-btn); font-size: 0.75rem;
             white-space: nowrap; font-weight: 900; cursor: pointer; transition: all 0.2s;
             border: var(--border-width) solid var(--tc-green); box-shadow: 3px 3px 0 var(--tc-blue);
+            display: flex; flex-direction: column; align-items: center; line-height: 1.2;
         }
+        .seg-chip span { font-family: var(--font-main); font-size: 0.7rem; font-weight: 700; opacity: 0.8; }
         .seg-chip.active {
             background: var(--tc-green); color: var(--white); border-color: var(--tc-green);
             box-shadow: 3px 3px 0 var(--tc-brown); transform: translate(-1px, -1px);
         }
+        .seg-chip.active span { color: #E0F2F1; }
 
         /* Date Bar */
         .date-bar {
@@ -108,7 +111,7 @@
             padding: 10px 20px 120px 20px;
         }
 
-        /* --- HOME PAGE STYLES (NEW SQUARE) --- */
+        /* HOME PAGE STYLES */
         .home-title {
             font-family: var(--font-header); font-weight: 900; font-size: 2.2rem;
             text-align: center; color: var(--tc-green); margin: 30px 0 25px 0;
@@ -118,36 +121,26 @@
             display: flex; flex-direction: column; align-items: center; gap: 30px;
         }
         .home-card-box {
-            width: 85%; max-width: 320px; aspect-ratio: 1 / 1; /* 正方形 */
-            border-radius: 35px; /* 大圓角方塊 */
+            width: 85%; max-width: 320px; aspect-ratio: 1 / 1;
+            border-radius: 35px;
             background: var(--white);
             border: 3px solid var(--tc-green);
-            box-shadow: 8px 8px 0 var(--tc-blue); /* 復古硬陰影 */
+            box-shadow: 8px 8px 0 var(--tc-blue);
             display: flex; justify-content: center; align-items: center;
             overflow: hidden; position: relative;
             transition: transform 0.2s;
         }
         .home-card-box:active { transform: scale(0.98); }
-        
-        .img-box img {
-            width: 100%; height: 100%; object-fit: cover;
-        }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; }
         
         .count-box {
             background: var(--tc-green); border-color: var(--tc-brown);
             color: var(--white); flex-direction: column; text-align: center;
             box-shadow: 8px 8px 0 var(--tc-brown);
         }
-        .countdown-number {
-            font-family: var(--font-header); font-size: 5rem; font-weight: 900; line-height: 1;
-        }
-        .countdown-label {
-            font-family: var(--font-main); font-size: 1.2rem; font-weight: 700; letter-spacing: 2px; margin-top: 5px;
-        }
-        .countdown-target {
-            font-size: 0.9rem; opacity: 0.8; margin-top: 10px; font-family: var(--font-header);
-            border-top: 1px solid rgba(255,255,255,0.3); padding-top: 8px; width: 80%;
-        }
+        .countdown-number { font-family: var(--font-header); font-size: 5rem; font-weight: 900; line-height: 1; }
+        .countdown-label { font-family: var(--font-main); font-size: 1.2rem; font-weight: 700; letter-spacing: 2px; margin-top: 5px; }
+        .countdown-target { font-size: 0.9rem; opacity: 0.8; margin-top: 10px; font-family: var(--font-header); border-top: 1px solid rgba(255,255,255,0.3); padding-top: 8px; width: 80%; }
 
         /* Day Hero */
         .day-hero { 
@@ -283,7 +276,24 @@
         }
         .bk-input:focus { outline: none; }
 
-        /* Checklist Styles (Categorized) */
+        /* Actions Row (Delete & Photo) */
+        .bk-actions-row {
+            display: flex; justify-content: flex-end; gap: 10px; margin-top: 5px;
+        }
+        .icon-btn.photo { color: var(--tc-blue); background: #E1F5FE; }
+
+        /* Booking Image */
+        .bk-image-container {
+            margin-top: 10px; border-radius: 15px; overflow: hidden; border: 2px solid #eee; position: relative;
+        }
+        .bk-image-container img { width: 100%; display: block; }
+        .remove-img-btn {
+            position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.6); color: white;
+            width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 0.8rem;
+        }
+
+        /* Checklist Styles */
         .check-category-card {
             background: var(--white); border-radius: var(--radius-card); padding: 0 0 20px 0; margin-bottom: 25px;
             border: var(--border-width) solid var(--tc-green); box-shadow: 6px 6px 0 rgba(0,0,0,0.05);
@@ -368,7 +378,7 @@
             <!-- Box 1: Illustration -->
             <div class="home-card-box img-box">
                 <!-- User to replace src -->
-                <img src="https://scontent-tpe1-1.xx.fbcdn.net/v/t39.30808-6/612388246_10236305700676525_8274520347842375536_n.jpg?stp=dst-jpg_s960x960_tt6&_nc_cat=103&ccb=1-7&_nc_sid=f727a1&_nc_ohc=njI6wR1jAkEQ7kNvwGovOh1&_nc_oc=AdlXuov5t0ZTjsxrFeKfDm1qKeFC-AjDyPmbcXl_4Ul3RdpXyUeJVOIMnU5lX9pZF1U&_nc_zt=23&_nc_ht=scontent-tpe1-1.xx&_nc_gid=-Sqk3HLMd8G4vlQ0PpaBzQ&oh=00_AfqDbkOGqwWZ8Dji2X0UIEcQ2CSzFesaXiYHVuegawcG9g&oe=69645F91" alt="Marc Illustration">
+                <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=500&q=80" alt="Marc Illustration">
             </div>
             <!-- Box 2: Countdown -->
             <div class="home-card-box count-box">
@@ -503,1016 +513,272 @@
 <script>
     /* ================= 初始資料 ================= */
     const segments = [
-        { id: 'tpe', name: 'Taipei', dates: [0] }, 
-        { id: 'lr', name: 'La Rochelle', dates: [1, 2, 3] },
-        { id: 'bod', name: 'Bordeaux', dates: [4] },
-        { id: 'ksl', name: 'Kœstlach', dates: [5, 6, 7, 8] },
-        { id: 'par', name: 'Paris', dates: [9, 10, 11, 12, 13] }
+        { id: 'tpe', name: 'Taipei (5/21)', dates: [0] }, 
+        { id: 'lr', name: 'La Rochelle (5/22-25)', dates: [1, 2, 3] },
+        { id: 'bod', name: 'Bordeaux (5/25-27)', dates: [4, 5] },
+        { id: 'ksl', name: 'Kœstlach (5/27-30)', dates: [6, 7, 8] },
+        { id: 'par', name: 'Paris (5/30-6/3)', dates: [9, 10, 11, 12, 13] }
     ];
 
     const defaultItinerary = [
-        { date: "5/21", day: "Wed", city: "Taipei", items: [
-            { time: "23:30", type: "transport", title: "Taipei to Paris", desc: "EVA AIR BR87", details: "提前3小時到機場。", link: "https://www.evaair.com/zh-tw/index.html", linkText: "EVA AIR", location: "Taoyuan International Airport", duration: "13h 15m", cost: "Booked" }
+        { date: "5/21", day: "Thu", city: "Taipei", items: [
+            { time: "23:30", type: "transport", title: "Taipei to Paris", desc: "EVA AIR BR087", details: "桃園機場二航廈 (T2) -> 戴高樂一航廈 (T1)", link: "https://www.evaair.com/zh-tw/index.html", linkText: "EVA AIR", location: "Taoyuan International Airport", duration: "13h 15m", cost: "Booked" }
         ]},
-        { date: "5/22", day: "Thu", city: "La Rochelle", items: [
+        { date: "5/22", day: "Fri", city: "La Rochelle", items: [
             { time: "07:45", type: "transport", title: "Arrival in Paris", desc: "Airport Transfer", location: "Charles de Gaulle Airport", duration: "2h", cost: "€15" },
             { time: "PM", type: "transport", title: "To La Rochelle", desc: "SNCF Train", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location: "Gare de La Rochelle", duration: "3h", cost: "Booked" }
         ]},
-        { date: "5/23", day: "Fri", city: "La Rochelle", items: [{time:"Day", type:"spot", title:"La Rochelle Port", desc:"Vieux Port, Aquarium", location:"Vieux Port La Rochelle", duration:"4h", cost:"€20"}] },
-        { date: "5/24", day: "Sat", city: "La Rochelle", items: [{time:"Day", type:"spot", title:"Local Market", desc:"Enjoy French Life", location:"Marché de La Rochelle", duration:"2h", cost:"€30"}] },
-        { date: "5/25", day: "Sun", city: "Bordeaux", items: [
-            { time: "AM", type: "transport", title: "To Bordeaux", desc: "SNCF Train", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location:"Gare de Bordeaux-Saint-Jean", duration:"2.5h", cost:"Booked" },
-            { time: "PM", type: "spot", title: "Dune du Pilat", desc: "Sand Dune", location:"Dune du Pilat", duration:"3h", cost:"€0" },
+        { date: "5/23", day: "Sat", city: "La Rochelle", items: [{time:"Day", type:"spot", title:"La Rochelle Port", desc:"Vieux Port, Aquarium", location:"Vieux Port La Rochelle", duration:"4h", cost:"€20"}] },
+        { date: "5/24", day: "Sun", city: "La Rochelle", items: [{time:"Day", type:"spot", title:"Local Market", desc:"Enjoy French Life", location:"Marché de La Rochelle", duration:"2h", cost:"€30"}] },
+        { date: "5/25", day: "Mon", city: "Bordeaux", items: [
+            { time: "AM", type: "transport", title: "To Bordeaux", desc: "SNCF Train", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location:"Gare de Bordeaux-Saint-Jean", duration:"2.5h", cost: "Booked" },
             { time: "Eve", type: "spot", title: "City Dinner", desc: "Grand Théâtre", location:"Grand Théâtre de Bordeaux", duration:"2h", cost:"€40" }
         ]},
-        { date: "5/26", day: "Mon", city: "Basel", items: [
-            { time: "AM", type: "spot", title: "Bordeaux Morning", desc: "Breakfast", location:"Bordeaux", duration:"1h", cost:"€15" },
-            { time: "PM", type: "transport", title: "Fly to Basel", desc: "EasyJet (BOD->BSL)", link: "https://www.easyjet.com/en", linkText: "EasyJet", location: "EuroAirport Basel-Mulhouse-Freiburg", duration:"1.5h", cost:"Booked" },
-            { time: "Eve", type: "spot", title: "Arrive Kœstlach", desc: "Chang-Yu's Home", location:"10 Rue du Chalet, 68480 Kœstlach", duration:"-", cost:"-" }
+        { date: "5/26", day: "Tue", city: "Bordeaux", items: [
+            { time: "Day", type: "spot", title: "Dune du Pilat", desc: "Sand Dune", location:"Dune du Pilat", duration:"3h", cost:"€0" },
+            { time: "Eve", type: "spot", title: "Relax", desc: "Bordeaux City", location:"Bordeaux", duration:"-", cost:"-" }
         ]},
-        { date: "5/27", day: "Tue", city: "Koestlach", items: [{time:"Day", type:"spot", title:"Countryside", desc:"Three Borders", location:"10 Rue du Chalet, 68480 Kœstlach", duration:"Day", cost:"€20"}] },
-        { date: "5/28", day: "Wed", city: "Basel", items: [{time:"Day", type:"spot", title:"Basel City", desc:"Museum, Rhine River", location:"Kunstmuseum Basel", duration:"Day", cost:"€30"}] },
-        { date: "5/29", day: "Thu", city: "Colmar", items: [{time:"Day", type:"spot", title:"Colmar & Alsace", desc:"Fairytale Town", location:"Colmar", duration:"Day", cost:"€40"}] },
-        { date: "5/30", day: "Fri", city: "Paris", items: [
+        { date: "5/27", day: "Wed", city: "Koestlach", items: [
+            { time: "10:40", type: "transport", title: "Fly to Basel", desc: "EasyJet (BOD->BSL)", details: "Arrive 12:10", link: "https://www.easyjet.com/en", linkText: "EasyJet", location: "EuroAirport Basel-Mulhouse-Freiburg", duration:"1.5h", cost:"Booked" },
+            { time: "PM", type: "spot", title: "Arrive Kœstlach", desc: "Chang-Yu's Home", location:"10 Rue du Chalet, 68480 Kœstlach", duration:"-", cost:"-" }
+        ]},
+        { date: "5/28", day: "Thu", city: "Basel", items: [{time:"Day", type:"spot", title:"Basel City", desc:"Museum, Rhine River", location:"Kunstmuseum Basel", duration:"Day", cost:"€30"}] },
+        { date: "5/29", day: "Fri", city: "Colmar", items: [{time:"Day", type:"spot", title:"Colmar & Alsace", desc:"Fairytale Town", location:"Colmar", duration:"Day", cost:"€40"}] },
+        { date: "5/30", day: "Sat", city: "Paris", items: [
             { time: "AM", type: "transport", title: "To Paris", desc: "TGV Lyria", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location: "Gare de Lyon", duration:"3h", cost:"Booked" },
             { time: "PM", type: "spot", title: "Eiffel Tower", desc: "Seine River", location:"Eiffel Tower", duration:"2h", cost:"€25" }
         ]},
-        { date: "5/31", day: "Sat", city: "Paris", items: [{time:"Day", type:"spot", title:"Louvre Museum", desc:"Art & History", location:"Louvre Museum", duration:"4h", cost:"€17"}] },
-        { date: "6/1", day: "Sun", city: "Paris", items: [{time:"Day", type:"spot", title:"Le Marais", desc:"Shopping", location:"Le Marais", duration:"4h", cost:"€50"}] },
-        { date: "6/2", day: "Mon", city: "Paris", items: [{time:"Day", type:"spot", title:"Montmartre", desc:"Sacré-Cœur", location:"Sacré-Cœur", duration:"3h", cost:"€0"}] },
-        { date: "6/3", day: "Tue", city: "Taipei", items: [
-            { time: "PM", type: "spot", title: "Last Shopping", desc: "Tax Refund", location:"Paris", duration:"2h", cost:"-" },
-            { time: "23:30", type: "transport", title: "Back to Taipei", desc: "EVA AIR BR88", location: "Charles de Gaulle Airport", duration:"13h", cost:"Booked" }
+        { date: "5/31", day: "Sun", city: "Paris", items: [{time:"Day", type:"spot", title:"Louvre Museum", desc:"Art & History", location:"Louvre Museum", duration:"4h", cost:"€17"}] },
+        { date: "6/1", day: "Mon", city: "Paris", items: [{time:"Day", type:"spot", title:"Le Marais", desc:"Shopping", location:"Le Marais", duration:"4h", cost:"€50"}] },
+        { date: "6/2", day: "Tue", city: "Paris", items: [{time:"Day", type:"spot", title:"Montmartre", desc:"Sacré-Cœur", location:"Sacré-Cœur", duration:"3h", cost:"€0"}] },
+        { date: "6/3", day: "Wed", city: "Taipei", items: [
+            { time: "11:20", type: "transport", title: "Back to Taipei", desc: "EVA AIR BR088", details: "戴高樂一航廈 (CDG T1)", location: "Charles de Gaulle Airport", duration:"13h", cost:"Booked" }
         ]}
     ];
 
     const defaultBookings = [
-        { type: 'transport', name: 'Flight Taipei-Paris', note: 'EVA AIR (Round Trip)', price: 42000, checked: false, link:'https://www.evaair.com/zh-tw/index.html' },
-        { type: 'transport', name: 'Train to La Rochelle', note: 'SNCF (TGV)', price: 2500, checked: false, link:'https://www.sncf-connect.com/en-en/' },
-        { type: 'transport', name: 'Train to Bordeaux', note: 'SNCF (Intercités)', price: 1200, checked: false, link:'https://www.sncf-connect.com/en-en/' },
-        { type: 'hotel',     name: 'Bordeaux Hotel', note: 'Booking.com (1 Night)', price: 4500, checked: false, link:'https://www.booking.com' },
-        { type: 'transport', name: 'Flight to Basel', note: 'EasyJet (+Luggage)', price: 2800, checked: false, link:'https://www.easyjet.com/en' },
-        { type: 'transport', name: 'Train to Paris', note: 'SNCF (TGV Lyria)', price: 3800, checked: false, link:'https://www.sncf-connect.com/en-en/' },
-        { type: 'hotel',     name: 'Paris Hotel', note: 'Booking.com (4 Nights)', price: 28000, checked: false, link:'https://www.booking.com' }
+        { type: 'transport', name: 'Flight Taipei-Paris (Round Trip)', note: 'BR087/BR088', price: 120000, checked: false, link:'https://www.evaair.com/zh-tw/index.html', image: '' },
+        { type: 'transport', name: 'Train to La Rochelle', note: 'SNCF (TGV)', price: 2500, checked: false, link:'https://www.sncf-connect.com/en-en/', image: '' },
+        { type: 'transport', name: 'Train to Bordeaux', note: 'SNCF (Intercités)', price: 1200, checked: false, link:'https://www.sncf-connect.com/en-en/', image: '' },
+        { type: 'hotel',     name: 'Bordeaux Hotel', note: 'Booking.com (1 Night)', price: 4500, checked: false, link:'https://www.booking.com', image: '' },
+        { type: 'transport', name: 'Flight to Basel', note: 'EasyJet', price: 6038, checked: false, link:'https://www.easyjet.com/en', image: '' }, // 172.52 * 35
+        { type: 'transport', name: 'Train to Paris', note: 'SNCF (TGV Lyria)', price: 3800, checked: false, link:'https://www.sncf-connect.com/en-en/', image: '' },
+        { type: 'hotel',     name: 'Paris Hotel', note: 'Booking.com (4 Nights)', price: 28000, checked: false, link:'https://www.booking.com', image: '' }
     ];
 
-    // Customized Checklist Data
     const defaultChecklist = [
-        { cat: "CLOTHING", items: [
-            { name: "睡衣", checked: false }, { name: "內衣褲", checked: false }, { name: "襪子", checked: false }, { name: "幾套穿搭", checked: false }
-        ]},
-        { cat: "BEAUTY & CARE", items: [
-            { name: "化妝包", checked: false }, { name: "眼罩", checked: false }, { name: "髮基因", checked: false }, { name: "隱形眼鏡", checked: false },
-            { name: "眼鏡", checked: false }, { name: "身體乳超大罐", checked: false }, { name: "面膜", checked: false }, { name: "香水", checked: false },
-            { name: "按摩刮痧", checked: false }, { name: "護手霜", checked: false }, { name: "電棒燙", checked: false }, { name: "橡皮筋", checked: false },
-            { name: "保養品包", checked: false }, { name: "防曬", checked: false }, { name: "衛生棉", checked: false }
-        ]},
-        { cat: "ACCESSORIES", items: [
-            { name: "配件", checked: false }, { name: "墨鏡", checked: false }, { name: "戒指/項鍊", checked: false }, { name: "側背包", checked: false }, { name: "Baggu", checked: false }
-        ]},
-        { cat: "ELECTRONICS", items: [
-            { name: "手機充電器", checked: false }, { name: "行充", checked: false }, { name: "變壓器", checked: false }, { name: "耳機充電", checked: false }
-        ]},
-        { cat: "ESSENTIALS", items: [
-            { name: "護照", checked: false }, { name: "藥(維他命、益生菌)", checked: false }, { name: "護墊/衛生棉/安全褲/棉條", checked: false }, 
-            { name: "口罩", checked: false }, { name: "esim", checked: false }, { name: "叫車", checked: false }, { name: "帶牙套", checked: false }, 
-            { name: "牙刷組、牙膏", checked: false }
-        ]}
+        { cat: "CLOTHING", items: [ { name: "睡衣", checked: false }, { name: "內衣褲", checked: false }, { name: "襪子", checked: false }, { name: "幾套穿搭", checked: false } ]},
+        { cat: "BEAUTY & CARE", items: [ { name: "化妝包", checked: false }, { name: "眼罩", checked: false }, { name: "髮基因", checked: false }, { name: "隱形眼鏡", checked: false }, { name: "眼鏡", checked: false }, { name: "身體乳超大罐", checked: false }, { name: "面膜", checked: false }, { name: "香水", checked: false }, { name: "按摩刮痧", checked: false }, { name: "護手霜", checked: false }, { name: "電棒燙", checked: false }, { name: "橡皮筋", checked: false }, { name: "保養品包", checked: false }, { name: "防曬", checked: false }, { name: "衛生棉", checked: false } ]},
+        { cat: "ACCESSORIES", items: [ { name: "配件", checked: false }, { name: "墨鏡", checked: false }, { name: "戒指/項鍊", checked: false }, { name: "側背包", checked: false }, { name: "Baggu", checked: false } ]},
+        { cat: "ELECTRONICS", items: [ { name: "手機充電器", checked: false }, { name: "行充", checked: false }, { name: "變壓器", checked: false }, { name: "耳機充電", checked: false } ]},
+        { cat: "ESSENTIALS", items: [ { name: "護照", checked: false }, { name: "藥(維他命、益生菌)", checked: false }, { name: "護墊/衛生棉/安全褲/棉條", checked: false }, { name: "口罩", checked: false }, { name: "esim", checked: false }, { name: "叫車", checked: false }, { name: "帶牙套", checked: false }, { name: "牙刷組、牙膏", checked: false } ]}
     ];
 
-    let currentItinerary = [];
-    let currentDayIndex = 0;
+    let currentItinerary = [], currentDayIndex = 0;
 
-    /* ================= 系統邏輯 ================= */
-    
     function init() {
-        // Init Itinerary (v9 to force checklist update)
-        const storedItin = localStorage.getItem('mark_trip_itinerary_v9');
-        if (storedItin) {
-            currentItinerary = JSON.parse(storedItin);
-        } else {
-            currentItinerary = defaultItinerary;
-            localStorage.setItem('mark_trip_itinerary_v9', JSON.stringify(currentItinerary));
-        }
-        
+        // Use v13 for this update
+        const storedItin = localStorage.getItem('mark_trip_itinerary_v13');
+        if (storedItin) currentItinerary = JSON.parse(storedItin);
+        else { currentItinerary = defaultItinerary; localStorage.setItem('mark_trip_itinerary_v13', JSON.stringify(currentItinerary)); }
         document.getElementById('exp-date').valueAsDate = new Date();
-
-        renderSegmentBar();
-        selectSegment(0); 
-        renderBookings();
-        renderExpenses();
-        renderChecklist();
-        switchView('home', document.querySelector('.nav-item.active')); // Default to Home
-        
-        // Start Countdown
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
+        renderSegmentBar(); selectSegment(0); renderBookings(); renderExpenses(); renderChecklist();
+        switchView('home', document.querySelector('.nav-item.active'));
+        setInterval(updateCountdown, 1000); updateCountdown();
     }
 
-    // Countdown Logic
+    /* Logic */
     function updateCountdown() {
-        const targetDate = new Date("2026-05-21T00:00:00").getTime();
-        const now = new Date().getTime();
-        const distance = targetDate - now;
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const el = document.getElementById("cd-days");
-        if(el) el.innerText = days > 0 ? days : 0;
+        const diff = new Date("2026-05-21").getTime() - new Date().getTime();
+        const d = Math.floor(diff / (1000*60*60*24));
+        document.getElementById("cd-days").innerText = d > 0 ? d : 0;
     }
-
-    /* --- 行程表渲染 --- */
+    // ... Itinerary Rendering ...
     function renderSegmentBar() {
-        const bar = document.getElementById('segment-bar');
-        bar.innerHTML = '';
+        const bar = document.getElementById('segment-bar'); bar.innerHTML = '';
         segments.forEach((seg, idx) => {
-            const chip = document.createElement('div');
-            chip.className = `seg-chip ${idx === 0 ? 'active' : ''}`;
-            chip.innerText = seg.name;
-            chip.onclick = () => selectSegment(idx);
-            bar.appendChild(chip);
+            const chip = document.createElement('div'); chip.className = `seg-chip ${idx===0?'active':''}`;
+            chip.innerHTML = `${seg.name}`; // name includes date now
+            chip.onclick = () => selectSegment(idx); bar.appendChild(chip);
         });
     }
-    function selectSegment(segIdx) {
-        document.querySelectorAll('.seg-chip').forEach((el, i) => el.classList.toggle('active', i === segIdx));
-        renderDateBar(segIdx);
-        switchDay(segments[segIdx].dates[0]);
-    }
-    function renderDateBar(segIdx) {
-        const bar = document.getElementById('date-bar');
-        bar.innerHTML = '';
-        const dayIndices = segments[segIdx].dates;
-        dayIndices.forEach((dayIdx) => {
-            const d = currentItinerary[dayIdx];
-            const pill = document.createElement('div');
-            pill.className = `date-pill ${dayIdx === currentDayIndex ? 'active' : ''}`;
-            pill.id = `date-pill-${dayIdx}`;
-            pill.onclick = () => switchDay(dayIdx);
+    function selectSegment(idx) {
+        document.querySelectorAll('.seg-chip').forEach((el, i) => el.classList.toggle('active', i === idx));
+        const bar = document.getElementById('date-bar'); bar.innerHTML = '';
+        segments[idx].dates.forEach(dIdx => {
+            const d = currentItinerary[dIdx];
+            const pill = document.createElement('div'); pill.className = `date-pill ${dIdx===currentDayIndex?'active':''}`;
+            pill.id=`dp-${dIdx}`; pill.onclick=()=>switchDay(dIdx);
             pill.innerHTML = `<div class="dp-day">${d.day}</div><div class="dp-date">${d.date}</div>`;
             bar.appendChild(pill);
         });
+        switchDay(segments[idx].dates[0]);
     }
     function switchDay(idx) {
         currentDayIndex = idx;
         document.querySelectorAll('.date-pill').forEach(el => el.classList.remove('active'));
-        const activePill = document.getElementById(`date-pill-${idx}`);
-        if(activePill) {
-            activePill.classList.add('active');
-            activePill.scrollIntoView({ behavior: 'smooth', inline: 'center' });
-        }
+        const active = document.getElementById(`dp-${idx}`); if(active) active.classList.add('active');
         renderDay(idx);
     }
     function renderDay(idx) {
         const data = currentItinerary[idx];
-        const container = document.getElementById('day-content');
-        const weatherUrl = `https://www.google.com/search?q=weather+${data.city}`;
-        let segName = "";
-        segments.forEach(s => { if(s.dates.includes(idx)) segName = s.name; });
-        let html = `
-            <div class="day-hero">
-                <div class="day-info"><h2>${data.city}</h2><p> ${segName}</p></div>
-                <a href="${weatherUrl}" target="_blank" class="weather-btn"><i class="fas fa-sun"></i> Weather</a>
-            </div>`;
-        data.items.forEach((item, itemIdx) => {
-            const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.location || item.title)}`;
-            let btnHtml = `<a href="${mapUrl}" target="_blank" class="btn btn-map"><i class="fas fa-map-marker-alt"></i> MAP</a>`;
-            if (item.link) btnHtml += `<a href="${item.link}" target="_blank" class="btn btn-ticket"><i class="fas fa-ticket-alt"></i> ${item.linkText}</a>`;
-            
-            // Meta Row Logic
-            let metaHtml = '';
-            if (item.duration || item.cost) {
-                metaHtml = `<div class="card-meta-row">`;
-                if(item.duration) metaHtml += `<div class="meta-item"><i class="fas fa-clock"></i> ${item.duration}</div>`;
-                if(item.cost) metaHtml += `<div class="meta-item"><i class="fas fa-coins"></i> ${item.cost}</div>`;
-                metaHtml += `</div>`;
-            }
-
-            html += `
-                <div class="card type-${item.type}">
-                    <div class="card-tag">${item.type}</div>
-                    <div class="card-controls">
-                        <div class="expand-toggle" onclick="toggleDetails(this)"><i class="fas fa-plus"></i></div>
-                        <div class="icon-btn delete" onclick="deleteItemFromDay(${idx}, ${itemIdx})"><i class="fas fa-trash"></i></div>
-                    </div>
-                    <div class="card-header">
-                        <div>
-                            <div class="time-badge">${item.time}</div>
-                            <div class="card-title">${item.title}</div>
-                            <div class="card-desc">${item.desc}</div>
-                        </div>
-                    </div>
-                    ${(item.type==='transport' && item.details) ? `<div class="transport-info"><i class="fas fa-info-circle"></i> ${item.details}</div>` : ''}
-                    
-                    ${metaHtml}
-
-                    <div class="details-box">
-                        ${(item.details && item.type!=='transport') ? `<p style="color:#5D4037; margin-bottom:10px;">${item.details}</p>` : ''}
-                        <div class="action-buttons">${btnHtml}</div>
-                    </div>
-                </div>`;
+        const con = document.getElementById('day-content');
+        con.innerHTML = `<div class="day-hero"><div class="day-info"><h2>${data.city}</h2><p>${segments.find(s=>s.dates.includes(idx)).name}</p></div><a href="https://www.google.com/search?q=weather+${data.city}" target="_blank" class="weather-btn"><i class="fas fa-sun"></i> Weather</a></div>`;
+        data.items.forEach((item, i) => {
+            let meta = ''; if(item.duration||item.cost) meta=`<div class="card-meta-row">${item.duration?`<div class="meta-item"><i class="fas fa-clock"></i>${item.duration}</div>`:''}${item.cost?`<div class="meta-item"><i class="fas fa-coins"></i>${item.cost}</div>`:''}</div>`;
+            let linkBtn = item.link?`<a href="${item.link}" target="_blank" class="btn btn-ticket"><i class="fas fa-ticket-alt"></i> ${item.linkText}</a>`:'';
+            con.innerHTML += `<div class="card type-${item.type}"><div class="card-tag">${item.type}</div><div class="card-controls"><div class="expand-toggle" onclick="this.closest('.card').querySelector('.details-box').classList.toggle('show')"><i class="fas fa-plus"></i></div><div class="icon-btn delete" onclick="delItinItem(${idx},${i})"><i class="fas fa-trash"></i></div></div><div class="card-header"><div class="time-badge">${item.time}</div><div class="card-title">${item.title}</div><div class="card-desc">${item.desc}</div></div>${(item.type==='transport'&&item.details)?`<div class="transport-info"><i class="fas fa-info-circle"></i>${item.details}</div>`:''}${meta}<div class="details-box">${(item.details&&item.type!=='transport')?`<p style="color:#5D4037;margin-bottom:10px;">${item.details}</p>`:''}<div class="action-buttons"><a href="https://www.google.com/maps/search/?api=1&query=${item.location}" target="_blank" class="btn btn-map"><i class="fas fa-map-marker-alt"></i> MAP</a>${linkBtn}</div></div></div>`;
         });
-        container.innerHTML = html;
-    }
-    function toggleDetails(btn) {
-        const box = btn.closest('.card').querySelector('.details-box');
-        const icon = btn.querySelector('.expand-toggle i');
-        if (box.classList.contains('show')) { box.classList.remove('show'); icon.className = 'fas fa-plus'; }
-        else { box.classList.add('show'); icon.className = 'fas fa-minus'; }
     }
     function addItemToDay() {
-        const time = document.getElementById('new-time').value || "TBD";
-        const type = document.getElementById('new-type').value;
-        const title = document.getElementById('new-title').value;
-        const desc = document.getElementById('new-desc').value || "";
-        const loc = document.getElementById('new-loc').value || title;
-        const dur = document.getElementById('new-duration').value || "";
-        const cst = document.getElementById('new-cost').value || "";
-
-        if (!title) { alert("Please enter a title"); return; }
-        currentItinerary[currentDayIndex].items.push({time, type, title, desc, location: loc, details: "", duration: dur, cost: cst});
-        localStorage.setItem('mark_trip_itinerary_v9', JSON.stringify(currentItinerary));
-        
-        document.getElementById('new-title').value = ""; 
-        document.getElementById('new-desc').value = ""; 
-        document.getElementById('new-loc').value = "";
-        document.getElementById('new-duration').value = "";
-        document.getElementById('new-cost').value = "";
-        
+        const t=document.getElementById('new-title').value; if(!t) return;
+        currentItinerary[currentDayIndex].items.push({
+            time: document.getElementById('new-time').value||"TBD", type: document.getElementById('new-type').value,
+            title: t, desc: document.getElementById('new-desc').value, location: document.getElementById('new-loc').value,
+            duration: document.getElementById('new-duration').value, cost: document.getElementById('new-cost').value, details:""
+        });
+        localStorage.setItem('mark_trip_itinerary_v13', JSON.stringify(currentItinerary));
         renderDay(currentDayIndex);
+        document.querySelectorAll('.add-item-form input').forEach(i=>i.value='');
     }
-    function deleteItemFromDay(dayIdx, itemIdx) {
-        if (!confirm("Delete?")) return;
-        currentItinerary[dayIdx].items.splice(itemIdx, 1);
-        localStorage.setItem('mark_trip_itinerary_v9', JSON.stringify(currentItinerary));
-        renderDay(dayIdx);
-    }
+    function delItinItem(d,i) { if(confirm('Delete?')) { currentItinerary[d].items.splice(i,1); localStorage.setItem('mark_trip_itinerary_v13', JSON.stringify(currentItinerary)); renderDay(d); } }
 
     /* --- Bookings Logic --- */
-    function getBookings() { return localStorage.getItem('mark_trip_bookings_v9') ? JSON.parse(localStorage.getItem('mark_trip_bookings_v9')) : defaultBookings; }
-    function saveBookings(data) { localStorage.setItem('mark_trip_bookings_v9', JSON.stringify(data)); renderBookings(); }
+    function getBookings() { return localStorage.getItem('mark_trip_bookings_v13') ? JSON.parse(localStorage.getItem('mark_trip_bookings_v13')) : defaultBookings; }
+    function saveBookings(d) { localStorage.setItem('mark_trip_bookings_v13', JSON.stringify(d)); } 
     
-    function handleBookingInput(idx, type, val) {
-        const list = getBookings();
-        const rate = parseFloat(document.getElementById('bk-rate').value) || 35;
-        let twdVal;
-        if (type === 'eur') {
-            twdVal = Math.round(val * rate);
-        } else {
-            twdVal = parseInt(val) || 0;
-        }
-        list[idx].price = twdVal; 
-        saveBookings(list);
-    }
-
     function renderBookings() {
         const list = getBookings();
-        const container = document.getElementById('booking-list');
-        container.innerHTML = '';
-        let totalTwd = 0;
-        const rate = parseFloat(document.getElementById('bk-rate').value) || 35;
-
+        const con = document.getElementById('booking-list'); con.innerHTML = '';
+        let total = 0; const rate = parseFloat(document.getElementById('bk-rate').value)||35;
         list.forEach((item, idx) => {
-            totalTwd += parseInt(item.price || 0); 
-            let eurVal = (item.price / rate).toFixed(2);
-            let btnHtml = item.link ? `<a href="${item.link}" target="_blank" class="mini-btn">LINK <i class="fas fa-external-link-alt"></i></a>` : '';
+            total += parseInt(item.price||0);
+            let eur = (item.price/rate).toFixed(2);
+            let imgHtml = item.image ? `<div class="bk-image-container"><img src="${item.image}"><div class="remove-img-btn" onclick="removeBkImage(${idx})"><i class="fas fa-times"></i></div></div>` : '';
             
-            container.innerHTML += `
-                <div class="booking-item type-${item.type} ${item.checked ? 'checked' : ''}">
-                    <div style="display:flex; gap:12px; align-items:flex-start;">
-                        <input type="checkbox" style="width:20px; height:20px; margin-top:3px; accent-color:#1E5638;" ${item.checked ? 'checked' : ''} onchange="toggleBooking(${idx})">
-                        <div style="flex:1;">
-                            <div style="font-family:var(--font-header); font-size:0.7rem; color:#888; text-transform:uppercase;">${item.type} ${btnHtml}</div>
-                            <div style="font-weight:700; color:#1E5638; font-family:var(--font-main);">${item.name}</div>
-                            <div style="font-size:0.85rem; color:#6D7248; margin-top:2px;">${item.note}</div>
-                        </div>
+            con.innerHTML += `
+            <div class="booking-item type-${item.type} ${item.checked?'checked':''}">
+                <div style="display:flex;gap:12px;">
+                    <input type="checkbox" style="width:20px;height:20px;accent-color:#1E5638;" ${item.checked?'checked':''} onchange="toggleBk(${idx})">
+                    <div style="flex:1;">
+                        <div style="font-family:var(--font-header);font-size:0.7rem;color:#888;">${item.type}</div>
+                        <div style="font-weight:700;color:#1E5638;">${item.name}</div>
+                        <div style="font-size:0.85rem;color:#6D7248;">${item.note}</div>
                     </div>
-                    <div class="dual-input-row">
-                        <div class="currency-input-group">
-                            <span class="currency-label">EUR €</span>
-                            <input type="number" id="eur-input-${idx}" class="bk-input" value="${eurVal}" oninput="handleBookingInput(${idx}, 'eur', this.value)" placeholder="0">
-                        </div>
-                        <div style="color:#D7CCC8;">↔</div>
-                        <div class="currency-input-group">
-                            <span class="currency-label">NT$</span>
-                            <input type="number" id="twd-input-${idx}" class="bk-input" value="${item.price}" oninput="handleBookingInput(${idx}, 'twd', this.value)" placeholder="0">
-                        </div>
-                    </div>
-                    <div style="text-align:right; margin-top:5px;">
-                        <i class="fas fa-trash" style="color:#DDD; cursor:pointer;" onclick="delBooking(${idx})"></i>
-                    </div>
-                </div>`;
+                </div>
+                <div class="dual-input-row">
+                    <div class="currency-input-group"><span class="currency-label">EUR €</span><input type="number" id="eur-${idx}" class="bk-input" value="${eur}" oninput="handleBkInput(${idx},'eur',this.value)"></div>
+                    <div style="color:#D7CCC8;">↔</div>
+                    <div class="currency-input-group"><span class="currency-label">NT$</span><input type="number" id="twd-${idx}" class="bk-input" value="${item.price}" oninput="handleBkInput(${idx},'twd',this.value)"></div>
+                </div>
+                ${imgHtml}
+                <div class="bk-actions-row">
+                    <input type="file" id="file-${idx}" style="display:none" accept="image/*" onchange="uploadBkImage(${idx}, this)">
+                    <div class="icon-btn photo" onclick="document.getElementById('file-${idx}').click()"><i class="fas fa-camera"></i></div>
+                    <div class="icon-btn delete" onclick="delBk(${idx})"><i class="fas fa-trash"></i></div>
+                </div>
+            </div>`;
         });
-        let totalEur = (totalTwd / rate).toFixed(2);
-        document.getElementById('total-budget').innerHTML = `NT$ ${totalTwd.toLocaleString()}<br><span style="font-size:1.5rem; opacity:0.8; font-family:var(--font-header); font-style:italic;">€ ${totalEur}</span>`;
+        updateTotalBudget(total, rate);
     }
-    function toggleBooking(idx) { let l = getBookings(); l[idx].checked = !l[idx].checked; saveBookings(l); }
-    function addBooking() {
-        const type = document.getElementById('new-bk-type').value;
-        const name = document.getElementById('new-bk-name').value;
-        if(!name) return;
-        let l = getBookings(); l.push({ type, name, note: 'Added', price: 0, checked: false });
-        document.getElementById('new-bk-name').value = ''; saveBookings(l);
+    function updateTotalBudget(totalTwd, rate) {
+        document.getElementById('total-budget').innerHTML = `NT$ ${totalTwd.toLocaleString()}<br><span style="font-size:1.3rem;opacity:0.9;">€ ${(totalTwd/rate).toFixed(2)}</span>`;
     }
-    function delBooking(idx) { if(confirm('Remove?')) { let l = getBookings(); l.splice(idx, 1); saveBookings(l); } }
-
-    /* --- Money --- */
-    function convert(source) {
-        const eurInput = document.getElementById('conv-eur');
-        const twdInput = document.getElementById('conv-twd');
-        const rate = parseFloat(document.getElementById('conv-rate').value) || 35;
-        if (source === 'eur') { twdInput.value = Math.round(eurInput.value * rate); } 
-        else if (source === 'twd') { eurInput.value = (twdInput.value / rate).toFixed(2); } 
-        else if (source === 'rate') { if(eurInput.value) twdInput.value = Math.round(eurInput.value * rate); }
+    function handleBkInput(idx, type, val) {
+        const list = getBookings(); const rate = parseFloat(document.getElementById('bk-rate').value)||35;
+        let twd;
+        if(type==='eur') { twd = Math.round(val*rate); document.getElementById(`twd-${idx}`).value = twd; }
+        else { twd = parseInt(val)||0; document.getElementById(`eur-${idx}`).value = (twd/rate).toFixed(2); }
+        list[idx].price = twd;
+        saveBookings(list); 
+        let newTotal = list.reduce((acc, curr) => acc + parseInt(curr.price||0), 0);
+        updateTotalBudget(newTotal, rate);
     }
-
-    function renderExpenses() {
-        let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v9')) || [];
-        const list = document.getElementById('expense-list');
-        list.innerHTML = '';
-        let total = 0;
-        
-        exps.sort((a,b) => new Date(b.date || 0) - new Date(a.date || 0));
-        const grouped = exps.reduce((acc, curr) => {
-            const d = curr.date || 'Undated';
-            if(!acc[d]) acc[d] = { total: 0, items: [] };
-            acc[d].items.push(curr);
-            acc[d].total += parseFloat(curr.amount);
-            return acc;
-        }, {});
-
-        Object.keys(grouped).forEach(date => {
-            const group = grouped[date];
-            const div = document.createElement('div');
-            div.className = 'daily-group';
-            div.innerHTML = `<div class="daily-header"><span>${date}</span><span>Daily: €${group.total.toFixed(2)}</span></div>`;
-            group.items.forEach(e => {
-                total += parseFloat(e.amount);
-                const origIdx = exps.indexOf(e);
-                div.innerHTML += `
-                    <div class="expense-item">
-                        <div style="display:flex; flex-direction:column;">
-                            <span style="font-family:var(--font-main); font-weight:700;">${e.name}</span>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <span style="font-weight:700; color:#1E5638;">€${e.amount}</span>
-                            <i class="fas fa-trash" style="color:#DDD; cursor:pointer;" onclick="delExpense(${origIdx})"></i>
-                        </div>
-                    </div>`;
-            });
-            list.appendChild(div);
-        });
-        document.getElementById('expense-total').innerText = '€' + total.toFixed(2);
+    function toggleBk(i) { let l=getBookings(); l[i].checked=!l[i].checked; saveBookings(l); renderBookings(); }
+    function addBooking() { let l=getBookings(); l.push({type:document.getElementById('new-bk-type').value, name:document.getElementById('new-bk-name').value, price:0, checked:false, image:''}); saveBookings(l); renderBookings(); }
+    function delBk(i) { if(confirm('Del?')) { let l=getBookings(); l.splice(i,1); saveBookings(l); renderBookings(); } }
+    
+    // Image Upload Logic
+    function uploadBkImage(idx, input) {
+        const file = input.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            let list = getBookings();
+            list[idx].image = e.target.result;
+            saveBookings(list);
+            renderBookings();
+        };
+        reader.readAsDataURL(file);
     }
-    function addExpense() {
-        const date = document.getElementById('exp-date').value;
-        const name = document.getElementById('exp-name').value;
-        const amt = document.getElementById('exp-amt').value;
-        if(!name || !amt) return;
-        let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v9')) || [];
-        const finalDate = date || new Date().toISOString().split('T')[0];
-        exps.push({ date: finalDate, name: name, amount: amt });
-        localStorage.setItem('mark_trip_expenses_v9', JSON.stringify(exps));
-        document.getElementById('exp-name').value = ''; document.getElementById('exp-amt').value = ''; renderExpenses();
+    function removeBkImage(idx) {
+        if(confirm("Remove photo?")) {
+            let list = getBookings();
+            list[idx].image = '';
+            saveBookings(list);
+            renderBookings();
+        }
     }
-    function delExpense(i) { if(confirm('Remove?')) { let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v9')); exps.splice(i, 1); localStorage.setItem('mark_trip_expenses_v9', JSON.stringify(exps)); renderExpenses(); } }
 
     /* --- Checklist Logic --- */
-    function getChecklist() { return localStorage.getItem('mark_trip_checklist_v9') ? JSON.parse(localStorage.getItem('mark_trip_checklist_v9')) : defaultChecklist; }
-    function saveChecklist(data) { localStorage.setItem('mark_trip_checklist_v9', JSON.stringify(data)); renderChecklist(); }
-
+    function getCheck() { return localStorage.getItem('mark_trip_checklist_v13') ? JSON.parse(localStorage.getItem('mark_trip_checklist_v13')) : defaultChecklist; }
+    function saveCheck(d) { localStorage.setItem('mark_trip_checklist_v13', JSON.stringify(d)); renderChecklist(); }
     function renderChecklist() {
-        const list = getChecklist();
-        const container = document.getElementById('checklist-container');
-        container.innerHTML = '';
-        list.forEach((catGroup, catIdx) => {
-            let itemsHtml = '';
-            catGroup.items.forEach((item, itemIdx) => {
-                itemsHtml += `
-                    <div class="check-item ${item.checked ? 'checked' : ''}" onclick="toggleCheck(${catIdx}, ${itemIdx})">
-                        <div class="check-left">
-                            <div class="custom-checkbox"><i class="fas fa-check" style="display:${item.checked?'block':'none'}"></i></div>
-                            <span>${item.name}</span>
-                        </div>
-                        <i class="fas fa-trash" style="color:#DDD; padding:5px;" onclick="delCheckItem(event, ${catIdx}, ${itemIdx})"></i>
-                    </div>
-                `;
+        const list = getCheck(); const con = document.getElementById('checklist-container'); con.innerHTML = '';
+        list.forEach((cat, cIdx) => {
+            let items = '';
+            cat.items.forEach((it, iIdx) => {
+                items += `<div class="check-item ${it.checked?'checked':''}" onclick="toggleCheck(${cIdx},${iIdx})"><div class="check-left"><div class="custom-checkbox"><i class="fas fa-check" style="display:${it.checked?'block':'none'}"></i></div><span>${it.name}</span></div><i class="fas fa-trash" style="color:#DDD;" onclick="delCheckItem(event,${cIdx},${iIdx})"></i></div>`;
             });
-            container.innerHTML += `
-                <div class="check-category-card">
-                    <div class="check-category-header">${catGroup.cat}</div>
-                    ${itemsHtml}
-                </div>
-            `;
+            con.innerHTML += `<div class="check-category-card"><div class="check-category-header">${cat.cat}</div>${items}</div>`;
         });
     }
-    function toggleCheck(catIdx, itemIdx) { 
-        let l = getChecklist(); 
-        l[catIdx].items[itemIdx].checked = !l[catIdx].items[itemIdx].checked; 
-        saveChecklist(l); 
+    function toggleCheck(c, i) { let l=getCheck(); l[c].items[i].checked=!l[c].items[i].checked; saveCheck(l); }
+    function addChecklistItem() { 
+        let l=getCheck(); let catName=document.getElementById('new-check-cat').value; let val=document.getElementById('new-check-item').value;
+        let cat = l.find(c=>c.cat===catName); if(cat && val) { cat.items.push({name:val, checked:false}); saveCheck(l); document.getElementById('new-check-item').value=''; }
     }
-    function addChecklistItem() {
-        const cat = document.getElementById('new-check-cat').value;
-        const val = document.getElementById('new-check-item').value;
-        if(!val) return;
-        let l = getChecklist(); 
-        let targetCat = l.find(c => c.cat === cat);
-        if(targetCat) {
-            targetCat.items.push({ name: val, checked: false });
-            saveChecklist(l);
-            document.getElementById('new-check-item').value = '';
-        }
-    }
-    function delCheckItem(e, catIdx, itemIdx) { 
-        e.stopPropagation(); 
-        if(confirm('Remove?')) { 
-            let l = getChecklist(); 
-            l[catIdx].items.splice(itemIdx, 1); 
-            saveChecklist(l); 
-        } 
-    }
-
-    function switchView(id, btn) {
-        document.querySelectorAll('.section-view').forEach(el => el.classList.remove('active'));
-        document.getElementById('view-' + id).classList.add('active');
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-        btn.classList.add('active');
-        // Hide Header on home page
-        document.getElementById('app-header').style.display = (id === 'home') ? 'none' : 'block';
-    }
-
-    window.onload = init;
-</script>
-</body>
-</html>
-
-    <!-- VIEW 1: 行程表 -->
-    <div id="view-itinerary" class="section-view">
-        <div id="day-content"></div>
-        
-        <div class="add-item-form">
-            <h4 style="margin:0 0 15px 0; font-family:var(--font-header); font-weight:900; color:var(--tc-green);">+ ADD TO PLAN</h4>
-            <div class="form-row">
-                <input type="text" id="new-time" class="form-input" placeholder="Time (e.g. 10:00)" style="flex:1;">
-                <select id="new-type" class="form-input" style="flex:1;">
-                    <option value="spot">Spot</option>
-                    <option value="food">Food</option>
-                    <option value="transport">Transport</option>
-                </select>
-            </div>
-            <div class="form-row">
-                <input type="text" id="new-duration" class="form-input" placeholder="Duration (e.g. 2h)" style="flex:1;">
-                <input type="text" id="new-cost" class="form-input" placeholder="Cost (e.g. €20)" style="flex:1;">
-            </div>
-            <div class="form-row"><input type="text" id="new-title" class="form-input" placeholder="Title (地點名稱)"></div>
-            <div class="form-row"><input type="text" id="new-desc" class="form-input" placeholder="Note (備註)"></div>
-            <div class="form-row"><input type="text" id="new-loc" class="form-input" placeholder="Location (Google Maps)"></div>
-            <button class="add-btn" onclick="addItemToDay()">CONFIRM</button>
-        </div>
-    </div>
-
-    <!-- VIEW 2: 預訂 (Bookings) -->
-    <div id="view-bookings" class="section-view">
-        <div class="budget-header">
-            <div style="opacity:0.9; margin-bottom:5px; font-family:var(--font-header); font-weight:700; letter-spacing:1px; color:var(--white);">TOTAL BUDGET</div>
-            <div id="total-budget" style="font-size:2rem; font-weight:700; font-family:var(--font-header); line-height:1.2; color:var(--white);">
-                NT$ 0<br><span style="font-size:1.3rem; opacity:0.9;">€ 0.00</span>
-            </div>
-            
-            <div style="margin-top:15px; font-size:0.9rem; border-top:2px solid rgba(255,255,255,0.3); padding-top:10px; color:var(--white); font-weight:bold;">
-                RATE: 1 € = <input type="number" id="bk-rate" value="35" class="rate-input" style="width:50px; background:transparent; border:none; border-bottom:1px solid white; color:white; text-align:center; font-weight:bold;" onchange="renderBookings()"> NT$
-            </div>
-        </div>
-
-        <div id="booking-list"></div>
-        
-        <div style="margin-top:40px; border-top:3px dashed var(--tc-blue); padding-top:20px;">
-            <div style="display:flex; gap:15px; margin-bottom:15px;">
-                <select id="new-bk-type" class="form-input" style="flex:1;"><option value="transport">Transport</option><option value="hotel">Hotel</option></select>
-                <input type="text" id="new-bk-name" class="form-input" placeholder="Name" style="flex:2;">
-            </div>
-            <button class="add-btn" onclick="addBooking()">ADD TO LIST</button>
-        </div>
-    </div>
-
-    <!-- VIEW 3: 記帳 (Cost) -->
-    <div id="view-money" class="section-view">
-        <h2 style="font-family:var(--font-header); font-weight:900; letter-spacing:1px; margin-top:0; color:var(--tc-green); text-align:center;">DAILY COST</h2>
-        
-        <!-- Currency Converter -->
-        <div class="converter-box">
-            <div style="font-family:var(--font-header); text-transform:uppercase; margin-bottom:15px; border-bottom:2px solid rgba(255,255,255,0.3); padding-bottom:5px; display:flex; justify-content:space-between; color:white; font-weight:900;">
-                <span style="letter-spacing:1px;">Converter</span>
-                <span style="font-size:0.8rem;">Rate: <input type="number" id="conv-rate" value="35" class="rate-input" style="width:40px; background:transparent; border:none; border-bottom:1px solid white; color:white; text-align:center;" onchange="convert('rate')"></span>
-            </div>
-            <div class="conv-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; color:white;">
-                <span style="font-weight:900; font-family:var(--font-header);">EUR €</span>
-                <input type="number" id="conv-eur" class="conv-input" placeholder="0" onkeyup="convert('eur')">
-            </div>
-            <div class="conv-row" style="display:flex; justify-content:space-between; align-items:center; color:white;">
-                <span style="font-weight:900; font-family:var(--font-header);">TWD $</span>
-                <input type="number" id="conv-twd" class="conv-input" placeholder="0" onkeyup="convert('twd')">
-            </div>
-        </div>
-
-        <div style="background:var(--white); padding:25px; border:var(--border-width) solid var(--tc-green); border-radius:var(--radius-card); box-shadow:6px 6px 0 var(--tc-blue); margin-bottom:25px; text-align:center;">
-            <div style="color:var(--tc-blue); margin-bottom:5px; font-family:var(--font-header); font-weight:900; letter-spacing:1px;">GRAND TOTAL</div>
-            <div id="expense-total" style="font-size:2.5rem; font-weight:900; color:var(--tc-green); font-family:var(--font-header);">€0.00</div>
-        </div>
-
-        <div style="margin-bottom:20px;">
-            <div style="display:flex; gap:10px; margin-bottom:10px;">
-                <input type="date" id="exp-date" class="form-input" style="flex:1; border-color:var(--tc-blue);">
-            </div>
-            <div style="display:flex; gap:15px; margin-bottom:15px;">
-                <input type="text" id="exp-name" class="form-input" placeholder="ITEM" style="flex:2;">
-                <input type="number" id="exp-amt" class="form-input" placeholder="€" style="flex:1;">
-            </div>
-            <button class="add-btn" onclick="addExpense()">RECORD EXPENSE</button>
-        </div>
-
-        <div id="expense-list" style="margin-top:30px;"></div>
-    </div>
-
-    <!-- VIEW 4: 行李清單 (Checklist) -->
-    <div id="view-checklist" class="section-view">
-        <h2 style="font-family:var(--font-header); margin-top:0; color:var(--tc-green); text-align:center; font-weight:900;">PACKING LIST</h2>
-        
-        <div style="background:var(--white); padding:15px; border-radius:var(--radius-card); margin-bottom:20px; border:2px dashed var(--tc-blue);">
-            <div style="display:flex; gap:10px;">
-                <select id="new-check-cat" class="form-input" style="flex:1; border-color: #EEE;">
-                    <option value="CLOTHING">CLOTHING</option>
-                    <option value="BEAUTY & CARE">BEAUTY & CARE</option>
-                    <option value="ACCESSORIES">ACCESSORIES</option>
-                    <option value="ELECTRONICS">ELECTRONICS</option>
-                    <option value="ESSENTIALS">ESSENTIALS</option>
-                </select>
-                <input type="text" id="new-check-item" class="form-input" placeholder="New Item..." style="flex:2; border-color: #EEE;">
-            </div>
-            <button class="add-btn" style="margin-top:10px; padding:10px;" onclick="addChecklistItem()">+ ADD ITEM</button>
-        </div>
-
-        <div id="checklist-container">
-            <!-- Categories will be rendered here -->
-        </div>
-    </div>
-
-</div>
-
-<nav class="bottom-nav">
-    <div class="nav-item active" onclick="switchView('home', this)"><i class="fas fa-home"></i><span>HOME</span></div>
-    <div class="nav-item" onclick="switchView('itinerary', this)"><i class="fas fa-map"></i><span>PLAN</span></div>
-    <div class="nav-item" onclick="switchView('bookings', this)"><i class="fas fa-ticket-alt"></i><span>BOOK</span></div>
-    <div class="nav-item" onclick="switchView('money', this)"><i class="fas fa-coins"></i><span>COST</span></div>
-    <div class="nav-item" onclick="switchView('checklist', this)"><i class="fas fa-clipboard-check"></i><span>CHECK</span></div>
-</nav>
-
-<script>
-    /* ================= 初始資料 ================= */
-    const segments = [
-        { id: 'tpe', name: 'Taipei', dates: [0] }, 
-        { id: 'lr', name: 'La Rochelle', dates: [1, 2, 3] },
-        { id: 'bod', name: 'Bordeaux', dates: [4] },
-        { id: 'ksl', name: 'Kœstlach', dates: [5, 6, 7, 8] },
-        { id: 'par', name: 'Paris', dates: [9, 10, 11, 12, 13] }
-    ];
-
-    const defaultItinerary = [
-        { date: "5/21", day: "Wed", city: "Taipei", items: [
-            { time: "23:30", type: "transport", title: "Taipei to Paris", desc: "EVA AIR BR87", details: "提前3小時到機場。", link: "https://www.evaair.com/zh-tw/index.html", linkText: "EVA AIR", location: "Taoyuan International Airport", duration: "13h 15m", cost: "Booked" }
-        ]},
-        { date: "5/22", day: "Thu", city: "La Rochelle", items: [
-            { time: "07:45", type: "transport", title: "Arrival in Paris", desc: "Airport Transfer", location: "Charles de Gaulle Airport", duration: "2h", cost: "€15" },
-            { time: "PM", type: "transport", title: "To La Rochelle", desc: "SNCF Train", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location: "Gare de La Rochelle", duration: "3h", cost: "Booked" }
-        ]},
-        { date: "5/23", day: "Fri", city: "La Rochelle", items: [{time:"Day", type:"spot", title:"La Rochelle Port", desc:"Vieux Port, Aquarium", location:"Vieux Port La Rochelle", duration:"4h", cost:"€20"}] },
-        { date: "5/24", day: "Sat", city: "La Rochelle", items: [{time:"Day", type:"spot", title:"Local Market", desc:"Enjoy French Life", location:"Marché de La Rochelle", duration:"2h", cost:"€30"}] },
-        { date: "5/25", day: "Sun", city: "Bordeaux", items: [
-            { time: "AM", type: "transport", title: "To Bordeaux", desc: "SNCF Train", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location:"Gare de Bordeaux-Saint-Jean", duration:"2.5h", cost:"Booked" },
-            { time: "PM", type: "spot", title: "Dune du Pilat", desc: "Sand Dune", location:"Dune du Pilat", duration:"3h", cost:"€0" },
-            { time: "Eve", type: "spot", title: "City Dinner", desc: "Grand Théâtre", location:"Grand Théâtre de Bordeaux", duration:"2h", cost:"€40" }
-        ]},
-        { date: "5/26", day: "Mon", city: "Basel", items: [
-            { time: "AM", type: "spot", title: "Bordeaux Morning", desc: "Breakfast", location:"Bordeaux", duration:"1h", cost:"€15" },
-            { time: "PM", type: "transport", title: "Fly to Basel", desc: "EasyJet (BOD->BSL)", link: "https://www.easyjet.com/en", linkText: "EasyJet", location: "EuroAirport Basel-Mulhouse-Freiburg", duration:"1.5h", cost:"Booked" },
-            { time: "Eve", type: "spot", title: "Arrive Kœstlach", desc: "Chang-Yu's Home", location:"10 Rue du Chalet, 68480 Kœstlach", duration:"-", cost:"-" }
-        ]},
-        { date: "5/27", day: "Tue", city: "Koestlach", items: [{time:"Day", type:"spot", title:"Countryside", desc:"Three Borders", location:"10 Rue du Chalet, 68480 Kœstlach", duration:"Day", cost:"€20"}] },
-        { date: "5/28", day: "Wed", city: "Basel", items: [{time:"Day", type:"spot", title:"Basel City", desc:"Museum, Rhine River", location:"Kunstmuseum Basel", duration:"Day", cost:"€30"}] },
-        { date: "5/29", day: "Thu", city: "Colmar", items: [{time:"Day", type:"spot", title:"Colmar & Alsace", desc:"Fairytale Town", location:"Colmar", duration:"Day", cost:"€40"}] },
-        { date: "5/30", day: "Fri", city: "Paris", items: [
-            { time: "AM", type: "transport", title: "To Paris", desc: "TGV Lyria", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location: "Gare de Lyon", duration:"3h", cost:"Booked" },
-            { time: "PM", type: "spot", title: "Eiffel Tower", desc: "Seine River", location:"Eiffel Tower", duration:"2h", cost:"€25" }
-        ]},
-        { date: "5/31", day: "Sat", city: "Paris", items: [{time:"Day", type:"spot", title:"Louvre Museum", desc:"Art & History", location:"Louvre Museum", duration:"4h", cost:"€17"}] },
-        { date: "6/1", day: "Sun", city: "Paris", items: [{time:"Day", type:"spot", title:"Le Marais", desc:"Shopping", location:"Le Marais", duration:"4h", cost:"€50"}] },
-        { date: "6/2", day: "Mon", city: "Paris", items: [{time:"Day", type:"spot", title:"Montmartre", desc:"Sacré-Cœur", location:"Sacré-Cœur", duration:"3h", cost:"€0"}] },
-        { date: "6/3", day: "Tue", city: "Taipei", items: [
-            { time: "PM", type: "spot", title: "Last Shopping", desc: "Tax Refund", location:"Paris", duration:"2h", cost:"-" },
-            { time: "23:30", type: "transport", title: "Back to Taipei", desc: "EVA AIR BR88", location: "Charles de Gaulle Airport", duration:"13h", cost:"Booked" }
-        ]}
-    ];
-
-    const defaultBookings = [
-        { type: 'transport', name: 'Flight Taipei-Paris', note: 'EVA AIR (Round Trip)', price: 42000, checked: false, link:'https://www.evaair.com/zh-tw/index.html' },
-        { type: 'transport', name: 'Train to La Rochelle', note: 'SNCF (TGV)', price: 2500, checked: false, link:'https://www.sncf-connect.com/en-en/' },
-        { type: 'transport', name: 'Train to Bordeaux', note: 'SNCF (Intercités)', price: 1200, checked: false, link:'https://www.sncf-connect.com/en-en/' },
-        { type: 'hotel',     name: 'Bordeaux Hotel', note: 'Booking.com (1 Night)', price: 4500, checked: false, link:'https://www.booking.com' },
-        { type: 'transport', name: 'Flight to Basel', note: 'EasyJet (+Luggage)', price: 2800, checked: false, link:'https://www.easyjet.com/en' },
-        { type: 'transport', name: 'Train to Paris', note: 'SNCF (TGV Lyria)', price: 3800, checked: false, link:'https://www.sncf-connect.com/en-en/' },
-        { type: 'hotel',     name: 'Paris Hotel', note: 'Booking.com (4 Nights)', price: 28000, checked: false, link:'https://www.booking.com' }
-    ];
-
-    const defaultChecklist = [
-        { cat: "CLOTHING", items: [
-            { name: "睡衣", checked: false }, { name: "內衣褲", checked: false }, { name: "襪子", checked: false }, { name: "幾套穿搭", checked: false }
-        ]},
-        { cat: "BEAUTY & CARE", items: [
-            { name: "化妝包", checked: false }, { name: "眼罩", checked: false }, { name: "髮基因", checked: false }, { name: "隱形眼鏡", checked: false },
-            { name: "眼鏡", checked: false }, { name: "身體乳超大罐", checked: false }, { name: "面膜", checked: false }, { name: "香水", checked: false },
-            { name: "按摩刮痧", checked: false }, { name: "護手霜", checked: false }, { name: "電棒燙", checked: false }, { name: "橡皮筋", checked: false },
-            { name: "保養品包", checked: false }, { name: "防曬", checked: false }, { name: "衛生棉", checked: false }
-        ]},
-        { cat: "ACCESSORIES", items: [
-            { name: "配件", checked: false }, { name: "墨鏡", checked: false }, { name: "戒指/項鍊", checked: false }, { name: "側背包", checked: false }, { name: "Baggu", checked: false }
-        ]},
-        { cat: "ELECTRONICS", items: [
-            { name: "手機充電器", checked: false }, { name: "行充", checked: false }, { name: "變壓器", checked: false }, { name: "耳機充電", checked: false }
-        ]},
-        { cat: "ESSENTIALS", items: [
-            { name: "護照", checked: false }, { name: "藥(維他命、益生菌)", checked: false }, { name: "護墊/衛生棉/安全褲/棉條", checked: false }, 
-            { name: "口罩", checked: false }, { name: "esim", checked: false }, { name: "叫車", checked: false }, { name: "帶牙套", checked: false }, 
-            { name: "牙刷組、牙膏", checked: false }
-        ]}
-    ];
-
-    let currentItinerary = [];
-    let currentDayIndex = 0;
-
-    /* ================= 系統邏輯 ================= */
-    
-    function init() {
-        // Init Itinerary (v9 to force checklist update)
-        const storedItin = localStorage.getItem('mark_trip_itinerary_v9');
-        if (storedItin) {
-            currentItinerary = JSON.parse(storedItin);
-        } else {
-            currentItinerary = defaultItinerary;
-            localStorage.setItem('mark_trip_itinerary_v9', JSON.stringify(currentItinerary));
-        }
-        
-        document.getElementById('exp-date').valueAsDate = new Date();
-
-        renderSegmentBar();
-        selectSegment(0); 
-        renderBookings();
-        renderExpenses();
-        renderChecklist();
-        switchView('home', document.querySelector('.nav-item.active')); // Default to Home
-        
-        // Start Countdown
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-    }
-
-    // Countdown Logic
-    function updateCountdown() {
-        // Target Date: May 21, 2026
-        const targetDate = new Date("2026-05-21T00:00:00").getTime();
-        const now = new Date().getTime();
-        const distance = targetDate - now;
-
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const el = document.getElementById("cd-days");
-        if(el) el.innerText = days > 0 ? days : 0;
-    }
-
-    /* --- 行程表渲染 --- */
-    function renderSegmentBar() {
-        const bar = document.getElementById('segment-bar');
-        bar.innerHTML = '';
-        segments.forEach((seg, idx) => {
-            const chip = document.createElement('div');
-            chip.className = `seg-chip ${idx === 0 ? 'active' : ''}`;
-            chip.innerText = seg.name;
-            chip.onclick = () => selectSegment(idx);
-            bar.appendChild(chip);
-        });
-    }
-    function selectSegment(segIdx) {
-        document.querySelectorAll('.seg-chip').forEach((el, i) => el.classList.toggle('active', i === segIdx));
-        renderDateBar(segIdx);
-        switchDay(segments[segIdx].dates[0]);
-    }
-    function renderDateBar(segIdx) {
-        const bar = document.getElementById('date-bar');
-        bar.innerHTML = '';
-        const dayIndices = segments[segIdx].dates;
-        dayIndices.forEach((dayIdx) => {
-            const d = currentItinerary[dayIdx];
-            const pill = document.createElement('div');
-            pill.className = `date-pill ${dayIdx === currentDayIndex ? 'active' : ''}`;
-            pill.id = `date-pill-${dayIdx}`;
-            pill.onclick = () => switchDay(dayIdx);
-            pill.innerHTML = `<div class="dp-day">${d.day}</div><div class="dp-date">${d.date}</div>`;
-            bar.appendChild(pill);
-        });
-    }
-    function switchDay(idx) {
-        currentDayIndex = idx;
-        document.querySelectorAll('.date-pill').forEach(el => el.classList.remove('active'));
-        const activePill = document.getElementById(`date-pill-${idx}`);
-        if(activePill) {
-            activePill.classList.add('active');
-            activePill.scrollIntoView({ behavior: 'smooth', inline: 'center' });
-        }
-        renderDay(idx);
-    }
-    function renderDay(idx) {
-        const data = currentItinerary[idx];
-        const container = document.getElementById('day-content');
-        const weatherUrl = `https://www.google.com/search?q=weather+${data.city}`;
-        let segName = "";
-        segments.forEach(s => { if(s.dates.includes(idx)) segName = s.name; });
-        let html = `
-            <div class="day-hero">
-                <div class="day-info"><h2>${data.city}</h2><p> ${segName}</p></div>
-                <a href="${weatherUrl}" target="_blank" class="weather-btn"><i class="fas fa-sun"></i> Weather</a>
-            </div>`;
-        data.items.forEach((item, itemIdx) => {
-            const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.location || item.title)}`;
-            let btnHtml = `<a href="${mapUrl}" target="_blank" class="btn btn-map"><i class="fas fa-map-marker-alt"></i> MAP</a>`;
-            if (item.link) btnHtml += `<a href="${item.link}" target="_blank" class="btn btn-ticket"><i class="fas fa-ticket-alt"></i> ${item.linkText}</a>`;
-            
-            // Meta Row Logic
-            let metaHtml = '';
-            if (item.duration || item.cost) {
-                metaHtml = `<div class="card-meta-row">`;
-                if(item.duration) metaHtml += `<div class="meta-item"><i class="fas fa-clock"></i> ${item.duration}</div>`;
-                if(item.cost) metaHtml += `<div class="meta-item"><i class="fas fa-coins"></i> ${item.cost}</div>`;
-                metaHtml += `</div>`;
-            }
-
-            html += `
-                <div class="card type-${item.type}">
-                    <div class="card-tag">${item.type}</div>
-                    <div class="card-controls">
-                        <div class="expand-toggle" onclick="toggleDetails(this)"><i class="fas fa-plus"></i></div>
-                        <div class="icon-btn delete" onclick="deleteItemFromDay(${idx}, ${itemIdx})"><i class="fas fa-trash"></i></div>
-                    </div>
-                    <div class="card-header">
-                        <div>
-                            <div class="time-badge">${item.time}</div>
-                            <div class="card-title">${item.title}</div>
-                            <div class="card-desc">${item.desc}</div>
-                        </div>
-                    </div>
-                    ${(item.type==='transport' && item.details) ? `<div class="transport-info"><i class="fas fa-info-circle"></i> ${item.details}</div>` : ''}
-                    
-                    ${metaHtml}
-
-                    <div class="details-box">
-                        ${(item.details && item.type!=='transport') ? `<p style="color:#5D4037; margin-bottom:10px;">${item.details}</p>` : ''}
-                        <div class="action-buttons">${btnHtml}</div>
-                    </div>
-                </div>`;
-        });
-        container.innerHTML = html;
-    }
-    function toggleDetails(btn) {
-        const box = btn.closest('.card').querySelector('.details-box');
-        const icon = btn.querySelector('.expand-toggle i');
-        if (box.classList.contains('show')) { box.classList.remove('show'); icon.className = 'fas fa-plus'; }
-        else { box.classList.add('show'); icon.className = 'fas fa-minus'; }
-    }
-    function addItemToDay() {
-        const time = document.getElementById('new-time').value || "TBD";
-        const type = document.getElementById('new-type').value;
-        const title = document.getElementById('new-title').value;
-        const desc = document.getElementById('new-desc').value || "";
-        const loc = document.getElementById('new-loc').value || title;
-        const dur = document.getElementById('new-duration').value || "";
-        const cst = document.getElementById('new-cost').value || "";
-
-        if (!title) { alert("Please enter a title"); return; }
-        currentItinerary[currentDayIndex].items.push({time, type, title, desc, location: loc, details: "", duration: dur, cost: cst});
-        localStorage.setItem('mark_trip_itinerary_v9', JSON.stringify(currentItinerary));
-        
-        document.getElementById('new-title').value = ""; 
-        document.getElementById('new-desc').value = ""; 
-        document.getElementById('new-loc').value = "";
-        document.getElementById('new-duration').value = "";
-        document.getElementById('new-cost').value = "";
-        
-        renderDay(currentDayIndex);
-    }
-    function deleteItemFromDay(dayIdx, itemIdx) {
-        if (!confirm("Delete?")) return;
-        currentItinerary[dayIdx].items.splice(itemIdx, 1);
-        localStorage.setItem('mark_trip_itinerary_v9', JSON.stringify(currentItinerary));
-        renderDay(dayIdx);
-    }
-
-    /* --- Bookings Logic (Dual Currency) --- */
-    function getBookings() { return localStorage.getItem('mark_trip_bookings_v9') ? JSON.parse(localStorage.getItem('mark_trip_bookings_v9')) : defaultBookings; }
-    function saveBookings(data) { localStorage.setItem('mark_trip_bookings_v9', JSON.stringify(data)); renderBookings(); }
-    
-    function handleBookingInput(idx, type, val) {
-        const list = getBookings();
-        const rate = parseFloat(document.getElementById('bk-rate').value) || 35;
-        let twdVal;
-
-        if (type === 'eur') {
-            twdVal = Math.round(val * rate);
-        } else {
-            twdVal = parseInt(val) || 0;
-        }
-        
-        list[idx].price = twdVal; // Always store in TWD base
-        saveBookings(list);
-    }
-
-    function renderBookings() {
-        const list = getBookings();
-        const container = document.getElementById('booking-list');
-        container.innerHTML = '';
-        let totalTwd = 0;
-        const rate = parseFloat(document.getElementById('bk-rate').value) || 35;
-
-        list.forEach((item, idx) => {
-            totalTwd += parseInt(item.price || 0); 
-            // Calculate EUR display value from stored TWD
-            let eurVal = (item.price / rate).toFixed(2);
-            // Use stored TWD for TWD input, but if it's 0, show empty or 0
-            let twdDisplay = item.price;
-
-            let btnHtml = item.link ? `<a href="${item.link}" target="_blank" class="mini-btn">LINK <i class="fas fa-external-link-alt"></i></a>` : '';
-            
-            container.innerHTML += `
-                <div class="booking-item type-${item.type} ${item.checked ? 'checked' : ''}">
-                    <div style="display:flex; gap:12px; align-items:flex-start;">
-                        <input type="checkbox" style="width:20px; height:20px; margin-top:3px; accent-color:#1E5638;" ${item.checked ? 'checked' : ''} onchange="toggleBooking(${idx})">
-                        <div style="flex:1;">
-                            <div style="font-family:var(--font-header); font-size:0.7rem; color:#888; text-transform:uppercase;">${item.type} ${btnHtml}</div>
-                            <div style="font-weight:700; color:#1E5638; font-family:var(--font-main);">${item.name}</div>
-                            <div style="font-size:0.85rem; color:#6D7248; margin-top:2px;">${item.note}</div>
-                        </div>
-                    </div>
-                    
-                    <div class="dual-input-row">
-                        <div class="currency-input-group">
-                            <span class="currency-label">EUR €</span>
-                            <input type="number" id="eur-input-${idx}" class="bk-input" value="${eurVal}" oninput="handleBookingInput(${idx}, 'eur', this.value)" placeholder="0">
-                        </div>
-                        <div style="color:#D7CCC8;">↔</div>
-                        <div class="currency-input-group">
-                            <span class="currency-label">NT$</span>
-                            <input type="number" id="twd-input-${idx}" class="bk-input" value="${twdDisplay}" oninput="handleBookingInput(${idx}, 'twd', this.value)" placeholder="0">
-                        </div>
-                    </div>
-                    
-                    <div style="text-align:right; margin-top:5px;">
-                        <i class="fas fa-trash" style="color:#DDD; cursor:pointer;" onclick="delBooking(${idx})"></i>
-                    </div>
-                </div>`;
-        });
-        
-        // Update Total Display
-        let totalEur = (totalTwd / rate).toFixed(2);
-        document.getElementById('total-budget').innerHTML = `NT$ ${totalTwd.toLocaleString()}<br><span style="font-size:1.5rem; opacity:0.8; font-family:var(--font-header); font-style:italic;">€ ${totalEur}</span>`;
-    }
-    
-    function toggleBooking(idx) { let l = getBookings(); l[idx].checked = !l[idx].checked; saveBookings(l); }
-    
-    function addBooking() {
-        const type = document.getElementById('new-bk-type').value;
-        const name = document.getElementById('new-bk-name').value;
-        if(!name) return;
-        let l = getBookings(); l.push({ type, name, note: 'Added', price: 0, checked: false });
-        document.getElementById('new-bk-name').value = ''; saveBookings(l);
-    }
-    function delBooking(idx) { if(confirm('Remove?')) { let l = getBookings(); l.splice(idx, 1); saveBookings(l); } }
+    function delCheckItem(e, c, i) { e.stopPropagation(); if(confirm('Del?')) { let l=getCheck(); l[c].items.splice(i,1); saveCheck(l); } }
 
     /* --- Money --- */
-    function convert(source) {
-        const eurInput = document.getElementById('conv-eur');
-        const twdInput = document.getElementById('conv-twd');
-        const rate = parseFloat(document.getElementById('conv-rate').value) || 35;
-        if (source === 'eur') { twdInput.value = Math.round(eurInput.value * rate); } 
-        else if (source === 'twd') { eurInput.value = (twdInput.value / rate).toFixed(2); } 
-        else if (source === 'rate') { if(eurInput.value) twdInput.value = Math.round(eurInput.value * rate); }
+    function convert(src) {
+        const eur = document.getElementById('conv-eur'), twd = document.getElementById('conv-twd'), rate = document.getElementById('conv-rate').value;
+        if(src==='eur') twd.value = Math.round(eur.value*rate);
+        if(src==='twd') eur.value = (twd.value/rate).toFixed(2);
     }
-
     function renderExpenses() {
-        let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v9')) || [];
-        const list = document.getElementById('expense-list');
-        list.innerHTML = '';
+        let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v13'))||[];
+        const list = document.getElementById('expense-list'); list.innerHTML = '';
         let total = 0;
-        
-        exps.sort((a,b) => new Date(b.date || 0) - new Date(a.date || 0));
-        const grouped = exps.reduce((acc, curr) => {
-            const d = curr.date || 'Undated';
-            if(!acc[d]) acc[d] = { total: 0, items: [] };
-            acc[d].items.push(curr);
-            acc[d].total += parseFloat(curr.amount);
-            return acc;
+        exps.sort((a,b)=>new Date(b.date)-new Date(a.date));
+        let grouped = exps.reduce((acc, curr) => {
+            const d = curr.date || 'Undated'; if(!acc[d]) acc[d] = {t:0, i:[]};
+            acc[d].i.push(curr); acc[d].t += parseFloat(curr.amount); return acc;
         }, {});
-
-        Object.keys(grouped).forEach(date => {
-            const group = grouped[date];
-            const div = document.createElement('div');
-            div.className = 'daily-group';
-            div.innerHTML = `<div class="daily-header"><span>${date}</span><span>Daily: €${group.total.toFixed(2)}</span></div>`;
-            
-            group.items.forEach(e => {
-                total += parseFloat(e.amount);
-                const origIdx = exps.indexOf(e);
-                div.innerHTML += `
-                    <div class="expense-item">
-                        <div style="display:flex; flex-direction:column;">
-                            <span style="font-family:var(--font-main); font-weight:700;">${e.name}</span>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <span style="font-weight:700; color:#1E5638;">€${e.amount}</span>
-                            <i class="fas fa-trash" style="color:#DDD; cursor:pointer;" onclick="delExpense(${origIdx})"></i>
-                        </div>
-                    </div>`;
+        Object.keys(grouped).forEach(d => {
+            let g = grouped[d];
+            let html = `<div class="daily-group"><div class="daily-header">${d} • €${g.t.toFixed(2)}</div>`;
+            g.i.forEach(e => {
+                total+=parseFloat(e.amount);
+                const oIdx = exps.indexOf(e);
+                html += `<div class="expense-item"><span>${e.name}</span><span>€${e.amount} <i class="fas fa-trash" onclick="delExp(${oIdx})"></i></span></div>`;
             });
-            list.appendChild(div);
+            list.innerHTML += html + '</div>';
         });
-        document.getElementById('expense-total').innerText = '€' + total.toFixed(2);
+        document.getElementById('expense-total').innerText = '€'+total.toFixed(2);
     }
-    function addExpense() {
-        const date = document.getElementById('exp-date').value;
-        const name = document.getElementById('exp-name').value;
-        const amt = document.getElementById('exp-amt').value;
-        if(!name || !amt) return;
-        let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v9')) || [];
-        const finalDate = date || new Date().toISOString().split('T')[0];
-        exps.push({ date: finalDate, name: name, amount: amt });
-        localStorage.setItem('mark_trip_expenses_v9', JSON.stringify(exps));
-        document.getElementById('exp-name').value = ''; document.getElementById('exp-amt').value = ''; renderExpenses();
+    function addExpense() { 
+        let l = JSON.parse(localStorage.getItem('mark_trip_expenses_v13'))||[]; 
+        l.push({date:document.getElementById('exp-date').value, name:document.getElementById('exp-name').value, amount:document.getElementById('exp-amt').value});
+        localStorage.setItem('mark_trip_expenses_v13', JSON.stringify(l)); renderExpenses();
     }
-    function delExpense(i) { if(confirm('Remove?')) { let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v9')); exps.splice(i, 1); localStorage.setItem('mark_trip_expenses_v9', JSON.stringify(exps)); renderExpenses(); } }
-
-    /* --- Checklist Logic (Categorized) --- */
-    function getChecklist() { return localStorage.getItem('mark_trip_checklist_v9') ? JSON.parse(localStorage.getItem('mark_trip_checklist_v9')) : defaultChecklist; }
-    function saveChecklist(data) { localStorage.setItem('mark_trip_checklist_v9', JSON.stringify(data)); renderChecklist(); }
-
-    function renderChecklist() {
-        const list = getChecklist();
-        const container = document.getElementById('checklist-container');
-        container.innerHTML = '';
-        list.forEach((catGroup, catIdx) => {
-            let itemsHtml = '';
-            catGroup.items.forEach((item, itemIdx) => {
-                itemsHtml += `
-                    <div class="check-item ${item.checked ? 'checked' : ''}" onclick="toggleCheck(${catIdx}, ${itemIdx})">
-                        <div class="check-left">
-                            <div class="custom-checkbox"><i class="fas fa-check" style="display:${item.checked?'block':'none'}"></i></div>
-                            <span>${item.name}</span>
-                        </div>
-                        <i class="fas fa-trash" style="color:#DDD; padding:5px;" onclick="delCheckItem(event, ${catIdx}, ${itemIdx})"></i>
-                    </div>
-                `;
-            });
-            container.innerHTML += `
-                <div class="check-category-card">
-                    <div class="check-category-header">${catGroup.cat}</div>
-                    ${itemsHtml}
-                </div>
-            `;
-        });
-    }
-    function toggleCheck(catIdx, itemIdx) { 
-        let l = getChecklist(); 
-        l[catIdx].items[itemIdx].checked = !l[catIdx].items[itemIdx].checked; 
-        saveChecklist(l); 
-    }
-    function addChecklistItem() {
-        const cat = document.getElementById('new-check-cat').value;
-        const val = document.getElementById('new-check-item').value;
-        if(!val) return;
-        let l = getChecklist(); 
-        let targetCat = l.find(c => c.cat === cat);
-        if(targetCat) {
-            targetCat.items.push({ name: val, checked: false });
-            saveChecklist(l);
-            document.getElementById('new-check-item').value = '';
-        }
-    }
-    function delCheckItem(e, catIdx, itemIdx) { 
-        e.stopPropagation(); 
-        if(confirm('Remove?')) { 
-            let l = getChecklist(); 
-            l[catIdx].items.splice(itemIdx, 1); 
-            saveChecklist(l); 
-        } 
-    }
+    function delExp(i) { let l=JSON.parse(localStorage.getItem('mark_trip_expenses_v13')); l.splice(i,1); localStorage.setItem('mark_trip_expenses_v13', JSON.stringify(l)); renderExpenses(); }
 
     function switchView(id, btn) {
-        document.querySelectorAll('.section-view').forEach(el => el.classList.remove('active'));
-        document.getElementById('view-' + id).classList.add('active');
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.section-view').forEach(e => e.classList.remove('active'));
+        document.getElementById('view-'+id).classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
         btn.classList.add('active');
-        // Hide Header on home page
         document.getElementById('app-header').style.display = (id === 'home') ? 'none' : 'block';
     }
 
