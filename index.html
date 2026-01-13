@@ -74,17 +74,14 @@
 
         .seg-chip {
             font-family: var(--font-header); color: var(--tc-green); background: var(--white);
-            padding: 10px 18px; border-radius: var(--radius-btn); font-size: 0.75rem;
+            padding: 10px 20px; border-radius: var(--radius-btn); font-size: 0.8rem;
             white-space: nowrap; font-weight: 900; cursor: pointer; transition: all 0.2s;
             border: var(--border-width) solid var(--tc-green); box-shadow: 3px 3px 0 var(--tc-blue);
-            display: flex; flex-direction: column; align-items: center; line-height: 1.2;
         }
-        .seg-chip span { font-family: var(--font-main); font-size: 0.7rem; font-weight: 700; opacity: 0.8; }
         .seg-chip.active {
             background: var(--tc-green); color: var(--white); border-color: var(--tc-green);
             box-shadow: 3px 3px 0 var(--tc-brown); transform: translate(-1px, -1px);
         }
-        .seg-chip.active span { color: #E0F2F1; }
 
         /* Date Bar */
         .date-bar {
@@ -251,7 +248,11 @@
         }
         .booking-item.type-transport::after { background: var(--tc-brown); }
         .booking-item.type-hotel::after { background: var(--tc-blue); }
-        .booking-item.checked { opacity: 0.5; background: #F9F9F9; box-shadow: none; border-color: #CCC;}
+        /* Checked state - Strikethrough visual */
+        .booking-item.checked { opacity: 0.6; background: #F9F9F9; box-shadow: none; border-color: #DDD;}
+        .booking-item.checked .bk-name, 
+        .booking-item.checked .bk-note,
+        .booking-item.checked .bk-input { text-decoration: line-through; color: #999; }
 
         .mini-btn {
             background: var(--tc-blue); color: var(--white); padding: 4px 12px; font-size: 0.7rem; text-decoration: none; 
@@ -532,7 +533,7 @@
         { date: "5/24", day: "Sun", city: "La Rochelle", items: [{time:"Day", type:"spot", title:"Local Market", desc:"Enjoy French Life", location:"Marché de La Rochelle", duration:"2h", cost:"€30"}] },
         { date: "5/25", day: "Mon", city: "Bordeaux", items: [
             { time: "AM", type: "transport", title: "To Bordeaux", desc: "SNCF Train", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location:"Gare de Bordeaux-Saint-Jean", duration:"2.5h", cost: "Booked" },
-            { time: "Eve", type: "spot", title: "City Dinner", desc: "Grand Théâtre", location:"Grand Théâtre de Bordeaux", duration:"2h", cost:"€40" }
+            { time: "Eve", type: "spot", title: "Check-in JOST", desc: "JOST Hotel Bordeaux", location:"JOST Hotel Bordeaux", duration:"-", cost:"Booked" }
         ]},
         { date: "5/26", day: "Tue", city: "Bordeaux", items: [
             { time: "Day", type: "spot", title: "Dune du Pilat", desc: "Sand Dune", location:"Dune du Pilat", duration:"3h", cost:"€0" },
@@ -549,21 +550,27 @@
             { time: "PM", type: "spot", title: "Eiffel Tower", desc: "Seine River", location:"Eiffel Tower", duration:"2h", cost:"€25" }
         ]},
         { date: "5/31", day: "Sun", city: "Paris", items: [{time:"Day", type:"spot", title:"Louvre Museum", desc:"Art & History", location:"Louvre Museum", duration:"4h", cost:"€17"}] },
-        { date: "6/1", day: "Mon", city: "Paris", items: [{time:"Day", type:"spot", title:"Le Marais", desc:"Shopping", location:"Le Marais", duration:"4h", cost:"€50"}] },
+        { date: "6/1", day: "Mon", city: "Paris", items: [
+            { time: "Day", type: "spot", title: "Le Marais", desc:"Shopping", location:"Le Marais", duration:"4h", cost:"€50" },
+            { time: "Eve", type: "spot", title: "Check-in Le Walt", desc: "Hôtel Le Walt", location:"Hôtel Le Walt", duration:"-", cost:"Booked" }
+        ]},
         { date: "6/2", day: "Tue", city: "Paris", items: [{time:"Day", type:"spot", title:"Montmartre", desc:"Sacré-Cœur", location:"Sacré-Cœur", duration:"3h", cost:"€0"}] },
         { date: "6/3", day: "Wed", city: "Taipei", items: [
+            { time: "06:45", type: "transport", title: "Airport Transfer", desc: "To CDG Airport", location:"Hôtel Le Walt", duration:"1h", cost:"Booked" },
             { time: "11:20", type: "transport", title: "Back to Taipei", desc: "EVA AIR BR088", details: "戴高樂一航廈 (CDG T1)", location: "Charles de Gaulle Airport", duration:"13h", cost:"Booked" }
         ]}
     ];
 
     const defaultBookings = [
-        { type: 'transport', name: 'Flight Taipei-Paris (Round Trip)', note: 'BR087/BR088', price: 120000, checked: false, link:'https://www.evaair.com/zh-tw/index.html', image: '' },
-        { type: 'transport', name: 'Train to La Rochelle', note: 'SNCF (TGV)', price: 2500, checked: false, link:'https://www.sncf-connect.com/en-en/', image: '' },
-        { type: 'transport', name: 'Train to Bordeaux', note: 'SNCF (Intercités)', price: 1200, checked: false, link:'https://www.sncf-connect.com/en-en/', image: '' },
-        { type: 'hotel',     name: 'Bordeaux Hotel', note: 'Booking.com (1 Night)', price: 4500, checked: false, link:'https://www.booking.com', image: '' },
-        { type: 'transport', name: 'Flight to Basel', note: 'EasyJet', price: 6038, checked: false, link:'https://www.easyjet.com/en', image: '' }, // 172.52 * 35
-        { type: 'transport', name: 'Train to Paris', note: 'SNCF (TGV Lyria)', price: 3800, checked: false, link:'https://www.sncf-connect.com/en-en/', image: '' },
-        { type: 'hotel',     name: 'Paris Hotel', note: 'Booking.com (4 Nights)', price: 28000, checked: false, link:'https://www.booking.com', image: '' }
+        { type: 'transport', name: 'Flight Taipei-Paris (Round Trip)', note: 'BR087 (TPE T2) / BR088 (CDG T1)', price: 120000, checked: true, link:'https://www.evaair.com/zh-tw/index.html', image: '' },
+        { type: 'transport', name: 'Flight Bordeaux-Basel', note: 'EasyJet 5/27 10:40-12:10', price: 6356, checked: true, link:'https://www.easyjet.com/en', image: '' },
+        { type: 'hotel',     name: 'JOST Hotel Bordeaux', note: '5/25-5/27 (Hotels.com)', price: 8773, checked: true, link:'https://www.hotels.com', image: '' },
+        { type: 'hotel',     name: 'Hôtel Le Walt Paris', note: '6/1-6/3 (Booking ID: 462561117)', price: 37812, checked: true, link:'https://www.booking.com', image: '' },
+        { type: 'hotel',     name: 'Paris Accommodation (5/31)', note: 'Not yet booked', price: 0, checked: false, link:'', image: '' },
+        { type: 'transport', name: 'Airport Transfer (Paris)', note: '6/3 06:45 Hotel to CDG', price: 1993, checked: true, link:'', image: '' },
+        { type: 'transport', name: 'Train to La Rochelle', note: 'SNCF (Est.)', price: 2500, checked: false, link:'https://www.sncf-connect.com/en-en/', image: '' },
+        { type: 'transport', name: 'Train to Bordeaux', note: 'SNCF (Est.)', price: 1200, checked: false, link:'https://www.sncf-connect.com/en-en/', image: '' },
+        { type: 'transport', name: 'Train to Paris', note: 'SNCF (Est.)', price: 3800, checked: false, link:'https://www.sncf-connect.com/en-en/', image: '' }
     ];
 
     const defaultChecklist = [
@@ -577,10 +584,14 @@
     let currentItinerary = [], currentDayIndex = 0;
 
     function init() {
-        // Use v13 for this update
-        const storedItin = localStorage.getItem('mark_trip_itinerary_v13');
-        if (storedItin) currentItinerary = JSON.parse(storedItin);
-        else { currentItinerary = defaultItinerary; localStorage.setItem('mark_trip_itinerary_v13', JSON.stringify(currentItinerary)); }
+        // Use v14 for this update
+        const storedItin = localStorage.getItem('mark_trip_itinerary_v14');
+        if (storedItin) {
+            currentItinerary = JSON.parse(storedItin);
+        } else {
+            currentItinerary = defaultItinerary;
+            localStorage.setItem('mark_trip_itinerary_v14', JSON.stringify(currentItinerary));
+        }
         document.getElementById('exp-date').valueAsDate = new Date();
         renderSegmentBar(); selectSegment(0); renderBookings(); renderExpenses(); renderChecklist();
         switchView('home', document.querySelector('.nav-item.active'));
@@ -598,7 +609,7 @@
         const bar = document.getElementById('segment-bar'); bar.innerHTML = '';
         segments.forEach((seg, idx) => {
             const chip = document.createElement('div'); chip.className = `seg-chip ${idx===0?'active':''}`;
-            chip.innerHTML = `${seg.name}`; // name includes date now
+            chip.innerHTML = `${seg.name}`; 
             chip.onclick = () => selectSegment(idx); bar.appendChild(chip);
         });
     }
@@ -637,15 +648,15 @@
             title: t, desc: document.getElementById('new-desc').value, location: document.getElementById('new-loc').value,
             duration: document.getElementById('new-duration').value, cost: document.getElementById('new-cost').value, details:""
         });
-        localStorage.setItem('mark_trip_itinerary_v13', JSON.stringify(currentItinerary));
+        localStorage.setItem('mark_trip_itinerary_v14', JSON.stringify(currentItinerary));
         renderDay(currentDayIndex);
         document.querySelectorAll('.add-item-form input').forEach(i=>i.value='');
     }
-    function delItinItem(d,i) { if(confirm('Delete?')) { currentItinerary[d].items.splice(i,1); localStorage.setItem('mark_trip_itinerary_v13', JSON.stringify(currentItinerary)); renderDay(d); } }
+    function delItinItem(d,i) { if(confirm('Delete?')) { currentItinerary[d].items.splice(i,1); localStorage.setItem('mark_trip_itinerary_v14', JSON.stringify(currentItinerary)); renderDay(d); } }
 
     /* --- Bookings Logic --- */
-    function getBookings() { return localStorage.getItem('mark_trip_bookings_v13') ? JSON.parse(localStorage.getItem('mark_trip_bookings_v13')) : defaultBookings; }
-    function saveBookings(d) { localStorage.setItem('mark_trip_bookings_v13', JSON.stringify(d)); } 
+    function getBookings() { return localStorage.getItem('mark_trip_bookings_v14') ? JSON.parse(localStorage.getItem('mark_trip_bookings_v14')) : defaultBookings; }
+    function saveBookings(d) { localStorage.setItem('mark_trip_bookings_v14', JSON.stringify(d)); } 
     
     function renderBookings() {
         const list = getBookings();
@@ -662,8 +673,8 @@
                     <input type="checkbox" style="width:20px;height:20px;accent-color:#1E5638;" ${item.checked?'checked':''} onchange="toggleBk(${idx})">
                     <div style="flex:1;">
                         <div style="font-family:var(--font-header);font-size:0.7rem;color:#888;">${item.type}</div>
-                        <div style="font-weight:700;color:#1E5638;">${item.name}</div>
-                        <div style="font-size:0.85rem;color:#6D7248;">${item.note}</div>
+                        <div style="font-weight:700;color:#1E5638;" class="bk-name">${item.name}</div>
+                        <div style="font-size:0.85rem;color:#6D7248;" class="bk-note">${item.note}</div>
                     </div>
                 </div>
                 <div class="dual-input-row">
@@ -698,7 +709,6 @@
     function addBooking() { let l=getBookings(); l.push({type:document.getElementById('new-bk-type').value, name:document.getElementById('new-bk-name').value, price:0, checked:false, image:''}); saveBookings(l); renderBookings(); }
     function delBk(i) { if(confirm('Del?')) { let l=getBookings(); l.splice(i,1); saveBookings(l); renderBookings(); } }
     
-    // Image Upload Logic
     function uploadBkImage(idx, input) {
         const file = input.files[0];
         if(!file) return;
@@ -721,8 +731,8 @@
     }
 
     /* --- Checklist Logic --- */
-    function getCheck() { return localStorage.getItem('mark_trip_checklist_v13') ? JSON.parse(localStorage.getItem('mark_trip_checklist_v13')) : defaultChecklist; }
-    function saveCheck(d) { localStorage.setItem('mark_trip_checklist_v13', JSON.stringify(d)); renderChecklist(); }
+    function getCheck() { return localStorage.getItem('mark_trip_checklist_v14') ? JSON.parse(localStorage.getItem('mark_trip_checklist_v14')) : defaultChecklist; }
+    function saveCheck(d) { localStorage.setItem('mark_trip_checklist_v14', JSON.stringify(d)); renderChecklist(); }
     function renderChecklist() {
         const list = getCheck(); const con = document.getElementById('checklist-container'); con.innerHTML = '';
         list.forEach((cat, cIdx) => {
@@ -747,7 +757,7 @@
         if(src==='twd') eur.value = (twd.value/rate).toFixed(2);
     }
     function renderExpenses() {
-        let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v13'))||[];
+        let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v14'))||[];
         const list = document.getElementById('expense-list'); list.innerHTML = '';
         let total = 0;
         exps.sort((a,b)=>new Date(b.date)-new Date(a.date));
@@ -768,11 +778,11 @@
         document.getElementById('expense-total').innerText = '€'+total.toFixed(2);
     }
     function addExpense() { 
-        let l = JSON.parse(localStorage.getItem('mark_trip_expenses_v13'))||[]; 
+        let l = JSON.parse(localStorage.getItem('mark_trip_expenses_v14'))||[]; 
         l.push({date:document.getElementById('exp-date').value, name:document.getElementById('exp-name').value, amount:document.getElementById('exp-amt').value});
-        localStorage.setItem('mark_trip_expenses_v13', JSON.stringify(l)); renderExpenses();
+        localStorage.setItem('mark_trip_expenses_v14', JSON.stringify(l)); renderExpenses();
     }
-    function delExp(i) { let l=JSON.parse(localStorage.getItem('mark_trip_expenses_v13')); l.splice(i,1); localStorage.setItem('mark_trip_expenses_v13', JSON.stringify(l)); renderExpenses(); }
+    function delExp(i) { let l=JSON.parse(localStorage.getItem('mark_trip_expenses_v14')); l.splice(i,1); localStorage.setItem('mark_trip_expenses_v14', JSON.stringify(l)); renderExpenses(); }
 
     function switchView(id, btn) {
         document.querySelectorAll('.section-view').forEach(e => e.classList.remove('active'));
