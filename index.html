@@ -77,11 +77,14 @@
             padding: 10px 20px; border-radius: var(--radius-btn); font-size: 0.8rem;
             white-space: nowrap; font-weight: 900; cursor: pointer; transition: all 0.2s;
             border: var(--border-width) solid var(--tc-green); box-shadow: 3px 3px 0 var(--tc-blue);
+            display: flex; flex-direction: column; align-items: center; line-height: 1.2;
         }
+        .seg-chip span { font-family: var(--font-main); font-size: 0.7rem; font-weight: 700; opacity: 0.8; }
         .seg-chip.active {
             background: var(--tc-green); color: var(--white); border-color: var(--tc-green);
             box-shadow: 3px 3px 0 var(--tc-brown); transform: translate(-1px, -1px);
         }
+        .seg-chip.active span { color: #E0F2F1; }
 
         /* Date Bar */
         .date-bar {
@@ -142,12 +145,18 @@
         /* Day Hero */
         .day-hero { 
             background: var(--white); padding: 25px; border-radius: var(--radius-card);
-            display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px; 
+            display: flex; flex-direction: column; justify-content: center; align-items: flex-start; margin-bottom: 25px; 
             border: var(--border-width) solid var(--tc-green); box-shadow: 6px 6px 0 var(--tc-green);
         }
+        .day-hero-top { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .day-info h2 { margin: 0; font-family: var(--font-header); font-size: 1.6rem; color: var(--tc-green); line-height: 1.1; font-weight: 900;}
-        .day-info p { margin: 6px 0 0 0; color: var(--tc-brown); font-size: 0.9rem; font-weight: 700; font-family: var(--font-header); letter-spacing: 1px;}
+        .day-info p { margin: 0; color: var(--tc-blue); font-size: 0.9rem; font-weight: 700; font-family: var(--font-header); letter-spacing: 1px;}
         
+        .day-theme {
+            background: #FFF3E0; color: var(--tc-brown); padding: 8px 12px; border-radius: 12px;
+            font-size: 0.9rem; font-weight: 700; width: 100%; border: 2px solid #FFE0B2;
+        }
+
         .weather-btn {
             background: var(--tc-blue); color: var(--white); padding: 10px 16px; border: none; text-decoration: none; border-radius: var(--radius-btn);
             font-family: var(--font-header); font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; gap: 6px; 
@@ -248,7 +257,6 @@
         }
         .booking-item.type-transport::after { background: var(--tc-brown); }
         .booking-item.type-hotel::after { background: var(--tc-blue); }
-        /* Checked state - Strikethrough visual */
         .booking-item.checked { opacity: 0.6; background: #F9F9F9; box-shadow: none; border-color: #DDD;}
         .booking-item.checked .bk-name, 
         .booking-item.checked .bk-note,
@@ -517,46 +525,65 @@
         { id: 'tpe', name: 'Taipei (5/21)', dates: [0] }, 
         { id: 'lr', name: 'La Rochelle (5/22-25)', dates: [1, 2, 3] },
         { id: 'bod', name: 'Bordeaux (5/25-27)', dates: [4, 5] },
-        { id: 'ksl', name: 'Kœstlach (5/27-30)', dates: [6, 7, 8] },
-        { id: 'par', name: 'Paris (5/30-6/3)', dates: [9, 10, 11, 12, 13] }
+        { id: 'ksl', name: 'Kœstlach (5/27-30)', dates: [6, 7, 8, 9] },
+        { id: 'par', name: 'Paris (5/31-6/3)', dates: [10, 11, 12, 13] }
     ];
 
     const defaultItinerary = [
-        { date: "5/21", day: "Thu", city: "Taipei", items: [
+        { date: "5/21", day: "Thu", city: "Taipei", theme: "Depart for Adventure", items: [
             { time: "23:30", type: "transport", title: "Taipei to Paris", desc: "EVA AIR BR087", details: "桃園機場二航廈 (T2) -> 戴高樂一航廈 (T1)", link: "https://www.evaair.com/zh-tw/index.html", linkText: "EVA AIR", location: "Taoyuan International Airport", duration: "13h 15m", cost: "Booked" }
         ]},
-        { date: "5/22", day: "Fri", city: "La Rochelle", items: [
+        { date: "5/22", day: "Fri", city: "La Rochelle", theme: "Arrival & Transfer", items: [
             { time: "07:45", type: "transport", title: "Arrival in Paris", desc: "Airport Transfer", location: "Charles de Gaulle Airport", duration: "2h", cost: "€15" },
             { time: "PM", type: "transport", title: "To La Rochelle", desc: "SNCF Train", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location: "Gare de La Rochelle", duration: "3h", cost: "Booked" }
         ]},
-        { date: "5/23", day: "Sat", city: "La Rochelle", items: [{time:"Day", type:"spot", title:"La Rochelle Port", desc:"Vieux Port, Aquarium", location:"Vieux Port La Rochelle", duration:"4h", cost:"€20"}] },
-        { date: "5/24", day: "Sun", city: "La Rochelle", items: [{time:"Day", type:"spot", title:"Local Market", desc:"Enjoy French Life", location:"Marché de La Rochelle", duration:"2h", cost:"€30"}] },
-        { date: "5/25", day: "Mon", city: "Bordeaux", items: [
+        { date: "5/23", day: "Sat", city: "La Rochelle", theme: "Port City Vibes", items: [{time:"Day", type:"spot", title:"La Rochelle Port", desc:"Vieux Port, Aquarium", location:"Vieux Port La Rochelle", duration:"4h", cost:"€20"}] },
+        { date: "5/24", day: "Sun", city: "La Rochelle", theme: "French Market Life", items: [{time:"Day", type:"spot", title:"Local Market", desc:"Enjoy French Life", location:"Marché de La Rochelle", duration:"2h", cost:"€30"}] },
+        { date: "5/25", day: "Mon", city: "Bordeaux", theme: "City & Dune", items: [
             { time: "AM", type: "transport", title: "To Bordeaux", desc: "SNCF Train", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location:"Gare de Bordeaux-Saint-Jean", duration:"2.5h", cost: "Booked" },
-            { time: "Eve", type: "spot", title: "Check-in JOST", desc: "JOST Hotel Bordeaux", location:"JOST Hotel Bordeaux", duration:"-", cost:"Booked" }
+            { time: "PM", type: "spot", title: "Dune du Pilat", desc: "Sand Dune", location:"Dune du Pilat", duration:"3h", cost:"€0" },
+            { time: "Eve", type: "spot", title: "City Dinner", desc: "Grand Théâtre", location:"Grand Théâtre de Bordeaux", duration:"2h", cost:"€40" }
         ]},
-        { date: "5/26", day: "Tue", city: "Bordeaux", items: [
-            { time: "Day", type: "spot", title: "Dune du Pilat", desc: "Sand Dune", location:"Dune du Pilat", duration:"3h", cost:"€0" },
-            { time: "Eve", type: "spot", title: "Relax", desc: "Bordeaux City", location:"Bordeaux", duration:"-", cost:"-" }
+        { date: "5/26", day: "Tue", city: "Bordeaux", theme: "Relax & Explore", items: [
+            { time: "AM", type: "spot", title: "Bordeaux Morning", desc: "Breakfast", location:"Bordeaux", duration:"1h", cost:"€15" },
+             { time: "Eve", type: "spot", title: "Relax", desc: "Bordeaux City", location:"Bordeaux", duration:"-", cost:"-" }
         ]},
-        { date: "5/27", day: "Wed", city: "Koestlach", items: [
-            { time: "10:40", type: "transport", title: "Fly to Basel", desc: "EasyJet (BOD->BSL)", details: "Arrive 12:10", link: "https://www.easyjet.com/en", linkText: "EasyJet", location: "EuroAirport Basel-Mulhouse-Freiburg", duration:"1.5h", cost:"Booked" },
-            { time: "PM", type: "spot", title: "Arrive Kœstlach", desc: "Chang-Yu's Home", location:"10 Rue du Chalet, 68480 Kœstlach", duration:"-", cost:"-" }
+        { date: "5/27", day: "Wed", city: "Koestlach", theme: "Design & Slide", items: [
+            { time: "10:40", type: "transport", title: "Fly to Basel", desc: "EasyJet (BOD->BSL)", details: "Arrive 12:10. Pick up rental car.", link: "https://www.easyjet.com/en", linkText: "EasyJet", location: "EuroAirport Basel-Mulhouse-Freiburg", duration:"1.5h", cost:"Booked" },
+            { time: "14:00", type: "transport", title: "Drive to Vitra", desc: "🚗 Drive", location: "Vitra Design Museum", duration: "15m", cost: "-" },
+            { time: "14:30", type: "spot", title: "Vitra Campus", desc: "Architecture & Slide Tower", location: "Vitra Slide Tower", duration: "2.5h", cost: "€20" },
+            { time: "17:30", type: "food", title: "Dinner", desc: "VitraHaus Café or Basel", location: "VitraHaus", duration: "2h", cost: "€30" }
         ]},
-        { date: "5/28", day: "Thu", city: "Basel", items: [{time:"Day", type:"spot", title:"Basel City", desc:"Museum, Rhine River", location:"Kunstmuseum Basel", duration:"Day", cost:"€30"}] },
-        { date: "5/29", day: "Fri", city: "Colmar", items: [{time:"Day", type:"spot", title:"Colmar & Alsace", desc:"Fairytale Town", location:"Colmar", duration:"Day", cost:"€40"}] },
-        { date: "5/30", day: "Sat", city: "Paris", items: [
-            { time: "AM", type: "transport", title: "To Paris", desc: "TGV Lyria", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location: "Gare de Lyon", duration:"3h", cost:"Booked" },
-            { time: "PM", type: "spot", title: "Eiffel Tower", desc: "Seine River", location:"Eiffel Tower", duration:"2h", cost:"€25" }
+        { date: "5/28", day: "Thu", city: "Colmar", theme: "Fairytale Towns", items: [
+            { time: "09:30", type: "transport", title: "Drive to Colmar", desc: "🚗 Drive", location: "Colmar", duration: "50m", cost: "-" },
+            { time: "10:30", type: "spot", title: "Colmar Old Town", desc: "Little Venice Boat Ride", location: "Little Venice Colmar", duration: "3h", cost: "€8" },
+            { time: "13:30", type: "transport", title: "Drive to Riquewihr", desc: "🚗 Drive", location: "Riquewihr", duration: "20m", cost: "-" },
+            { time: "14:00", type: "spot", title: "Riquewihr", desc: "Vineyards & Walled Town", location: "Riquewihr", duration: "2h", cost: "Free" }
         ]},
-        { date: "5/31", day: "Sun", city: "Paris", items: [{time:"Day", type:"spot", title:"Louvre Museum", desc:"Art & History", location:"Louvre Museum", duration:"4h", cost:"€17"}] },
-        { date: "6/1", day: "Mon", city: "Paris", items: [
-            { time: "Day", type: "spot", title: "Le Marais", desc:"Shopping", location:"Le Marais", duration:"4h", cost:"€50" },
-            { time: "Eve", type: "spot", title: "Check-in Le Walt", desc: "Hôtel Le Walt", location:"Hôtel Le Walt", duration:"-", cost:"Booked" }
+        { date: "5/29", day: "Fri", city: "Pilatus", theme: "Steepest Railway", items: [
+            { time: "09:00", type: "transport", title: "Drive to Pilatus", desc: "🚗 Drive (Scenic)", location: "Alpnachstad", duration: "1h 10m", cost: "-" },
+            { time: "10:30", type: "spot", title: "Mt. Pilatus", desc: "Cogwheel Railway", location: "Pilatus Kulm", duration: "3h", cost: "€80" },
+            { time: "14:00", type: "spot", title: "Luzern City", desc: "Chapel Bridge", location: "Kapellbrücke", duration: "2.5h", cost: "Free" }
         ]},
-        { date: "6/2", day: "Tue", city: "Paris", items: [{time:"Day", type:"spot", title:"Montmartre", desc:"Sacré-Cœur", location:"Sacré-Cœur", duration:"3h", cost:"€0"}] },
-        { date: "6/3", day: "Wed", city: "Taipei", items: [
-            { time: "06:45", type: "transport", title: "Airport Transfer", desc: "To CDG Airport", location:"Hôtel Le Walt", duration:"1h", cost:"Booked" },
+        { date: "5/30", day: "Sat", city: "Black Forest", theme: "Coaster & Gothic", items: [
+            { time: "09:00", type: "transport", title: "Drive to Todtnau", desc: "🚗 Drive", location: "Hasenhorn Rodelbahn", duration: "50m", cost: "-" },
+            { time: "10:00", type: "spot", title: "Hasenhorn Coaster", desc: "Alpine Coaster", location: "Hasenhorn Rodelbahn", duration: "2h", cost: "€10" },
+            { time: "13:00", type: "spot", title: "Freiburg", desc: "Cathedral & Market", location: "Freiburger Münster", duration: "2.5h", cost: "€10" }
+        ]},
+        { date: "5/31", day: "Sun", city: "Paris", theme: "Back to City", items: [
+            { time: "08:34", type: "transport", title: "To Paris (Est.)", desc: "Basel SBB -> Gare de Lyon", details: "TGV Lyria (Not yet released)", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location: "Basel SBB", duration: "3h 04m", cost: "Est. €110" },
+            { time: "14:00", type: "spot", title: "Check-in / City", desc: "Hôtel Le Walt", location: "Hôtel Le Walt", duration: "-", cost: "Booked" }
+        ]},
+        { date: "6/1", day: "Mon", city: "Paris", theme: "Art & History", items: [
+            { time: "09:00", type: "spot", title: "Louvre Museum", desc: "Must Book! Closed Tue.", location: "Louvre Museum", duration: "4h", cost: "€22", details:"<b>EMERGENCY ADVICE:</b> Book 9:00 AM slot NOW if open." },
+            { time: "PM", type: "spot", title: "Le Marais", desc: "Shopping", location:"Le Marais", duration:"4h", cost:"€50" }
+        ]},
+        { date: "6/2", day: "Tue", city: "Paris", theme: "Romantic Vibes", items: [
+            { time: "09:30", type: "spot", title: "Musée d'Orsay", desc: "Closed Mon.", location:"Musée d'Orsay", duration:"3h", cost:"€16" },
+            { time: "PM", type: "spot", title: "Montmartre", desc: "Sacré-Cœur", location:"Sacré-Cœur", duration:"3h", cost:"€0" }
+        ]},
+        { date: "6/3", day: "Wed", city: "Taipei", theme: "Home Sweet Home", items: [
+            { time: "06:45", type: "transport", title: "Airport Transfer", desc: "Hotel to CDG", details: "Private Transfer Booked", location:"Hôtel Le Walt", duration:"1h", cost:"Booked" },
             { time: "11:20", type: "transport", title: "Back to Taipei", desc: "EVA AIR BR088", details: "戴高樂一航廈 (CDG T1)", location: "Charles de Gaulle Airport", duration:"13h", cost:"Booked" }
         ]}
     ];
@@ -566,11 +593,12 @@
         { type: 'transport', name: 'Flight Bordeaux-Basel', note: 'EasyJet 5/27 10:40-12:10', price: 6356, checked: true, link:'https://www.easyjet.com/en', image: '' },
         { type: 'hotel',     name: 'JOST Hotel Bordeaux', note: '5/25-5/27 (Hotels.com)', price: 8773, checked: true, link:'https://www.hotels.com', image: '' },
         { type: 'hotel',     name: 'Hôtel Le Walt Paris', note: '6/1-6/3 (Booking ID: 462561117)', price: 37812, checked: true, link:'https://www.booking.com', image: '' },
-        { type: 'hotel',     name: 'Paris Accommodation (5/31)', note: 'Not yet booked', price: 0, checked: false, link:'', image: '' },
         { type: 'transport', name: 'Airport Transfer (Paris)', note: '6/3 06:45 Hotel to CDG', price: 1993, checked: true, link:'', image: '' },
+        { type: 'transport', name: 'Train Basel -> Paris (5/31)', note: 'TGV Lyria (Not yet released)', price: 3850, checked: false, link:'https://www.sncf-connect.com/en-en/', image: '' },
+        { type: 'transport', name: 'Louvre Museum Ticket', note: 'Book for 6/1 09:00', price: 770, checked: false, link:'https://www.ticketlouvre.fr/', image: '' },
         { type: 'transport', name: 'Train to La Rochelle', note: 'SNCF (Est.)', price: 2500, checked: false, link:'https://www.sncf-connect.com/en-en/', image: '' },
         { type: 'transport', name: 'Train to Bordeaux', note: 'SNCF (Est.)', price: 1200, checked: false, link:'https://www.sncf-connect.com/en-en/', image: '' },
-        { type: 'transport', name: 'Train to Paris', note: 'SNCF (Est.)', price: 3800, checked: false, link:'https://www.sncf-connect.com/en-en/', image: '' }
+        { type: 'hotel',     name: 'Paris Accommodation (5/31)', note: 'Not yet booked', price: 0, checked: false, link:'', image: '' }
     ];
 
     const defaultChecklist = [
@@ -584,13 +612,13 @@
     let currentItinerary = [], currentDayIndex = 0;
 
     function init() {
-        // Use v14 for this update
-        const storedItin = localStorage.getItem('mark_trip_itinerary_v14');
+        // Use v17 for this update
+        const storedItin = localStorage.getItem('mark_trip_itinerary_v17');
         if (storedItin) {
             currentItinerary = JSON.parse(storedItin);
         } else {
             currentItinerary = defaultItinerary;
-            localStorage.setItem('mark_trip_itinerary_v14', JSON.stringify(currentItinerary));
+            localStorage.setItem('mark_trip_itinerary_v17', JSON.stringify(currentItinerary));
         }
         document.getElementById('exp-date').valueAsDate = new Date();
         renderSegmentBar(); selectSegment(0); renderBookings(); renderExpenses(); renderChecklist();
@@ -634,7 +662,18 @@
     function renderDay(idx) {
         const data = currentItinerary[idx];
         const con = document.getElementById('day-content');
-        con.innerHTML = `<div class="day-hero"><div class="day-info"><h2>${data.city}</h2><p>${segments.find(s=>s.dates.includes(idx)).name}</p></div><a href="https://www.google.com/search?q=weather+${data.city}" target="_blank" class="weather-btn"><i class="fas fa-sun"></i> Weather</a></div>`;
+        con.innerHTML = `
+        <div class="day-hero">
+            <div class="day-hero-top">
+                <div class="day-info">
+                    <h2>${data.city}</h2>
+                    <p>${segments.find(s=>s.dates.includes(idx)).name}</p>
+                </div>
+                <a href="https://www.google.com/search?q=weather+${data.city}" target="_blank" class="weather-btn"><i class="fas fa-sun"></i> Weather</a>
+            </div>
+            ${data.theme ? `<div class="day-theme">THEME: ${data.theme}</div>` : ''}
+        </div>`;
+        
         data.items.forEach((item, i) => {
             let meta = ''; if(item.duration||item.cost) meta=`<div class="card-meta-row">${item.duration?`<div class="meta-item"><i class="fas fa-clock"></i>${item.duration}</div>`:''}${item.cost?`<div class="meta-item"><i class="fas fa-coins"></i>${item.cost}</div>`:''}</div>`;
             let linkBtn = item.link?`<a href="${item.link}" target="_blank" class="btn btn-ticket"><i class="fas fa-ticket-alt"></i> ${item.linkText}</a>`:'';
@@ -648,15 +687,15 @@
             title: t, desc: document.getElementById('new-desc').value, location: document.getElementById('new-loc').value,
             duration: document.getElementById('new-duration').value, cost: document.getElementById('new-cost').value, details:""
         });
-        localStorage.setItem('mark_trip_itinerary_v14', JSON.stringify(currentItinerary));
+        localStorage.setItem('mark_trip_itinerary_v17', JSON.stringify(currentItinerary));
         renderDay(currentDayIndex);
         document.querySelectorAll('.add-item-form input').forEach(i=>i.value='');
     }
-    function delItinItem(d,i) { if(confirm('Delete?')) { currentItinerary[d].items.splice(i,1); localStorage.setItem('mark_trip_itinerary_v14', JSON.stringify(currentItinerary)); renderDay(d); } }
+    function delItinItem(d,i) { if(confirm('Delete?')) { currentItinerary[d].items.splice(i,1); localStorage.setItem('mark_trip_itinerary_v17', JSON.stringify(currentItinerary)); renderDay(d); } }
 
-    /* --- Bookings Logic --- */
-    function getBookings() { return localStorage.getItem('mark_trip_bookings_v14') ? JSON.parse(localStorage.getItem('mark_trip_bookings_v14')) : defaultBookings; }
-    function saveBookings(d) { localStorage.setItem('mark_trip_bookings_v14', JSON.stringify(d)); } 
+    /* --- Bookings Logic (Instant Input) --- */
+    function getBookings() { return localStorage.getItem('mark_trip_bookings_v17') ? JSON.parse(localStorage.getItem('mark_trip_bookings_v17')) : defaultBookings; }
+    function saveBookings(d) { localStorage.setItem('mark_trip_bookings_v17', JSON.stringify(d)); } 
     
     function renderBookings() {
         const list = getBookings();
@@ -731,8 +770,8 @@
     }
 
     /* --- Checklist Logic --- */
-    function getCheck() { return localStorage.getItem('mark_trip_checklist_v14') ? JSON.parse(localStorage.getItem('mark_trip_checklist_v14')) : defaultChecklist; }
-    function saveCheck(d) { localStorage.setItem('mark_trip_checklist_v14', JSON.stringify(d)); renderChecklist(); }
+    function getCheck() { return localStorage.getItem('mark_trip_checklist_v17') ? JSON.parse(localStorage.getItem('mark_trip_checklist_v17')) : defaultChecklist; }
+    function saveCheck(d) { localStorage.setItem('mark_trip_checklist_v17', JSON.stringify(d)); renderChecklist(); }
     function renderChecklist() {
         const list = getCheck(); const con = document.getElementById('checklist-container'); con.innerHTML = '';
         list.forEach((cat, cIdx) => {
@@ -757,7 +796,7 @@
         if(src==='twd') eur.value = (twd.value/rate).toFixed(2);
     }
     function renderExpenses() {
-        let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v14'))||[];
+        let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v17'))||[];
         const list = document.getElementById('expense-list'); list.innerHTML = '';
         let total = 0;
         exps.sort((a,b)=>new Date(b.date)-new Date(a.date));
@@ -778,11 +817,11 @@
         document.getElementById('expense-total').innerText = '€'+total.toFixed(2);
     }
     function addExpense() { 
-        let l = JSON.parse(localStorage.getItem('mark_trip_expenses_v14'))||[]; 
+        let l = JSON.parse(localStorage.getItem('mark_trip_expenses_v17'))||[]; 
         l.push({date:document.getElementById('exp-date').value, name:document.getElementById('exp-name').value, amount:document.getElementById('exp-amt').value});
-        localStorage.setItem('mark_trip_expenses_v14', JSON.stringify(l)); renderExpenses();
+        localStorage.setItem('mark_trip_expenses_v17', JSON.stringify(l)); renderExpenses();
     }
-    function delExp(i) { let l=JSON.parse(localStorage.getItem('mark_trip_expenses_v14')); l.splice(i,1); localStorage.setItem('mark_trip_expenses_v14', JSON.stringify(l)); renderExpenses(); }
+    function delExp(i) { let l=JSON.parse(localStorage.getItem('mark_trip_expenses_v17')); l.splice(i,1); localStorage.setItem('mark_trip_expenses_v17', JSON.stringify(l)); renderExpenses(); }
 
     function switchView(id, btn) {
         document.querySelectorAll('.section-view').forEach(e => e.classList.remove('active'));
@@ -796,3 +835,5 @@
 </script>
 </body>
 </html>
+
+  
