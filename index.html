@@ -542,7 +542,8 @@
         { date: "5/25", day: "Mon", city: "Bordeaux", theme: "City & Dune", items: [
             { time: "AM", type: "transport", title: "To Bordeaux", desc: "SNCF Train", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location:"Gare de Bordeaux-Saint-Jean", duration:"2.5h", cost: "Booked" },
             { time: "PM", type: "spot", title: "Dune du Pilat", desc: "Sand Dune", location:"Dune du Pilat", duration:"3h", cost:"€0" },
-            { time: "Eve", type: "spot", title: "City Dinner", desc: "Grand Théâtre", location:"Grand Théâtre de Bordeaux", duration:"2h", cost:"€40" }
+            { time: "Eve", type: "spot", title: "City Dinner", desc: "Grand Théâtre", location:"Grand Théâtre de Bordeaux", duration:"2h", cost:"€40" },
+            { time: "Eve", type: "spot", title: "Check-in JOST", desc: "JOST Hotel Bordeaux", location:"JOST Hotel Bordeaux", duration:"-", cost:"Booked" }
         ]},
         { date: "5/26", day: "Tue", city: "Bordeaux", theme: "Relax & Explore", items: [
             { time: "AM", type: "spot", title: "Bordeaux Morning", desc: "Breakfast", location:"Bordeaux", duration:"1h", cost:"€15" },
@@ -572,11 +573,12 @@
         ]},
         { date: "5/31", day: "Sun", city: "Paris", theme: "Back to City", items: [
             { time: "08:34", type: "transport", title: "To Paris (Est.)", desc: "Basel SBB -> Gare de Lyon", details: "TGV Lyria (Not yet released)", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location: "Basel SBB", duration: "3h 04m", cost: "Est. €110" },
-            { time: "14:00", type: "spot", title: "Check-in / City", desc: "Hôtel Le Walt", location: "Hôtel Le Walt", duration: "-", cost: "Booked" }
+            { time: "14:00", type: "spot", title: "Check-in Le Walt", desc: "Hôtel Le Walt (5/31-6/1)", location: "Hôtel Le Walt", duration: "-", cost: "Booked" }
         ]},
         { date: "6/1", day: "Mon", city: "Paris", theme: "Art & History", items: [
             { time: "09:00", type: "spot", title: "Louvre Museum", desc: "Must Book! Closed Tue.", location: "Louvre Museum", duration: "4h", cost: "€22", details:"<b>EMERGENCY ADVICE:</b> Book 9:00 AM slot NOW if open." },
-            { time: "PM", type: "spot", title: "Le Marais", desc: "Shopping", location:"Le Marais", duration:"4h", cost:"€50" }
+            { time: "PM", type: "spot", title: "Le Marais", desc: "Shopping", location:"Le Marais", duration:"4h", cost:"€50" },
+            { time: "Eve", type: "spot", title: "Stay at Le Walt", desc: "Hôtel Le Walt (6/1-6/3)", location: "Hôtel Le Walt", duration: "-", cost: "Booked" }
         ]},
         { date: "6/2", day: "Tue", city: "Paris", theme: "Romantic Vibes", items: [
             { time: "09:30", type: "spot", title: "Musée d'Orsay", desc: "Closed Mon.", location:"Musée d'Orsay", duration:"3h", cost:"€16" },
@@ -598,7 +600,7 @@
         { type: 'transport', name: 'Louvre Museum Ticket', note: 'Book for 6/1 09:00', price: 770, checked: false, link:'https://www.ticketlouvre.fr/', image: '' },
         { type: 'transport', name: 'Train to La Rochelle', note: 'SNCF (Est.)', price: 2500, checked: false, link:'https://www.sncf-connect.com/en-en/', image: '' },
         { type: 'transport', name: 'Train to Bordeaux', note: 'SNCF (Est.)', price: 1200, checked: false, link:'https://www.sncf-connect.com/en-en/', image: '' },
-        { type: 'hotel',     name: 'Paris Accommodation (5/31)', note: 'Not yet booked', price: 0, checked: false, link:'', image: '' }
+        { type: 'hotel',     name: 'Hôtel Le Walt (5/31-6/1)', note: 'Booking.com', price: 17881, checked: true, link:'https://www.booking.com', image: '' }
     ];
 
     const defaultChecklist = [
@@ -612,13 +614,13 @@
     let currentItinerary = [], currentDayIndex = 0;
 
     function init() {
-        // Use v17 for this update
-        const storedItin = localStorage.getItem('mark_trip_itinerary_v17');
+        // Use v18 for this update
+        const storedItin = localStorage.getItem('mark_trip_itinerary_v18');
         if (storedItin) {
             currentItinerary = JSON.parse(storedItin);
         } else {
             currentItinerary = defaultItinerary;
-            localStorage.setItem('mark_trip_itinerary_v17', JSON.stringify(currentItinerary));
+            localStorage.setItem('mark_trip_itinerary_v18', JSON.stringify(currentItinerary));
         }
         document.getElementById('exp-date').valueAsDate = new Date();
         renderSegmentBar(); selectSegment(0); renderBookings(); renderExpenses(); renderChecklist();
@@ -687,15 +689,15 @@
             title: t, desc: document.getElementById('new-desc').value, location: document.getElementById('new-loc').value,
             duration: document.getElementById('new-duration').value, cost: document.getElementById('new-cost').value, details:""
         });
-        localStorage.setItem('mark_trip_itinerary_v17', JSON.stringify(currentItinerary));
+        localStorage.setItem('mark_trip_itinerary_v18', JSON.stringify(currentItinerary));
         renderDay(currentDayIndex);
         document.querySelectorAll('.add-item-form input').forEach(i=>i.value='');
     }
-    function delItinItem(d,i) { if(confirm('Delete?')) { currentItinerary[d].items.splice(i,1); localStorage.setItem('mark_trip_itinerary_v17', JSON.stringify(currentItinerary)); renderDay(d); } }
+    function delItinItem(d,i) { if(confirm('Delete?')) { currentItinerary[d].items.splice(i,1); localStorage.setItem('mark_trip_itinerary_v18', JSON.stringify(currentItinerary)); renderDay(d); } }
 
     /* --- Bookings Logic (Instant Input) --- */
-    function getBookings() { return localStorage.getItem('mark_trip_bookings_v17') ? JSON.parse(localStorage.getItem('mark_trip_bookings_v17')) : defaultBookings; }
-    function saveBookings(d) { localStorage.setItem('mark_trip_bookings_v17', JSON.stringify(d)); } 
+    function getBookings() { return localStorage.getItem('mark_trip_bookings_v18') ? JSON.parse(localStorage.getItem('mark_trip_bookings_v18')) : defaultBookings; }
+    function saveBookings(d) { localStorage.setItem('mark_trip_bookings_v18', JSON.stringify(d)); } 
     
     function renderBookings() {
         const list = getBookings();
@@ -770,8 +772,8 @@
     }
 
     /* --- Checklist Logic --- */
-    function getCheck() { return localStorage.getItem('mark_trip_checklist_v17') ? JSON.parse(localStorage.getItem('mark_trip_checklist_v17')) : defaultChecklist; }
-    function saveCheck(d) { localStorage.setItem('mark_trip_checklist_v17', JSON.stringify(d)); renderChecklist(); }
+    function getCheck() { return localStorage.getItem('mark_trip_checklist_v18') ? JSON.parse(localStorage.getItem('mark_trip_checklist_v18')) : defaultChecklist; }
+    function saveCheck(d) { localStorage.setItem('mark_trip_checklist_v18', JSON.stringify(d)); renderChecklist(); }
     function renderChecklist() {
         const list = getCheck(); const con = document.getElementById('checklist-container'); con.innerHTML = '';
         list.forEach((cat, cIdx) => {
@@ -796,7 +798,7 @@
         if(src==='twd') eur.value = (twd.value/rate).toFixed(2);
     }
     function renderExpenses() {
-        let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v17'))||[];
+        let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v18'))||[];
         const list = document.getElementById('expense-list'); list.innerHTML = '';
         let total = 0;
         exps.sort((a,b)=>new Date(b.date)-new Date(a.date));
@@ -817,11 +819,11 @@
         document.getElementById('expense-total').innerText = '€'+total.toFixed(2);
     }
     function addExpense() { 
-        let l = JSON.parse(localStorage.getItem('mark_trip_expenses_v17'))||[]; 
+        let l = JSON.parse(localStorage.getItem('mark_trip_expenses_v18'))||[]; 
         l.push({date:document.getElementById('exp-date').value, name:document.getElementById('exp-name').value, amount:document.getElementById('exp-amt').value});
-        localStorage.setItem('mark_trip_expenses_v17', JSON.stringify(l)); renderExpenses();
+        localStorage.setItem('mark_trip_expenses_v18', JSON.stringify(l)); renderExpenses();
     }
-    function delExp(i) { let l=JSON.parse(localStorage.getItem('mark_trip_expenses_v17')); l.splice(i,1); localStorage.setItem('mark_trip_expenses_v17', JSON.stringify(l)); renderExpenses(); }
+    function delExp(i) { let l=JSON.parse(localStorage.getItem('mark_trip_expenses_v18')); l.splice(i,1); localStorage.setItem('mark_trip_expenses_v18', JSON.stringify(l)); renderExpenses(); }
 
     function switchView(id, btn) {
         document.querySelectorAll('.section-view').forEach(e => e.classList.remove('active'));
@@ -835,5 +837,3 @@
 </script>
 </body>
 </html>
-
-  
