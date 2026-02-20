@@ -74,7 +74,7 @@
 
         .seg-chip {
             font-family: var(--font-header); color: var(--tc-green); background: var(--white);
-            padding: 10px 20px; border-radius: var(--radius-btn); font-size: 0.8rem;
+            padding: 10px 18px; border-radius: var(--radius-btn); font-size: 0.75rem;
             white-space: nowrap; font-weight: 900; cursor: pointer; transition: all 0.2s;
             border: var(--border-width) solid var(--tc-green); box-shadow: 3px 3px 0 var(--tc-blue);
             display: flex; flex-direction: column; align-items: center; line-height: 1.2;
@@ -179,13 +179,14 @@
         }
         .card.type-transport .card-tag { background: var(--tc-brown); }
         .card.type-spot .card-tag { background: var(--tc-blue); }
+        .card.type-food .card-tag { background: #FFD54F; color: var(--tc-green); }
 
         .card-header { display: flex; flex-direction: column; align-items: flex-start; margin-top: 5px;}
         .time-badge {
             font-family: var(--font-header); font-size: 1.2rem; font-weight: 900; color: var(--tc-green);
             background: #E8F5E9; padding: 4px 12px; border-radius: var(--radius-btn); display: inline-block; margin-bottom: 8px;
         }
-        .card-title { font-family: var(--font-header); font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; color: var(--black); padding-right: 60px; }
+        .card-title { font-family: var(--font-header); font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; color: var(--black); padding-right: 60px; line-height: 1.3;}
         .card-desc { font-size: 1rem; color: #555; line-height: 1.5; font-weight: 500; }
 
         .card-meta-row {
@@ -214,6 +215,7 @@
         .card-controls { position: absolute; top: 20px; right: 20px; display: flex; gap: 8px; }
         .icon-btn { color: #BBB; cursor: pointer; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #F5F5F5;}
         .icon-btn.delete { color: #E57373; }
+        .icon-btn.add-plan { color: var(--tc-green); background: #E8F5E9; }
         .expand-toggle { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: var(--tc-bg); color: var(--tc-green); cursor: pointer; border-radius: 50%; font-weight: bold;}
 
         .transport-info { 
@@ -345,6 +347,14 @@
             color: var(--tc-blue); font-family: var(--font-header); font-weight: 700; font-size: 0.9rem;
             margin: 25px 0 10px 5px; letter-spacing: 1px;
             background: #EBF3F7; display: inline-block; padding: 5px 15px; border-radius: 20px;
+        }
+
+        /* Food View Specific */
+        .food-filter-select {
+            width: 100%; padding: 15px; border-radius: var(--radius-card); 
+            border: var(--border-width) solid var(--tc-green); background: var(--white);
+            font-family: var(--font-header); font-weight: 900; font-size: 1.1rem; color: var(--tc-green);
+            margin-bottom: 20px; outline: none;
         }
 
         /* Bottom Nav */
@@ -485,8 +495,22 @@
 
         <div id="expense-list" style="margin-top:30px;"></div>
     </div>
+    
+    <!-- VIEW 4: 美食 (Food) -->
+    <div id="view-food" class="section-view">
+        <h2 style="font-family:var(--font-header); font-weight:900; letter-spacing:1px; margin-top:0; color:var(--tc-green); text-align:center;">GOURMET GUIDE</h2>
+        
+        <select id="food-filter" class="food-filter-select" onchange="renderFoodList()">
+            <option value="paris">Paris (15 Selected)</option>
+            <option value="koestlach">Kœstlach & Border</option>
+        </select>
 
-    <!-- VIEW 4: 行李清單 (Checklist) -->
+        <div id="food-list-container">
+            <!-- JS Renders Here -->
+        </div>
+    </div>
+
+    <!-- VIEW 5: 行李清單 (Checklist) -->
     <div id="view-checklist" class="section-view">
         <h2 style="font-family:var(--font-header); margin-top:0; color:var(--tc-green); text-align:center; font-weight:900;">PACKING LIST</h2>
         
@@ -514,7 +538,8 @@
 <nav class="bottom-nav">
     <div class="nav-item active" onclick="switchView('home', this)"><i class="fas fa-home"></i><span>HOME</span></div>
     <div class="nav-item" onclick="switchView('itinerary', this)"><i class="fas fa-map"></i><span>PLAN</span></div>
-    <div class="nav-item" onclick="switchView('bookings', this)"><i class="fas fa-ticket-alt"></i><span>BOOKING</span></div>
+    <div class="nav-item" onclick="switchView('bookings', this)"><i class="fas fa-ticket-alt"></i><span>BOOK</span></div>
+    <div class="nav-item" onclick="switchView('food', this)"><i class="fas fa-utensils"></i><span>FOOD</span></div>
     <div class="nav-item" onclick="switchView('money', this)"><i class="fas fa-coins"></i><span>COST</span></div>
     <div class="nav-item" onclick="switchView('checklist', this)"><i class="fas fa-clipboard-check"></i><span>CHECK</span></div>
 </nav>
@@ -540,7 +565,7 @@
         { date: "5/23", day: "Sat", city: "La Rochelle", theme: "Port City Vibes", items: [{time:"Day", type:"spot", title:"La Rochelle Port", desc:"Vieux Port, Aquarium", location:"Vieux Port La Rochelle", duration:"4h", cost:"€20"}] },
         { date: "5/24", day: "Sun", city: "La Rochelle", theme: "French Market Life", items: [{time:"Day", type:"spot", title:"Local Market", desc:"Enjoy French Life", location:"Marché de La Rochelle", duration:"2h", cost:"€30"}] },
         { date: "5/25", day: "Mon", city: "Bordeaux", theme: "City & Dune", items: [
-            { time: "AM", type: "transport", title: "To Bordeaux", desc: "SNCF Train", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location:"Gare de Bordeaux-Saint-Jean", duration:"2.5h", cost: "Booked" },
+            { time: "13:35", type: "transport", title: "To Bordeaux", desc: "SNCF Train", details: "Katia Booked", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location:"Gare de Bordeaux-Saint-Jean", duration:"2.5h", cost: "Booked" },
             { time: "PM", type: "spot", title: "Dune du Pilat", desc: "Sand Dune", location:"Dune du Pilat", duration:"3h", cost:"€0" },
             { time: "Eve", type: "spot", title: "City Dinner", desc: "Grand Théâtre", location:"Grand Théâtre de Bordeaux", duration:"2h", cost:"€40" },
             { time: "Eve", type: "spot", title: "Check-in JOST", desc: "JOST Hotel Bordeaux", location:"JOST Hotel Bordeaux", duration:"-", cost:"Booked" }
@@ -572,7 +597,7 @@
             { time: "13:00", type: "spot", title: "Freiburg", desc: "Cathedral & Market", location: "Freiburger Münster", duration: "2.5h", cost: "€10" }
         ]},
         { date: "5/31", day: "Sun", city: "Paris", theme: "Back to City", items: [
-            { time: "08:34", type: "transport", title: "To Paris (Est.)", desc: "Basel SBB -> Gare de Lyon", details: "TGV Lyria (Not yet released)", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location: "Basel SBB", duration: "3h 04m", cost: "Est. €110" },
+            { time: "08:34", type: "transport", title: "To Paris (Est.)", desc: "Basel SBB -> Gare de Lyon", details: "TGV Lyria (Katia Booked)", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location: "Basel SBB", duration: "3h 04m", cost: "Booked" },
             { time: "14:00", type: "spot", title: "Check-in Le Walt", desc: "Hôtel Le Walt (5/31-6/1)", location: "Hôtel Le Walt", duration: "-", cost: "Booked" }
         ]},
         { date: "6/1", day: "Mon", city: "Paris", theme: "Art & History", items: [
@@ -594,13 +619,37 @@
         { type: 'transport', name: 'Flight Taipei-Paris (Round Trip)', note: 'BR087 (TPE T2) / BR088 (CDG T1)', price: 120000, checked: true, link:'https://www.evaair.com/zh-tw/index.html', image: '' },
         { type: 'transport', name: 'Flight Bordeaux-Basel', note: 'EasyJet 5/27 10:40-12:10', price: 6356, checked: true, link:'https://www.easyjet.com/en', image: '' },
         { type: 'hotel',     name: 'JOST Hotel Bordeaux', note: '5/25-5/27 (Hotels.com)', price: 8773, checked: true, link:'https://www.hotels.com', image: '' },
-        { type: 'hotel',     name: 'Hôtel Le Walt Paris', note: '6/1-6/3 (Booking ID: 462561117)', price: 37812, checked: true, link:'https://www.booking.com', image: '' },
+        { type: 'hotel',     name: 'Hôtel Le Walt (5/31-6/1)', note: 'Booking.com (Katia買)', price: 17881, checked: true, link:'https://www.booking.com', image: '' },
+        { type: 'hotel',     name: 'Hôtel Le Walt (6/1-6/3)', note: 'Booking.com (Katia買)', price: 37812, checked: true, link:'https://www.booking.com', image: '' },
         { type: 'transport', name: 'Airport Transfer (Paris)', note: '6/3 06:45 Hotel to CDG', price: 1993, checked: true, link:'', image: '' },
-        { type: 'transport', name: 'Train Basel -> Paris (5/31)', note: 'TGV Lyria (Not yet released)', price: 3850, checked: false, link:'https://www.sncf-connect.com/en-en/', image: '' },
+        { type: 'transport', name: 'Train Basel -> Paris', note: '5/31 08:34 (Katia買)', price: 8764, checked: true, link:'https://www.sncf-connect.com/en-en/', image: '' },
+        { type: 'transport', name: 'Train La Rochelle -> Bordeaux', note: '5/25 13:35 (Katia買)', price: 2472, checked: true, link:'https://www.sncf-connect.com/en-en/', image: '' },
         { type: 'transport', name: 'Louvre Museum Ticket', note: 'Book for 6/1 09:00', price: 770, checked: false, link:'https://www.ticketlouvre.fr/', image: '' },
-        { type: 'transport', name: 'Train to La Rochelle', note: 'SNCF (Est.)', price: 2500, checked: false, link:'https://www.sncf-connect.com/en-en/', image: '' },
-        { type: 'transport', name: 'Train to Bordeaux', note: 'SNCF (Est.)', price: 1200, checked: false, link:'https://www.sncf-connect.com/en-en/', image: '' },
-        { type: 'hotel',     name: 'Hôtel Le Walt (5/31-6/1)', note: 'Booking.com', price: 17881, checked: true, link:'https://www.booking.com', image: '' }
+        { type: 'transport', name: 'Train to La Rochelle', note: 'SNCF (Est.)', price: 2500, checked: false, link:'https://www.sncf-connect.com/en-en/', image: '' }
+    ];
+
+    const parisFood = [
+        {name: "L'Ami Jean", area: "7th (Eiffel)", type: "Bistro", price: "€40-90", time: "Tue-Sat 12-14, 19-23", note: "米其林推薦，必點米布丁", loc: "27 Rue Malar"},
+        {name: "Le Petit Sommelier", area: "14th (Montparnasse)", type: "Bistro", price: "€20-45", time: "Mon-Sat 08-23", note: "選酒很棒，酥皮佐餐", loc: "49 Av. du Maine"},
+        {name: "Au Terminus du Châtelet", area: "1st (Châtelet)", type: "Traditional", price: "€18-25", time: "Daily 06:30-02:00", note: "營業時間長，份量足", loc: "5 Rue des Lavandières Sainte-Opportune"},
+        {name: "Pizzeria Popolare", area: "2nd", type: "Italian", price: "€15-25", time: "Daily 11:45-14:15, 18:30-22:30", note: "網紅店，便宜好吃披薩", loc: "111 Rue Réaumur"},
+        {name: "Les Antiquaires", area: "7th (Orsay)", type: "Bistro", price: "€20-30", time: "Daily 07-23", note: "復古優雅", loc: "13 Rue du Bac"},
+        {name: "Bouillon République", area: "3rd (Republic)", type: "Bouillon", price: "€15-20", time: "Daily 12-00", note: "工人食堂，超便宜大碗", loc: "39 Bd du Temple"},
+        {name: "Chez Janou", area: "3rd (Marais)", type: "Provençal", price: "€20-40", time: "Daily 12-15, 19-00", note: "巧克力慕斯吃到飽", loc: "2 Rue Roger Verlomme"},
+        {name: "Narro Restaurant", area: "5th (Latin)", type: "Modern", price: "€35-80", time: "Tue-Sat 12-14:30, 19-22", note: "精緻擺盤，高分推薦", loc: "72 Rue du Cardinal Lemoine"},
+        {name: "Le Chabert", area: "5th/13th", type: "Traditional", price: "€35-40", time: "Daily 12-14:30, 19-22:30", note: "前菜甜點吃到飽", loc: "12 Rue de la Glacière"},
+        {name: "Les Enfants Rouges", area: "3rd (Marais)", type: "Bistro", price: "€30-70", time: "Thu-Mon 12-14, 19-22", note: "日式職人精神法餐", loc: "9 Rue de Beauce"},
+        {name: "Du Pain et des Idées", area: "10th", type: "Bakery", price: "€", time: "Mon-Fri 07-19:30", note: "必吃蝸牛麵包", loc: "34 Rue Yves Toudic"},
+        {name: "Blé Sucré", area: "12th", type: "Bakery", price: "€", time: "Tue-Sun 07-19:30", note: "瑪德蓮、可頌", loc: "7 Rue Antoine Vollon"},
+        {name: "La Maison d’Isabelle", area: "5th", type: "Bakery", price: "€", time: "Tue-Sun 06-20", note: "可頌冠軍", loc: "47 Bd Saint-Germain"},
+        {name: "Pierre Hermé", area: "6th", type: "Dessert", price: "€€", time: "Daily 10-20", note: "馬卡龍之神", loc: "72 Rue Bonaparte"}
+    ];
+
+    const koestlachFood = [
+        {name: "Auberge Saint-Laurent", area: "Sierentz (FR)", type: "Alsatian", price: "€30-60", time: "Wed-Sun", note: "米其林推薦，傳統亞爾薩斯菜", loc: "1 Rue de la Fontaine, Sierentz"},
+        {name: "Restaurant La Couronne", area: "Tagsdorf (FR)", type: "French", price: "€25-50", time: "Tue-Sun", note: "當地人推薦，氣氛溫馨", loc: "2 Rue du Général de Gaulle, Tagsdorf"},
+        {name: "Markthalle Basel", area: "Basel (CH)", type: "Food Court", price: "CHF 15-30", time: "Daily", note: "巴塞爾市內美食廣場，選擇多", loc: "Steinentorberg 20, Basel"},
+        {name: "Confiserie Gilgen", area: "Basel (CH)", type: "Cafe", price: "CHF 10-20", time: "Mon-Sat", note: "巴塞爾百年老店，甜點很棒", loc: "Spalenberg 6, Basel"}
     ];
 
     const defaultChecklist = [
@@ -614,16 +663,16 @@
     let currentItinerary = [], currentDayIndex = 0;
 
     function init() {
-        // Use v18 for this update
-        const storedItin = localStorage.getItem('mark_trip_itinerary_v18');
+        // Use v21 for this update
+        const storedItin = localStorage.getItem('mark_trip_itinerary_v21');
         if (storedItin) {
             currentItinerary = JSON.parse(storedItin);
         } else {
             currentItinerary = defaultItinerary;
-            localStorage.setItem('mark_trip_itinerary_v18', JSON.stringify(currentItinerary));
+            localStorage.setItem('mark_trip_itinerary_v21', JSON.stringify(currentItinerary));
         }
         document.getElementById('exp-date').valueAsDate = new Date();
-        renderSegmentBar(); selectSegment(0); renderBookings(); renderExpenses(); renderChecklist();
+        renderSegmentBar(); selectSegment(0); renderBookings(); renderExpenses(); renderChecklist(); renderFoodList();
         switchView('home', document.querySelector('.nav-item.active'));
         setInterval(updateCountdown, 1000); updateCountdown();
     }
@@ -689,15 +738,57 @@
             title: t, desc: document.getElementById('new-desc').value, location: document.getElementById('new-loc').value,
             duration: document.getElementById('new-duration').value, cost: document.getElementById('new-cost').value, details:""
         });
-        localStorage.setItem('mark_trip_itinerary_v18', JSON.stringify(currentItinerary));
+        localStorage.setItem('mark_trip_itinerary_v21', JSON.stringify(currentItinerary));
         renderDay(currentDayIndex);
         document.querySelectorAll('.add-item-form input').forEach(i=>i.value='');
     }
-    function delItinItem(d,i) { if(confirm('Delete?')) { currentItinerary[d].items.splice(i,1); localStorage.setItem('mark_trip_itinerary_v18', JSON.stringify(currentItinerary)); renderDay(d); } }
+    function delItinItem(d,i) { if(confirm('Delete?')) { currentItinerary[d].items.splice(i,1); localStorage.setItem('mark_trip_itinerary_v21', JSON.stringify(currentItinerary)); renderDay(d); } }
 
-    /* --- Bookings Logic (Instant Input) --- */
-    function getBookings() { return localStorage.getItem('mark_trip_bookings_v18') ? JSON.parse(localStorage.getItem('mark_trip_bookings_v18')) : defaultBookings; }
-    function saveBookings(d) { localStorage.setItem('mark_trip_bookings_v18', JSON.stringify(d)); } 
+    /* --- FOOD LOGIC --- */
+    function renderFoodList() {
+        const type = document.getElementById('food-filter').value;
+        const list = type === 'paris' ? parisFood : koestlachFood;
+        const container = document.getElementById('food-list-container');
+        container.innerHTML = '';
+
+        list.forEach(item => {
+            container.innerHTML += `
+            <div class="card type-food">
+                <div class="card-tag">${item.type}</div>
+                <div class="card-controls">
+                    <div class="expand-toggle" onclick="addFoodToPlan('${item.name}')"><i class="fas fa-plus"></i></div>
+                </div>
+                <div class="card-header">
+                    <div class="time-badge">${item.area}</div>
+                    <div class="card-title">${item.name}</div>
+                    <div class="card-desc">${item.note}</div>
+                </div>
+                <div class="card-meta-row">
+                    <div class="meta-item"><i class="fas fa-clock"></i> ${item.time}</div>
+                    <div class="meta-item"><i class="fas fa-coins"></i> ${item.price}</div>
+                </div>
+                <div class="details-box show">
+                    <div class="action-buttons">
+                        <a href="https://www.google.com/maps/search/?api=1&query=${item.loc}" target="_blank" class="btn btn-map"><i class="fas fa-map-marker-alt"></i> MAP</a>
+                    </div>
+                </div>
+            </div>`;
+        });
+    }
+
+    function addFoodToPlan(name) {
+        if(confirm(`Add "${name}" to current plan day?`)) {
+            currentItinerary[currentDayIndex].items.push({
+                time: "Meal", type: "food", title: name, desc: "Added from Food List", location: name, details: "", duration: "2h", cost: "?"
+            });
+            localStorage.setItem('mark_trip_itinerary_v21', JSON.stringify(currentItinerary));
+            alert("Added!");
+        }
+    }
+
+    /* --- Bookings Logic --- */
+    function getBookings() { return localStorage.getItem('mark_trip_bookings_v21') ? JSON.parse(localStorage.getItem('mark_trip_bookings_v21')) : defaultBookings; }
+    function saveBookings(d) { localStorage.setItem('mark_trip_bookings_v21', JSON.stringify(d)); } 
     
     function renderBookings() {
         const list = getBookings();
@@ -772,8 +863,8 @@
     }
 
     /* --- Checklist Logic --- */
-    function getCheck() { return localStorage.getItem('mark_trip_checklist_v18') ? JSON.parse(localStorage.getItem('mark_trip_checklist_v18')) : defaultChecklist; }
-    function saveCheck(d) { localStorage.setItem('mark_trip_checklist_v18', JSON.stringify(d)); renderChecklist(); }
+    function getCheck() { return localStorage.getItem('mark_trip_checklist_v21') ? JSON.parse(localStorage.getItem('mark_trip_checklist_v21')) : defaultChecklist; }
+    function saveCheck(d) { localStorage.setItem('mark_trip_checklist_v21', JSON.stringify(d)); renderChecklist(); }
     function renderChecklist() {
         const list = getCheck(); const con = document.getElementById('checklist-container'); con.innerHTML = '';
         list.forEach((cat, cIdx) => {
@@ -798,7 +889,7 @@
         if(src==='twd') eur.value = (twd.value/rate).toFixed(2);
     }
     function renderExpenses() {
-        let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v18'))||[];
+        let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v21'))||[];
         const list = document.getElementById('expense-list'); list.innerHTML = '';
         let total = 0;
         exps.sort((a,b)=>new Date(b.date)-new Date(a.date));
@@ -819,11 +910,11 @@
         document.getElementById('expense-total').innerText = '€'+total.toFixed(2);
     }
     function addExpense() { 
-        let l = JSON.parse(localStorage.getItem('mark_trip_expenses_v18'))||[]; 
+        let l = JSON.parse(localStorage.getItem('mark_trip_expenses_v21'))||[]; 
         l.push({date:document.getElementById('exp-date').value, name:document.getElementById('exp-name').value, amount:document.getElementById('exp-amt').value});
-        localStorage.setItem('mark_trip_expenses_v18', JSON.stringify(l)); renderExpenses();
+        localStorage.setItem('mark_trip_expenses_v21', JSON.stringify(l)); renderExpenses();
     }
-    function delExp(i) { let l=JSON.parse(localStorage.getItem('mark_trip_expenses_v18')); l.splice(i,1); localStorage.setItem('mark_trip_expenses_v18', JSON.stringify(l)); renderExpenses(); }
+    function delExp(i) { let l=JSON.parse(localStorage.getItem('mark_trip_expenses_v21')); l.splice(i,1); localStorage.setItem('mark_trip_expenses_v21', JSON.stringify(l)); renderExpenses(); }
 
     function switchView(id, btn) {
         document.querySelectorAll('.section-view').forEach(e => e.classList.remove('active'));
