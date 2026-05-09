@@ -1,930 +1,279 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#F0F6F9">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>MARK'S TRIP | Tiny Bold</title>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Lato:wght@400;700;900&family=Noto+Sans+TC:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marc's Europe Adventure</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            /* --- Tinycottons Bold Palette --- */
-            --tc-green: #006B48;    /* 主色：松林綠 */
-            --tc-blue: #7EA8BE;     /* 輔助：霧霾藍 */
-            --tc-brown: #A66336;    /* 重點：焦糖橘 */
-            --tc-bg: #F0F6F9;       /* 背景：淺灰藍 */
-            --white: #FFFFFF;
-            --black: #1A1A1A;
-            
-            /* Fonts */
-            --font-main: 'Lato', 'Noto Sans TC', sans-serif;
-            --font-header: 'Cinzel', serif; 
-
-            /* Layout Specs */
-            --radius-card: 24px;
-            --radius-btn: 50px;
-            --border-width: 2.5px;
-            
-            --safe-top: env(safe-area-inset-top);
-            --safe-bottom: env(safe-area-inset-bottom);
+            --primary-pink: #FF8EB2; 
+            --vibrant-red: #FF4D31;  
+            --teal-green: #00B4A8;   
+            --bright-yellow: #FFF200;
+            --bg-cream: #F9F7F2;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Helvetica Neue', 'PingFang TC', sans-serif; }
+        body { background-color: var(--bg-cream); padding-bottom: 80px; }
+
+        header { background-color: var(--primary-pink); padding: 30px 20px; text-align: center; border-bottom: 5px solid var(--vibrant-red); }
+        h1 { color: white; font-size: 20px; text-transform: uppercase; letter-spacing: 2px; text-shadow: 2px 2px var(--vibrant-red); }
+
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 3px solid var(--vibrant-red); z-index: 1000; }
+        .nav-item { border: none; background: none; font-size: 11px; color: #888; text-align: center; flex: 1; cursor: pointer; }
+        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
+        .nav-item.active { color: var(--vibrant-red); font-weight: bold; }
+
+        .nav-container { position: sticky; top: 0; z-index: 100; background: white; }
+        .tier-1 { display: flex; overflow-x: auto; background: var(--vibrant-red); padding: 10px 0; scrollbar-width: none; }
+        .tier-1 button { flex: 0 0 auto; background: none; border: none; color: white; padding: 8px 15px; font-weight: bold; opacity: 0.7; font-size: 13px; }
+        .tier-1 button.active { opacity: 1; border-bottom: 3px solid var(--bright-yellow); }
+        .tier-2 { display: flex; overflow-x: auto; background: white; padding: 10px 5px; border-bottom: 1px solid #eee; }
+        .date-btn { background: #f0f0f0; border: none; border-radius: 20px; padding: 6px 15px; margin: 0 5px; white-space: nowrap; font-size: 12px; }
+        .date-btn.active { background: var(--teal-green); color: white; }
+
+        .section { display: none; padding: 20px; }
+        .section.active { display: block; }
+
+        .card { background: white; border-left: 8px solid var(--teal-green); border-radius: 15px; padding: 15px; margin-bottom: 15px; box-shadow: 4px 4px 0px rgba(0,0,0,0.05); position: relative; }
+        .card.transport { border-left-color: var(--vibrant-red); }
+        .card.accommodation { border-left-color: var(--primary-pink); }
         
-        body {
-            font-family: var(--font-main);
-            background-color: var(--tc-bg);
-            color: var(--tc-green);
-            margin: 0; padding: 0;
-            height: 100vh;
-            display: flex; flex-direction: column;
-            overflow: hidden;
-        }
+        .weather-banner { background: #E0F2F1; padding: 12px; border-radius: 12px; margin-bottom: 15px; font-size: 14px; display: flex; align-items: center; border: 1px solid var(--teal-green); color: #00796B; font-weight: bold; }
+        .weather-banner i { font-size: 20px; margin-right: 10px; color: #009688; }
+        .temp-val { font-size: 16px; margin-left: 5px; color: var(--vibrant-red); }
 
-        /* --- Header --- */
-        header {
-            background: repeating-linear-gradient(
-                45deg,
-                var(--tc-green),
-                var(--tc-green) 20px,
-                var(--tc-blue) 20px,
-                var(--tc-blue) 40px
-            );
-            z-index: 50; flex-shrink: 0; padding-bottom: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
+        .direction-box { background: #FFFDE7; border: 1px dashed #FBC02D; padding: 12px; border-radius: 12px; margin-bottom: 15px; font-size: 13px; color: #5D4037; line-height: 1.5; }
 
-        /* Segment Bar */
-        .segment-bar {
-            padding-top: calc(15px + var(--safe-top));
-            padding-bottom: 15px; padding-left: 15px; padding-right: 15px;
-            display: flex; overflow-x: auto; gap: 10px; scrollbar-width: none;
-            background: rgba(255,255,255,0.9); backdrop-filter: blur(5px);
-            border-bottom: var(--border-width) solid var(--tc-green);
-        }
-        .segment-bar::-webkit-scrollbar { display: none; }
-
-        .seg-chip {
-            font-family: var(--font-header); color: var(--tc-green); background: var(--white);
-            padding: 10px 18px; border-radius: var(--radius-btn); font-size: 0.75rem;
-            white-space: nowrap; font-weight: 900; cursor: pointer; transition: all 0.2s;
-            border: var(--border-width) solid var(--tc-green); box-shadow: 3px 3px 0 var(--tc-blue);
-            display: flex; flex-direction: column; align-items: center; line-height: 1.2;
-        }
-        .seg-chip span { font-family: var(--font-main); font-size: 0.7rem; font-weight: 700; opacity: 0.8; }
-        .seg-chip.active {
-            background: var(--tc-green); color: var(--white); border-color: var(--tc-green);
-            box-shadow: 3px 3px 0 var(--tc-brown); transform: translate(-1px, -1px);
-        }
-        .seg-chip.active span { color: #E0F2F1; }
-
-        /* Date Bar */
-        .date-bar {
-            background: var(--tc-bg); padding: 15px; display: flex; overflow-x: auto; gap: 10px; scrollbar-width: none;
-        }
-        .date-bar::-webkit-scrollbar { display: none; }
-
-        .date-pill {
-            min-width: 60px; height: 75px; border-radius: var(--radius-card); 
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            background: var(--white); border: var(--border-width) solid var(--tc-blue); 
-            color: var(--tc-blue); cursor: pointer; transition: all 0.2s;
-        }
-        .date-pill.active {
-            background: var(--tc-blue); color: var(--white); border-color: var(--tc-blue);
-            box-shadow: 4px 4px 0 var(--tc-green); transform: scale(1.05);
-        }
-        .dp-day { font-family: var(--font-header); font-size: 0.75rem; text-transform: uppercase; font-weight: 900; }
-        .dp-date { font-family: var(--font-header); font-size: 1.3rem; font-weight: 900; }
-
-        /* --- Main Content --- */
-        #main-container {
-            flex: 1; overflow-y: auto; scroll-behavior: smooth;
-            padding: 10px 20px 120px 20px;
-        }
-
-        /* HOME PAGE STYLES */
-        .home-title {
-            font-family: var(--font-header); font-weight: 900; font-size: 2.2rem;
-            text-align: center; color: var(--tc-green); margin: 30px 0 25px 0;
-            line-height: 1.1; letter-spacing: 1px; text-shadow: 2px 2px 0 var(--white);
-        }
-        .home-boxes-container {
-            display: flex; flex-direction: column; align-items: center; gap: 30px;
-        }
-        .home-card-box {
-            width: 85%; max-width: 320px; aspect-ratio: 1 / 1;
-            border-radius: 35px;
-            background: var(--white);
-            border: 3px solid var(--tc-green);
-            box-shadow: 8px 8px 0 var(--tc-blue);
-            display: flex; justify-content: center; align-items: center;
-            overflow: hidden; position: relative;
-            transition: transform 0.2s;
-        }
-        .home-card-box:active { transform: scale(0.98); }
-        .img-box img { width: 100%; height: 100%; object-fit: cover; }
+        .delete-btn { position: absolute; top: 12px; right: 12px; color: #ddd; border: none; background: none; }
+        .map-btn { background: var(--teal-green); color: white; text-decoration: none; display: block; text-align: center; padding: 12px; border-radius: 10px; margin-top: 12px; font-weight: bold; font-size: 14px; }
         
-        .count-box {
-            background: var(--tc-green); border-color: var(--tc-brown);
-            color: var(--white); flex-direction: column; text-align: center;
-            box-shadow: 8px 8px 0 var(--tc-brown);
-        }
-        .countdown-number { font-family: var(--font-header); font-size: 5rem; font-weight: 900; line-height: 1; }
-        .countdown-label { font-family: var(--font-main); font-size: 1.2rem; font-weight: 700; letter-spacing: 2px; margin-top: 5px; }
-        .countdown-target { font-size: 0.9rem; opacity: 0.8; margin-top: 10px; font-family: var(--font-header); border-top: 1px solid rgba(255,255,255,0.3); padding-top: 8px; width: 80%; }
+        .total-display { background: var(--vibrant-red); color: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; text-align: center; box-shadow: 0 4px 10px rgba(255, 77, 49, 0.3); }
+        .budget-item { display: flex; justify-content: space-between; padding: 12px; border-bottom: 1px solid #eee; background: white; align-items: center; font-size: 14px; }
+        .add-input { width: 100%; padding: 12px; margin: 6px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; }
 
-        /* Day Hero */
-        .day-hero { 
-            background: var(--white); padding: 25px; border-radius: var(--radius-card);
-            display: flex; flex-direction: column; justify-content: center; align-items: flex-start; margin-bottom: 25px; 
-            border: var(--border-width) solid var(--tc-green); box-shadow: 6px 6px 0 var(--tc-green);
-        }
-        .day-hero-top { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .day-info h2 { margin: 0; font-family: var(--font-header); font-size: 1.6rem; color: var(--tc-green); line-height: 1.1; font-weight: 900;}
-        .day-info p { margin: 0; color: var(--tc-blue); font-size: 0.9rem; font-weight: 700; font-family: var(--font-header); letter-spacing: 1px;}
-        
-        .day-theme {
-            background: #FFF3E0; color: var(--tc-brown); padding: 8px 12px; border-radius: 12px;
-            font-size: 0.9rem; font-weight: 700; width: 100%; border: 2px solid #FFE0B2;
-        }
-
-        .weather-btn {
-            background: var(--tc-blue); color: var(--white); padding: 10px 16px; border: none; text-decoration: none; border-radius: var(--radius-btn);
-            font-family: var(--font-header); font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; gap: 6px; 
-            box-shadow: 2px 2px 0 var(--tc-green);
-        }
-
-        /* Cards */
-        .card {
-            background: var(--white); border-radius: var(--radius-card); padding: 22px; margin-bottom: 20px;
-            position: relative; border: var(--border-width) solid var(--tc-green);
-            box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
-        }
-        
-        .card-tag {
-            position: absolute; top: -12px; left: 20px;
-            background: var(--tc-green); color: var(--white);
-            font-family: var(--font-header); font-size: 0.75rem; padding: 6px 14px; border-radius: var(--radius-btn);
-            text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
-            border: 2px solid var(--white);
-        }
-        .card.type-transport .card-tag { background: var(--tc-brown); }
-        .card.type-spot .card-tag { background: var(--tc-blue); }
-        .card.type-food .card-tag { background: #FFD54F; color: var(--tc-green); }
-
-        .card-header { display: flex; flex-direction: column; align-items: flex-start; margin-top: 5px;}
-        .time-badge {
-            font-family: var(--font-header); font-size: 1.2rem; font-weight: 900; color: var(--tc-green);
-            background: #E8F5E9; padding: 4px 12px; border-radius: var(--radius-btn); display: inline-block; margin-bottom: 8px;
-        }
-        .card-title { font-family: var(--font-header); font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; color: var(--black); padding-right: 60px; line-height: 1.3;}
-        .card-desc { font-size: 1rem; color: #555; line-height: 1.5; font-weight: 500; }
-
-        .card-meta-row {
-            display: flex; gap: 15px; margin-top: 12px; padding-top: 12px; border-top: 2px dashed #DDD;
-        }
-        .meta-item {
-            display: flex; align-items: center; gap: 6px; 
-            font-family: var(--font-main); font-size: 0.9rem; color: var(--tc-green); font-weight: 700;
-        }
-        .meta-item i { color: var(--tc-brown); font-size: 1rem;}
-
-        .details-box { display: none; margin-top: 15px; padding-top: 15px; border-top: var(--border-width) solid var(--tc-bg); animation: fadeIn 0.3s; }
-        .details-box.show { display: block; }
-        
-        .action-buttons { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
-        .btn { 
-            padding: 10px 20px; border-radius: var(--radius-btn); border: none;
-            background: var(--tc-green); color: var(--white);
-            font-family: var(--font-header); font-size: 0.8rem; text-decoration: none; font-weight: 700; 
-            display: flex; align-items: center; gap: 6px; letter-spacing: 0.5px;
-            box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
-        }
-        .btn-map { background: var(--tc-blue); }
-        .btn-ticket { background: var(--tc-brown); }
-        
-        .card-controls { position: absolute; top: 20px; right: 20px; display: flex; gap: 8px; }
-        .icon-btn { color: #BBB; cursor: pointer; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #F5F5F5;}
-        .icon-btn.delete { color: #E57373; }
-        .icon-btn.add-plan { color: var(--tc-green); background: #E8F5E9; }
-        .expand-toggle { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: var(--tc-bg); color: var(--tc-green); cursor: pointer; border-radius: 50%; font-weight: bold;}
-
-        .transport-info { 
-            background: #FFF3E0; border-radius: 15px; padding: 12px; margin-top: 12px; 
-            font-size: 0.9rem; color: var(--tc-brown); display: flex; align-items: center; gap: 10px; font-weight: 700;
-            border: 2px solid #FFE0B2;
-        }
-
-        /* Forms */
-        .add-item-form { background: var(--white); border-radius: var(--radius-card); padding: 20px; margin-top: 30px; border: var(--border-width) dashed var(--tc-blue); }
-        .form-row { display: flex; gap: 10px; margin-bottom: 12px; }
-        .form-input { 
-            flex: 1; padding: 12px 18px; border: 2px solid #EEE; border-radius: var(--radius-btn); background: #FAFAFA;
-            font-family: var(--font-main); font-size: 1rem; color: var(--tc-green); font-weight: 600;
-        }
-        .form-input:focus { outline: none; border-color: var(--tc-green); background: #FFF; }
-        .add-btn { 
-            width: 100%; background: var(--tc-green); color: var(--white); padding: 15px; border-radius: var(--radius-btn); border: none; 
-            font-family: var(--font-header); font-weight: 900; font-size: 1rem; cursor: pointer; letter-spacing: 1px;
-            box-shadow: 0 4px 10px rgba(0,107,72,0.3);
-        }
-
-        /* Bookings */
-        .budget-header {
-            background: var(--tc-green); color: var(--white); padding: 30px 20px; text-align: center; margin-bottom: 30px; 
-            border-radius: var(--radius-card); border: var(--border-width) solid var(--tc-green);
-            box-shadow: 6px 6px 0 var(--tc-brown);
-        }
-        .budget-header input { 
-            color: var(--white); border: none; border-bottom: 2px solid var(--white); 
-            font-family: var(--font-header); font-weight: 700; text-align: center; background: transparent; width: 60px;
-        }
-
-        .booking-item {
-            background: var(--white); padding: 20px; border-radius: var(--radius-card); margin-bottom: 15px; 
-            box-shadow: 4px 4px 0 #E0E0E0; border: var(--border-width) solid var(--tc-green); display: flex; flex-direction: column; gap: 12px; 
-        }
-        .booking-item::after {
-            content: ''; position: absolute; top: 20px; left: 0; bottom: 20px; width: 6px; 
-            background: var(--tc-green); border-radius: 0 4px 4px 0;
-        }
-        .booking-item.type-transport::after { background: var(--tc-brown); }
-        .booking-item.type-hotel::after { background: var(--tc-blue); }
-        .booking-item.checked { opacity: 0.6; background: #F9F9F9; box-shadow: none; border-color: #DDD;}
-        .booking-item.checked .bk-name, 
-        .booking-item.checked .bk-note,
-        .booking-item.checked .bk-input { text-decoration: line-through; color: #999; }
-
-        .mini-btn {
-            background: var(--tc-blue); color: var(--white); padding: 4px 12px; font-size: 0.7rem; text-decoration: none; 
-            display: inline-block; margin-left: 8px; border-radius: 20px; font-weight: 700; vertical-align: middle;
-        }
-
-        /* Dual Input Row */
-        .dual-input-row {
-            display: flex; align-items: flex-end; justify-content: space-between; 
-            padding-top: 15px; border-top: 2px dashed #EEE; gap: 15px;
-        }
-        .currency-input-group {
-            display: flex; flex-direction: column; align-items: flex-start; flex: 1; 
-            background: #F5F9FA; padding: 8px 12px; border-radius: 15px; border: 1px solid #E0E0E0;
-        }
-        .currency-label {
-            font-size: 0.7rem; font-family: var(--font-header); color: #888; font-weight: 900; margin-bottom: 2px; letter-spacing: 0.5px;
-        }
-        .bk-input {
-            width: 100%; border: none; background: transparent; text-align: right; font-weight: 700;
-            color: var(--tc-green); font-size: 1.1rem; padding: 2px 0;
-        }
-        .bk-input:focus { outline: none; }
-
-        /* Actions Row (Delete & Photo) */
-        .bk-actions-row {
-            display: flex; justify-content: flex-end; gap: 10px; margin-top: 5px;
-        }
-        .icon-btn.photo { color: var(--tc-blue); background: #E1F5FE; }
-
-        /* Booking Image */
-        .bk-image-container {
-            margin-top: 10px; border-radius: 15px; overflow: hidden; border: 2px solid #eee; position: relative;
-        }
-        .bk-image-container img { width: 100%; display: block; }
-        .remove-img-btn {
-            position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.6); color: white;
-            width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 0.8rem;
-        }
-
-        /* Checklist Styles */
-        .check-category-card {
-            background: var(--white); border-radius: var(--radius-card); padding: 0 0 20px 0; margin-bottom: 25px;
-            border: var(--border-width) solid var(--tc-green); box-shadow: 6px 6px 0 rgba(0,0,0,0.05);
-            overflow: hidden;
-        }
-        .check-category-header {
-            background: var(--tc-green); color: var(--white); padding: 15px 20px;
-            font-family: var(--font-header); font-weight: 900; font-size: 1.1rem;
-            display: flex; justify-content: space-between; align-items: center; letter-spacing: 1px;
-        }
-        .check-item {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 15px 20px; border-bottom: 1px dashed #EEE; transition: all 0.2s;
-        }
-        .check-item:last-child { border-bottom: none; }
-        .check-item.checked span { text-decoration: line-through; color: #BBB; }
-        .check-left { display: flex; align-items: center; gap: 15px; flex: 1; cursor: pointer; }
-        .check-checkbox {
-            width: 24px; height: 24px; border: 2.5px solid var(--tc-green); border-radius: 8px;
-            display: flex; align-items: center; justify-content: center; color: white; transition: all 0.2s;
-        }
-        .check-item.checked .check-checkbox { background: var(--tc-green); }
-        
-        /* Cost */
-        .converter-box {
-            background: var(--tc-blue); color: var(--white); padding: 25px; margin-bottom: 30px;
-            border-radius: var(--radius-card); border: var(--border-width) solid var(--tc-green);
-            box-shadow: 6px 6px 0 var(--tc-green);
-        }
-        .conv-input {
-            background: rgba(255,255,255,0.25); border: none; padding: 10px; width: 120px; text-align: right; border-radius: 15px;
-            font-family: var(--font-header); font-weight: 700; font-size: 1.4rem; color: var(--white);
-        }
-        .expense-item {
-            background: var(--white); padding: 18px; margin-bottom: 12px; border-radius: var(--radius-card); 
-            display:flex; justify-content:space-between; align-items:center; 
-            border: 2px solid #EEE; box-shadow: 2px 2px 0 #DDD;
-        }
-        .daily-header {
-            color: var(--tc-blue); font-family: var(--font-header); font-weight: 700; font-size: 0.9rem;
-            margin: 25px 0 10px 5px; letter-spacing: 1px;
-            background: #EBF3F7; display: inline-block; padding: 5px 15px; border-radius: 20px;
-        }
-
-        /* Food View Specific */
-        .food-filter-select {
-            width: 100%; padding: 15px; border-radius: var(--radius-card); 
-            border: var(--border-width) solid var(--tc-green); background: var(--white);
-            font-family: var(--font-header); font-weight: 900; font-size: 1.1rem; color: var(--tc-green);
-            margin-bottom: 20px; outline: none;
-        }
-
-        /* Bottom Nav */
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); 
-            backdrop-filter: blur(10px);
-            border-top: var(--border-width) solid var(--tc-green); display: flex; justify-content: space-around; 
-            padding: 15px 0 calc(15px + var(--safe-bottom)) 0; z-index: 100;
-            border-top-left-radius: 30px; border-top-right-radius: 30px;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
-        }
-        .nav-item { 
-            display: flex; flex-direction: column; align-items: center; color: #9FB3C0; font-size: 0.7rem; cursor: pointer; padding: 5px; flex: 1; 
-            transition: all 0.2s;
-        }
-        .nav-item i { font-size: 1.4rem; margin-bottom: 6px; }
-        .nav-item span { font-family: var(--font-header); font-weight: 700; letter-spacing: 0.5px;}
-        .nav-item.active { color: var(--tc-green); transform: translateY(-5px); }
-
-        .section-view { display: none; padding-bottom: 20px; }
-        .section-view.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
+        .packing-item { display: flex; align-items: center; padding: 12px; background: white; border-radius: 12px; margin-bottom: 8px; border-left: 5px solid var(--primary-pink); }
+        .packing-item input { margin-right: 15px; transform: scale(1.3); }
     </style>
 </head>
 <body>
 
-<!-- Header -->
-<header id="app-header" style="display:none;">
-    <div class="segment-bar" id="segment-bar"></div>
-    <div class="date-bar" id="date-bar"></div>
+<header>
+    <h1>MARC'S EUROPE ADVENTURE</h1>
 </header>
 
-<div id="main-container">
-    
-    <!-- VIEW 0: HOME -->
-    <div id="view-home" class="section-view active">
-        <h1 class="home-title">TAKE MARC<br>TO EUROPE</h1>
-        <div class="home-boxes-container">
-            <!-- Box 1: Illustration -->
-            <div class="home-card-box img-box">
-                <!-- User to replace src -->
-                <img src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=500&q=80" alt="Marc Illustration">
-            </div>
-            <!-- Box 2: Countdown -->
-            <div class="home-card-box count-box">
-                <div class="countdown-number" id="cd-days">0</div>
-                <div class="countdown-label">DAYS</div>
-                <div class="countdown-target">UNTIL MAY 21, 2026</div>
-            </div>
+<div id="page-itinerary" class="section active">
+    <div class="nav-container">
+        <div class="tier-1" id="locationTabs">
+            <button onclick="switchLocation('Taipei')" class="active">Taipei</button>
+            <button onclick="switchLocation('La Rochelle')">La Rochelle</button>
+            <button onclick="switchLocation('Bordeaux')">Bordeaux</button>
+            <button onclick="switchLocation('Kœstlach')">Kœstlach</button>
+            <button onclick="switchLocation('Paris')">Paris</button>
         </div>
+        <div class="tier-2" id="dateTabs"></div>
     </div>
-
-    <!-- VIEW 1: 行程表 -->
-    <div id="view-itinerary" class="section-view">
-        <div id="day-content"></div>
-        
-        <div class="add-item-form">
-            <h4 style="margin:0 0 15px 0; font-family:var(--font-header); font-weight:900; color:var(--tc-green);">+ ADD TO PLAN</h4>
-            <div class="form-row">
-                <input type="text" id="new-time" class="form-input" placeholder="Time (e.g. 10:00)" style="flex:1;">
-                <select id="new-type" class="form-input" style="flex:1;">
-                    <option value="spot">Spot</option>
-                    <option value="food">Food</option>
-                    <option value="transport">Transport</option>
-                </select>
-            </div>
-            <div class="form-row">
-                <input type="text" id="new-duration" class="form-input" placeholder="Duration (e.g. 2h)" style="flex:1;">
-                <input type="text" id="new-cost" class="form-input" placeholder="Cost (e.g. €20)" style="flex:1;">
-            </div>
-            <div class="form-row"><input type="text" id="new-title" class="form-input" placeholder="Title (地點名稱)"></div>
-            <div class="form-row"><input type="text" id="new-desc" class="form-input" placeholder="Note (備註)"></div>
-            <div class="form-row"><input type="text" id="new-loc" class="form-input" placeholder="Location (Google Maps)"></div>
-            <button class="add-btn" onclick="addItemToDay()">CONFIRM</button>
-        </div>
-    </div>
-
-    <!-- VIEW 2: 預訂 (Bookings) -->
-    <div id="view-bookings" class="section-view">
-        <div class="budget-header">
-            <div style="opacity:0.9; margin-bottom:5px; font-family:var(--font-header); font-weight:700; letter-spacing:1px; color:var(--white);">TOTAL BUDGET</div>
-            <div id="total-budget" style="font-size:2rem; font-weight:700; font-family:var(--font-header); line-height:1.2; color:var(--white);">
-                NT$ 0<br><span style="font-size:1.3rem; opacity:0.9;">€ 0.00</span>
-            </div>
-            
-            <div style="margin-top:15px; font-size:0.9rem; border-top:2px solid rgba(255,255,255,0.3); padding-top:10px; color:var(--white); font-weight:bold;">
-                RATE: 1 € = <input type="number" id="bk-rate" value="35" class="rate-input" style="width:50px; background:transparent; border:none; border-bottom:1px solid white; color:white; text-align:center; font-weight:bold;" onchange="renderBookings()"> NT$
-            </div>
-        </div>
-
-        <div id="booking-list"></div>
-        
-        <div style="margin-top:40px; border-top:3px dashed var(--tc-blue); padding-top:20px;">
-            <div style="display:flex; gap:15px; margin-bottom:15px;">
-                <select id="new-bk-type" class="form-input" style="flex:1;"><option value="transport">Transport</option><option value="hotel">Hotel</option></select>
-                <input type="text" id="new-bk-name" class="form-input" placeholder="Name" style="flex:2;">
-            </div>
-            <button class="add-btn" onclick="addBooking()">ADD TO LIST</button>
-        </div>
-    </div>
-
-    <!-- VIEW 3: 記帳 (Cost) -->
-    <div id="view-money" class="section-view">
-        <h2 style="font-family:var(--font-header); font-weight:900; letter-spacing:1px; margin-top:0; color:var(--tc-green); text-align:center;">DAILY COST</h2>
-        
-        <!-- Currency Converter -->
-        <div class="converter-box">
-            <div style="font-family:var(--font-header); text-transform:uppercase; margin-bottom:15px; border-bottom:2px solid rgba(255,255,255,0.3); padding-bottom:5px; display:flex; justify-content:space-between; color:white; font-weight:900;">
-                <span style="letter-spacing:1px;">Converter</span>
-                <span style="font-size:0.8rem;">Rate: <input type="number" id="conv-rate" value="35" class="rate-input" style="width:40px; background:transparent; border:none; border-bottom:1px solid white; color:white; text-align:center;" onchange="convert('rate')"></span>
-            </div>
-            <div class="conv-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; color:white;">
-                <span style="font-weight:900; font-family:var(--font-header);">EUR €</span>
-                <input type="number" id="conv-eur" class="conv-input" placeholder="0" onkeyup="convert('eur')">
-            </div>
-            <div class="conv-row" style="display:flex; justify-content:space-between; align-items:center; color:white;">
-                <span style="font-weight:900; font-family:var(--font-header);">TWD $</span>
-                <input type="number" id="conv-twd" class="conv-input" placeholder="0" onkeyup="convert('twd')">
-            </div>
-        </div>
-
-        <div style="background:var(--white); padding:25px; border:var(--border-width) solid var(--tc-green); border-radius:var(--radius-card); box-shadow:6px 6px 0 var(--tc-blue); margin-bottom:25px; text-align:center;">
-            <div style="color:var(--tc-blue); margin-bottom:5px; font-family:var(--font-header); font-weight:900; letter-spacing:1px;">GRAND TOTAL</div>
-            <div id="expense-total" style="font-size:2.5rem; font-weight:900; color:var(--tc-green); font-family:var(--font-header);">€0.00</div>
-        </div>
-
-        <div style="margin-bottom:20px;">
-            <div style="display:flex; gap:10px; margin-bottom:10px;">
-                <input type="date" id="exp-date" class="form-input" style="flex:1; border-color:var(--tc-blue);">
-            </div>
-            <div style="display:flex; gap:15px; margin-bottom:15px;">
-                <input type="text" id="exp-name" class="form-input" placeholder="ITEM" style="flex:2;">
-                <input type="number" id="exp-amt" class="form-input" placeholder="€" style="flex:1;">
-            </div>
-            <button class="add-btn" onclick="addExpense()">RECORD EXPENSE</button>
-        </div>
-
-        <div id="expense-list" style="margin-top:30px;"></div>
-    </div>
-    
-    <!-- VIEW 4: 美食 (Food) -->
-    <div id="view-food" class="section-view">
-        <h2 style="font-family:var(--font-header); font-weight:900; letter-spacing:1px; margin-top:0; color:var(--tc-green); text-align:center;">GOURMET GUIDE</h2>
-        
-        <select id="food-filter" class="food-filter-select" onchange="renderFoodList()">
-            <option value="paris">Paris (15 Selected)</option>
-            <option value="koestlach">Kœstlach & Border</option>
-        </select>
-
-        <div id="food-list-container">
-            <!-- JS Renders Here -->
-        </div>
-    </div>
-
-    <!-- VIEW 5: 行李清單 (Checklist) -->
-    <div id="view-checklist" class="section-view">
-        <h2 style="font-family:var(--font-header); margin-top:0; color:var(--tc-green); text-align:center; font-weight:900;">PACKING LIST</h2>
-        
-        <div style="background:var(--white); padding:15px; border-radius:var(--radius-card); margin-bottom:20px; border:2px dashed var(--tc-blue);">
-            <div style="display:flex; gap:10px;">
-                <select id="new-check-cat" class="form-input" style="flex:1; border-color: #EEE;">
-                    <option value="CLOTHING">CLOTHING</option>
-                    <option value="BEAUTY & CARE">BEAUTY & CARE</option>
-                    <option value="ACCESSORIES">ACCESSORIES</option>
-                    <option value="ELECTRONICS">ELECTRONICS</option>
-                    <option value="ESSENTIALS">ESSENTIALS</option>
-                </select>
-                <input type="text" id="new-check-item" class="form-input" placeholder="New Item..." style="flex:2; border-color: #EEE;">
-            </div>
-            <button class="add-btn" style="margin-top:10px; padding:10px;" onclick="addChecklistItem()">+ ADD ITEM</button>
-        </div>
-
-        <div id="checklist-container">
-            <!-- Categories will be rendered here -->
-        </div>
-    </div>
-
+    <div id="itineraryContent" style="margin-top:15px;"></div>
 </div>
 
-<nav class="bottom-nav">
-    <div class="nav-item active" onclick="switchView('home', this)"><i class="fas fa-home"></i><span>HOME</span></div>
-    <div class="nav-item" onclick="switchView('itinerary', this)"><i class="fas fa-map"></i><span>PLAN</span></div>
-    <div class="nav-item" onclick="switchView('bookings', this)"><i class="fas fa-ticket-alt"></i><span>BOOK</span></div>
-    <div class="nav-item" onclick="switchView('food', this)"><i class="fas fa-utensils"></i><span>FOOD</span></div>
-    <div class="nav-item" onclick="switchView('money', this)"><i class="fas fa-coins"></i><span>COST</span></div>
-    <div class="nav-item" onclick="switchView('checklist', this)"><i class="fas fa-clipboard-check"></i><span>CHECK</span></div>
-</nav>
+<div id="page-budget" class="section">
+    <div class="total-display">
+        <small>ESTIMATED TOTAL SPEND</small>
+        <h2 id="totalAmount">TWD 0</h2>
+    </div>
+    <div style="margin-bottom: 20px;">
+        <input type="text" id="budgetName" class="add-input" placeholder="項目名稱">
+        <input type="number" id="budgetPrice" class="add-input" placeholder="金額 (TWD)">
+        <button onclick="addBudgetItem()" style="width:100%; padding:14px; background:var(--teal-green); color:white; border:none; border-radius:10px; font-weight:bold;">+ ADD EXPENSE</button>
+    </div>
+    <ul id="budgetList" style="list-style: none;"></ul>
+</div>
+
+<div id="page-packing" class="section">
+    <h3 style="margin-bottom:15px; color: var(--vibrant-red);">行李準備清單</h3>
+    <div class="packing-item"><input type="checkbox"> <span>萬用轉接頭 (歐規兩圓孔)</span></div>
+    <div class="packing-item"><input type="checkbox"> <span>防風薄外套 & 太陽眼鏡</span></div>
+    <div class="packing-item"><input type="checkbox"> <span>羅浮宮門票電子檔 / 預約單</span></div>
+    <div class="packing-item"><input type="checkbox"> <span>舒適步行鞋 (爬沙丘必備)</span></div>
+    <div class="packing-item"><input type="checkbox"> <span>個人常備藥物</span></div>
+</div>
+
+<div id="page-info" class="section">
+    <h3 style="margin-bottom:15px; color: var(--vibrant-red);">Travel Logistics</h3>
+    <div class="card transport"><strong>去程: EVA Air BR087</strong><br>5/21 23:30 | TPE T2 -> CDG T1</div>
+    <div class="card transport"><strong>回程: EVA Air BR088</strong><br>6/03 11:20 | CDG T1 -> TPE</div>
+    <div class="card accommodation"><strong>莉莉家 (La Rochelle)</strong><br>11 Bis Rue Louise Pinchon</div>
+    <div class="card accommodation"><strong>常郁家 (Kœstlach)</strong><br>10 Rue du Chalet</div>
+    <div class="card accommodation"><strong>Hôtel Le Walt (Paris)</strong><br>37 Av. de la Motte-Picquet</div>
+</div>
+
+<div class="bottom-nav">
+    <button class="nav-item active" onclick="showPage('itinerary', this)"><i class="fas fa-map-marked-alt"></i>PLAN</button>
+    <button class="nav-item" onclick="showPage('budget', this)"><i class="fas fa-wallet"></i>BUDGET</button>
+    <button class="nav-item" onclick="showPage('packing', this)"><i class="fas fa-clipboard-list"></i>PACKING</button>
+    <button class="nav-item" onclick="showPage('info', this)"><i class="fas fa-info-circle"></i>INFO</button>
+</div>
 
 <script>
-    /* ================= 初始資料 ================= */
-    const segments = [
-        { id: 'tpe', name: 'Taipei (5/21)', dates: [0] }, 
-        { id: 'lr', name: 'La Rochelle (5/22-25)', dates: [1, 2, 3] },
-        { id: 'bod', name: 'Bordeaux (5/25-27)', dates: [4, 5] },
-        { id: 'ksl', name: 'Kœstlach (5/27-30)', dates: [6, 7, 8, 9] },
-        { id: 'par', name: 'Paris (5/31-6/3)', dates: [10, 11, 12, 13] }
+    // 精確校對後的初始預算資料
+    let myBudget = [
+        { name: 'EVA Air BR087/088 (Marc)', price: 120000 },
+        { name: 'EasyJet BOD-BSL (Marc)', price: 6356 },
+        { name: 'TGV Paris-LR (Katia)', price: 9251 },
+        { name: 'Train LR-Bordeaux (Katia)', price: 2472 },
+        { name: 'TGV Basel-Paris (Katia)', price: 8764 },
+        { name: 'JOST Hotel Bordeaux (Katia)', price: 8773 },
+        { name: 'Hôtel Le Walt Paris (Katia)', price: 55693 }
     ];
 
-    const defaultItinerary = [
-        { date: "5/21", day: "Thu", city: "Taipei", theme: "Depart for Adventure", items: [
-            { time: "23:30", type: "transport", title: "Taipei to Paris", desc: "EVA AIR BR087", details: "桃園機場二航廈 (T2) -> 戴高樂一航廈 (T1)", link: "https://www.evaair.com/zh-tw/index.html", linkText: "EVA AIR", location: "Taoyuan International Airport", duration: "13h 15m", cost: "Booked" }
-        ]},
-        { date: "5/22", day: "Fri", city: "La Rochelle", theme: "Arrival & Transfer", items: [
-            { time: "07:45", type: "transport", title: "Arrival in Paris", desc: "Airport Transfer", location: "Charles de Gaulle Airport", duration: "2h", cost: "€15" },
-            { time: "PM", type: "transport", title: "To La Rochelle", desc: "SNCF Train", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location: "Gare de La Rochelle", duration: "3h", cost: "Booked" }
-        ]},
-        { date: "5/23", day: "Sat", city: "La Rochelle", theme: "Port City Vibes", items: [{time:"Day", type:"spot", title:"La Rochelle Port", desc:"Vieux Port, Aquarium", location:"Vieux Port La Rochelle", duration:"4h", cost:"€20"}] },
-        { date: "5/24", day: "Sun", city: "La Rochelle", theme: "French Market Life", items: [{time:"Day", type:"spot", title:"Local Market", desc:"Enjoy French Life", location:"Marché de La Rochelle", duration:"2h", cost:"€30"}] },
-        { date: "5/25", day: "Mon", city: "Bordeaux", theme: "City & Dune", items: [
-            { time: "13:35", type: "transport", title: "To Bordeaux", desc: "SNCF Train", details: "Katia Booked", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location:"Gare de Bordeaux-Saint-Jean", duration:"2.5h", cost: "Booked" },
-            { time: "PM", type: "spot", title: "Dune du Pilat", desc: "Sand Dune", location:"Dune du Pilat", duration:"3h", cost:"€0" },
-            { time: "Eve", type: "spot", title: "City Dinner", desc: "Grand Théâtre", location:"Grand Théâtre de Bordeaux", duration:"2h", cost:"€40" },
-            { time: "Eve", type: "spot", title: "Check-in JOST", desc: "JOST Hotel Bordeaux", location:"JOST Hotel Bordeaux", duration:"-", cost:"Booked" }
-        ]},
-        { date: "5/26", day: "Tue", city: "Bordeaux", theme: "Relax & Explore", items: [
-            { time: "AM", type: "spot", title: "Bordeaux Morning", desc: "Breakfast", location:"Bordeaux", duration:"1h", cost:"€15" },
-             { time: "Eve", type: "spot", title: "Relax", desc: "Bordeaux City", location:"Bordeaux", duration:"-", cost:"-" }
-        ]},
-        { date: "5/27", day: "Wed", city: "Koestlach", theme: "Design & Slide", items: [
-            { time: "10:40", type: "transport", title: "Fly to Basel", desc: "EasyJet (BOD->BSL)", details: "Arrive 12:10. Pick up rental car.", link: "https://www.easyjet.com/en", linkText: "EasyJet", location: "EuroAirport Basel-Mulhouse-Freiburg", duration:"1.5h", cost:"Booked" },
-            { time: "14:00", type: "transport", title: "Drive to Vitra", desc: "🚗 Drive", location: "Vitra Design Museum", duration: "15m", cost: "-" },
-            { time: "14:30", type: "spot", title: "Vitra Campus", desc: "Architecture & Slide Tower", location: "Vitra Slide Tower", duration: "2.5h", cost: "€20" },
-            { time: "17:30", type: "food", title: "Dinner", desc: "VitraHaus Café or Basel", location: "VitraHaus", duration: "2h", cost: "€30" }
-        ]},
-        { date: "5/28", day: "Thu", city: "Colmar", theme: "Fairytale Towns", items: [
-            { time: "09:30", type: "transport", title: "Drive to Colmar", desc: "🚗 Drive", location: "Colmar", duration: "50m", cost: "-" },
-            { time: "10:30", type: "spot", title: "Colmar Old Town", desc: "Little Venice Boat Ride", location: "Little Venice Colmar", duration: "3h", cost: "€8" },
-            { time: "13:30", type: "transport", title: "Drive to Riquewihr", desc: "🚗 Drive", location: "Riquewihr", duration: "20m", cost: "-" },
-            { time: "14:00", type: "spot", title: "Riquewihr", desc: "Vineyards & Walled Town", location: "Riquewihr", duration: "2h", cost: "Free" }
-        ]},
-        { date: "5/29", day: "Fri", city: "Pilatus", theme: "Steepest Railway", items: [
-            { time: "09:00", type: "transport", title: "Drive to Pilatus", desc: "🚗 Drive (Scenic)", location: "Alpnachstad", duration: "1h 10m", cost: "-" },
-            { time: "10:30", type: "spot", title: "Mt. Pilatus", desc: "Cogwheel Railway", location: "Pilatus Kulm", duration: "3h", cost: "€80" },
-            { time: "14:00", type: "spot", title: "Luzern City", desc: "Chapel Bridge", location: "Kapellbrücke", duration: "2.5h", cost: "Free" }
-        ]},
-        { date: "5/30", day: "Sat", city: "Black Forest", theme: "Coaster & Gothic", items: [
-            { time: "09:00", type: "transport", title: "Drive to Todtnau", desc: "🚗 Drive", location: "Hasenhorn Rodelbahn", duration: "50m", cost: "-" },
-            { time: "10:00", type: "spot", title: "Hasenhorn Coaster", desc: "Alpine Coaster", location: "Hasenhorn Rodelbahn", duration: "2h", cost: "€10" },
-            { time: "13:00", type: "spot", title: "Freiburg", desc: "Cathedral & Market", location: "Freiburger Münster", duration: "2.5h", cost: "€10" }
-        ]},
-        { date: "5/31", day: "Sun", city: "Paris", theme: "Back to City", items: [
-            { time: "08:34", type: "transport", title: "To Paris (Est.)", desc: "Basel SBB -> Gare de Lyon", details: "TGV Lyria (Katia Booked)", link: "https://www.sncf-connect.com/en-en/", linkText: "SNCF", location: "Basel SBB", duration: "3h 04m", cost: "Booked" },
-            { time: "14:00", type: "spot", title: "Check-in Le Walt", desc: "Hôtel Le Walt (5/31-6/1)", location: "Hôtel Le Walt", duration: "-", cost: "Booked" }
-        ]},
-        { date: "6/1", day: "Mon", city: "Paris", theme: "Art & History", items: [
-            { time: "09:00", type: "spot", title: "Louvre Museum", desc: "Must Book! Closed Tue.", location: "Louvre Museum", duration: "4h", cost: "€22", details:"<b>EMERGENCY ADVICE:</b> Book 9:00 AM slot NOW if open." },
-            { time: "PM", type: "spot", title: "Le Marais", desc: "Shopping", location:"Le Marais", duration:"4h", cost:"€50" },
-            { time: "Eve", type: "spot", title: "Stay at Le Walt", desc: "Hôtel Le Walt (6/1-6/3)", location: "Hôtel Le Walt", duration: "-", cost: "Booked" }
-        ]},
-        { date: "6/2", day: "Tue", city: "Paris", theme: "Romantic Vibes", items: [
-            { time: "09:30", type: "spot", title: "Musée d'Orsay", desc: "Closed Mon.", location:"Musée d'Orsay", duration:"3h", cost:"€16" },
-            { time: "PM", type: "spot", title: "Montmartre", desc: "Sacré-Cœur", location:"Sacré-Cœur", duration:"3h", cost:"€0" }
-        ]},
-        { date: "6/3", day: "Wed", city: "Taipei", theme: "Home Sweet Home", items: [
-            { time: "06:45", type: "transport", title: "Airport Transfer", desc: "Hotel to CDG", details: "Private Transfer Booked", location:"Hôtel Le Walt", duration:"1h", cost:"Booked" },
-            { time: "11:20", type: "transport", title: "Back to Taipei", desc: "EVA AIR BR088", details: "戴高樂一航廈 (CDG T1)", location: "Charles de Gaulle Airport", duration:"13h", cost:"Booked" }
-        ]}
-    ];
-
-    const defaultBookings = [
-        { type: 'transport', name: 'Flight Taipei-Paris (Round Trip)', note: 'BR087 (TPE T2) / BR088 (CDG T1)', price: 120000, checked: true, link:'https://www.evaair.com/zh-tw/index.html', image: '' },
-        { type: 'transport', name: 'Flight Bordeaux-Basel', note: 'EasyJet 5/27 10:40-12:10', price: 6356, checked: true, link:'https://www.easyjet.com/en', image: '' },
-        { type: 'hotel',     name: 'JOST Hotel Bordeaux', note: '5/25-5/27 (Hotels.com)', price: 8773, checked: true, link:'https://www.hotels.com', image: '' },
-        { type: 'hotel',     name: 'Hôtel Le Walt (5/31-6/1)', note: 'Booking.com (Katia買)', price: 17881, checked: true, link:'https://www.booking.com', image: '' },
-        { type: 'hotel',     name: 'Hôtel Le Walt (6/1-6/3)', note: 'Booking.com (Katia買)', price: 37812, checked: true, link:'https://www.booking.com', image: '' },
-        { type: 'transport', name: 'Airport Transfer (Paris)', note: '6/3 06:45 Hotel to CDG', price: 1993, checked: true, link:'', image: '' },
-        { type: 'transport', name: 'Train Basel -> Paris', note: '5/31 08:34 (Katia買)', price: 8764, checked: true, link:'https://www.sncf-connect.com/en-en/', image: '' },
-        { type: 'transport', name: 'Train La Rochelle -> Bordeaux', note: '5/25 13:35 (Katia買)', price: 2472, checked: true, link:'https://www.sncf-connect.com/en-en/', image: '' },
-        { type: 'transport', name: 'Louvre Museum Ticket', note: 'Book for 6/1 09:00', price: 770, checked: false, link:'https://www.ticketlouvre.fr/', image: '' },
-        { type: 'transport', name: 'Train to La Rochelle', note: 'SNCF (Est.)', price: 2500, checked: false, link:'https://www.sncf-connect.com/en-en/', image: '' }
-    ];
-
-    const parisFood = [
-        {name: "L'Ami Jean", area: "7th (Eiffel)", type: "Bistro", price: "€40-90", time: "Tue-Sat 12-14, 19-23", note: "米其林推薦，必點米布丁", loc: "27 Rue Malar"},
-        {name: "Le Petit Sommelier", area: "14th (Montparnasse)", type: "Bistro", price: "€20-45", time: "Mon-Sat 08-23", note: "選酒很棒，酥皮佐餐", loc: "49 Av. du Maine"},
-        {name: "Au Terminus du Châtelet", area: "1st (Châtelet)", type: "Traditional", price: "€18-25", time: "Daily 06:30-02:00", note: "營業時間長，份量足", loc: "5 Rue des Lavandières Sainte-Opportune"},
-        {name: "Pizzeria Popolare", area: "2nd", type: "Italian", price: "€15-25", time: "Daily 11:45-14:15, 18:30-22:30", note: "網紅店，便宜好吃披薩", loc: "111 Rue Réaumur"},
-        {name: "Les Antiquaires", area: "7th (Orsay)", type: "Bistro", price: "€20-30", time: "Daily 07-23", note: "復古優雅", loc: "13 Rue du Bac"},
-        {name: "Bouillon République", area: "3rd (Republic)", type: "Bouillon", price: "€15-20", time: "Daily 12-00", note: "工人食堂，超便宜大碗", loc: "39 Bd du Temple"},
-        {name: "Chez Janou", area: "3rd (Marais)", type: "Provençal", price: "€20-40", time: "Daily 12-15, 19-00", note: "巧克力慕斯吃到飽", loc: "2 Rue Roger Verlomme"},
-        {name: "Narro Restaurant", area: "5th (Latin)", type: "Modern", price: "€35-80", time: "Tue-Sat 12-14:30, 19-22", note: "精緻擺盤，高分推薦", loc: "72 Rue du Cardinal Lemoine"},
-        {name: "Le Chabert", area: "5th/13th", type: "Traditional", price: "€35-40", time: "Daily 12-14:30, 19-22:30", note: "前菜甜點吃到飽", loc: "12 Rue de la Glacière"},
-        {name: "Les Enfants Rouges", area: "3rd (Marais)", type: "Bistro", price: "€30-70", time: "Thu-Mon 12-14, 19-22", note: "日式職人精神法餐", loc: "9 Rue de Beauce"},
-        {name: "Du Pain et des Idées", area: "10th", type: "Bakery", price: "€", time: "Mon-Fri 07-19:30", note: "必吃蝸牛麵包", loc: "34 Rue Yves Toudic"},
-        {name: "Blé Sucré", area: "12th", type: "Bakery", price: "€", time: "Tue-Sun 07-19:30", note: "瑪德蓮、可頌", loc: "7 Rue Antoine Vollon"},
-        {name: "La Maison d’Isabelle", area: "5th", type: "Bakery", price: "€", time: "Tue-Sun 06-20", note: "可頌冠軍", loc: "47 Bd Saint-Germain"},
-        {name: "Pierre Hermé", area: "6th", type: "Dessert", price: "€€", time: "Daily 10-20", note: "馬卡龍之神", loc: "72 Rue Bonaparte"}
-    ];
-
-    const koestlachFood = [
-        {name: "Auberge Saint-Laurent", area: "Sierentz (FR)", type: "Alsatian", price: "€30-60", time: "Wed-Sun", note: "米其林推薦，傳統亞爾薩斯菜", loc: "1 Rue de la Fontaine, Sierentz"},
-        {name: "Restaurant La Couronne", area: "Tagsdorf (FR)", type: "French", price: "€25-50", time: "Tue-Sun", note: "當地人推薦，氣氛溫馨", loc: "2 Rue du Général de Gaulle, Tagsdorf"},
-        {name: "Markthalle Basel", area: "Basel (CH)", type: "Food Court", price: "CHF 15-30", time: "Daily", note: "巴塞爾市內美食廣場，選擇多", loc: "Steinentorberg 20, Basel"},
-        {name: "Confiserie Gilgen", area: "Basel (CH)", type: "Cafe", price: "CHF 10-20", time: "Mon-Sat", note: "巴塞爾百年老店，甜點很棒", loc: "Spalenberg 6, Basel"}
-    ];
-
-    const defaultChecklist = [
-        { cat: "CLOTHING", items: [ { name: "睡衣", checked: false }, { name: "內衣褲", checked: false }, { name: "襪子", checked: false }, { name: "幾套穿搭", checked: false } ]},
-        { cat: "BEAUTY & CARE", items: [ { name: "化妝包", checked: false }, { name: "眼罩", checked: false }, { name: "髮基因", checked: false }, { name: "隱形眼鏡", checked: false }, { name: "眼鏡", checked: false }, { name: "身體乳超大罐", checked: false }, { name: "面膜", checked: false }, { name: "香水", checked: false }, { name: "按摩刮痧", checked: false }, { name: "護手霜", checked: false }, { name: "電棒燙", checked: false }, { name: "橡皮筋", checked: false }, { name: "保養品包", checked: false }, { name: "防曬", checked: false }, { name: "衛生棉", checked: false } ]},
-        { cat: "ACCESSORIES", items: [ { name: "配件", checked: false }, { name: "墨鏡", checked: false }, { name: "戒指/項鍊", checked: false }, { name: "側背包", checked: false }, { name: "Baggu", checked: false } ]},
-        { cat: "ELECTRONICS", items: [ { name: "手機充電器", checked: false }, { name: "行充", checked: false }, { name: "變壓器", checked: false }, { name: "耳機充電", checked: false } ]},
-        { cat: "ESSENTIALS", items: [ { name: "護照", checked: false }, { name: "藥(維他命、益生菌)", checked: false }, { name: "護墊/衛生棉/安全褲/棉條", checked: false }, { name: "口罩", checked: false }, { name: "esim", checked: false }, { name: "叫車", checked: false }, { name: "帶牙套", checked: false }, { name: "牙刷組、牙膏", checked: false } ]}
-    ];
-
-    let currentItinerary = [], currentDayIndex = 0;
-
-    function init() {
-        // Use v21 for this update
-        const storedItin = localStorage.getItem('mark_trip_itinerary_v21');
-        if (storedItin) {
-            currentItinerary = JSON.parse(storedItin);
-        } else {
-            currentItinerary = defaultItinerary;
-            localStorage.setItem('mark_trip_itinerary_v21', JSON.stringify(currentItinerary));
+    const itineraryData = {
+        'Taipei': { 
+            '5/21': { 
+                icon: 'fa-cloud-showers-heavy', temp: '26°C', 
+                direction: '請於 20:30 前抵達桃機。今晚將跨越歐亞大陸。', 
+                events: [{ type: 'transport', time: '23:30', title: 'EVA Air BR087', note: '馬克已付 $120,000', location: 'Taoyuan T2' }] 
+            }
+        },
+        'La Rochelle': { 
+            '5/22': { 
+                icon: 'fa-cloud', temp: '17°C', 
+                direction: '13:27 高鐵出發。莉莉家位於 La Rochelle 核心地帶。', 
+                events: [{ type: 'transport', time: '13:27', title: 'TGV: Paris to La Rochelle', note: '16:18 抵達 | Katia付 $9251', location: 'Paris Montparnasse' }] 
+            },
+            '5/23-5/24': { 
+                icon: 'fa-sun', temp: '19°C', 
+                direction: '悠閒時光：建議前往雷島（Île de Ré），享受法式濱海度假感。', 
+                events: [{ title: 'Explore La Rochelle Old Port', location: '11 Bis Rue Louise Pinchon' }] 
+            }
+        },
+        'Bordeaux': {
+            '5/25': { 
+                icon: 'fa-cloud-sun', temp: '22°C', 
+                direction: '13:35 搭車。JOST 飯店位置優越，離車站很近。', 
+                events: [{ type: 'transport', time: '13:35', title: 'Train to Bordeaux', note: '15:57 抵達 | Katia付 $2472', location: 'La Rochelle Ville' }] 
+            },
+            '5/26': { 
+                icon: 'fa-sun', temp: '23°C', 
+                direction: '💡 重點行程：皮拉沙丘 (Dune du Pilat)。記得多帶水，爬沙丘很耗體力。', 
+                events: [{ title: 'Dune du Pilat Adventure', location: 'Dune du Pilat' }] 
+            }
+        },
+        'Kœstlach': {
+            '5/27': { 
+                icon: 'fa-cloud-rain', temp: '15°C', 
+                direction: '10:40 飛機。常郁會在 Saint Louis 接機，前往 Kœstlach。', 
+                events: [{ type: 'transport', time: '10:40', title: 'EasyJet: BOD to BSL', note: '12:10 抵達 | 馬克付 $6356', location: 'Bordeaux Airport' }] 
+            },
+            '5/28-5/30': { 
+                icon: 'fa-cloud-sun', temp: '16°C', 
+                direction: '小鎮放空：適合參觀巴塞爾周邊的 Vitra 設計校園。', 
+                events: [{ title: 'Vitra Design Campus', location: 'Vitra Campus' }] 
+            }
+        },
+        'Paris': {
+            '5/31': { 
+                icon: 'fa-cloud', temp: '20°C', 
+                direction: '08:34 從巴塞爾回巴黎。入住 Le Walt，可步行至艾菲爾鐵塔。', 
+                events: [{ type: 'transport', time: '08:34', title: 'TGV: Basel SBB to Paris', note: '11:38 抵達 | Katia付 $8764', location: 'Basel SBB' }] 
+            },
+            '6/01': { 
+                icon: 'fa-sun', temp: '21°C', 
+                direction: '藝文日：09:30 羅浮宮預約（2張）。下午建議逛瑪黑區。', 
+                events: [{ time: '09:30', title: 'Louvre Museum Visit', location: 'Louvre Museum' }] 
+            },
+            '6/02': { 
+                icon: 'fa-sun', temp: '22°C', 
+                direction: '自由發揮：適合在左岸喝杯咖啡，進行最後採買。', 
+                events: [{ title: 'Free Day in Paris', location: 'Saint-Germain-des-Prés' }] 
+            },
+            '6/03': { 
+                icon: 'fa-sun', temp: '18°C', 
+                direction: '打包回程：06:45 車子已訂。11:20 飛機起飛。', 
+                events: [
+                    { time: '06:45', title: 'Airport Transfer', note: '訂單 462561117', location: 'Hôtel Le Walt' }, 
+                    { time: '11:20', title: 'EVA Air BR088', location: 'CDG Airport T1' }
+                ] 
+            }
         }
-        document.getElementById('exp-date').valueAsDate = new Date();
-        renderSegmentBar(); selectSegment(0); renderBookings(); renderExpenses(); renderChecklist(); renderFoodList();
-        switchView('home', document.querySelector('.nav-item.active'));
-        setInterval(updateCountdown, 1000); updateCountdown();
+    };
+
+    function showPage(p, b) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById('page-' + p).classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        b.classList.add('active');
+        if(p === 'budget') renderBudget();
     }
 
-    /* Logic */
-    function updateCountdown() {
-        const diff = new Date("2026-05-21").getTime() - new Date().getTime();
-        const d = Math.floor(diff / (1000*60*60*24));
-        document.getElementById("cd-days").innerText = d > 0 ? d : 0;
-    }
-    // ... Itinerary Rendering ...
-    function renderSegmentBar() {
-        const bar = document.getElementById('segment-bar'); bar.innerHTML = '';
-        segments.forEach((seg, idx) => {
-            const chip = document.createElement('div'); chip.className = `seg-chip ${idx===0?'active':''}`;
-            chip.innerHTML = `${seg.name}`; 
-            chip.onclick = () => selectSegment(idx); bar.appendChild(chip);
-        });
-    }
-    function selectSegment(idx) {
-        document.querySelectorAll('.seg-chip').forEach((el, i) => el.classList.toggle('active', i === idx));
-        const bar = document.getElementById('date-bar'); bar.innerHTML = '';
-        segments[idx].dates.forEach(dIdx => {
-            const d = currentItinerary[dIdx];
-            const pill = document.createElement('div'); pill.className = `date-pill ${dIdx===currentDayIndex?'active':''}`;
-            pill.id=`dp-${dIdx}`; pill.onclick=()=>switchDay(dIdx);
-            pill.innerHTML = `<div class="dp-day">${d.day}</div><div class="dp-date">${d.date}</div>`;
-            bar.appendChild(pill);
-        });
-        switchDay(segments[idx].dates[0]);
-    }
-    function switchDay(idx) {
-        currentDayIndex = idx;
-        document.querySelectorAll('.date-pill').forEach(el => el.classList.remove('active'));
-        const active = document.getElementById(`dp-${idx}`); if(active) active.classList.add('active');
-        renderDay(idx);
-    }
-    function renderDay(idx) {
-        const data = currentItinerary[idx];
-        const con = document.getElementById('day-content');
-        con.innerHTML = `
-        <div class="day-hero">
-            <div class="day-hero-top">
-                <div class="day-info">
-                    <h2>${data.city}</h2>
-                    <p>${segments.find(s=>s.dates.includes(idx)).name}</p>
-                </div>
-                <a href="https://www.google.com/search?q=weather+${data.city}" target="_blank" class="weather-btn"><i class="fas fa-sun"></i> Weather</a>
-            </div>
-            ${data.theme ? `<div class="day-theme">THEME: ${data.theme}</div>` : ''}
-        </div>`;
-        
-        data.items.forEach((item, i) => {
-            let meta = ''; if(item.duration||item.cost) meta=`<div class="card-meta-row">${item.duration?`<div class="meta-item"><i class="fas fa-clock"></i>${item.duration}</div>`:''}${item.cost?`<div class="meta-item"><i class="fas fa-coins"></i>${item.cost}</div>`:''}</div>`;
-            let linkBtn = item.link?`<a href="${item.link}" target="_blank" class="btn btn-ticket"><i class="fas fa-ticket-alt"></i> ${item.linkText}</a>`:'';
-            con.innerHTML += `<div class="card type-${item.type}"><div class="card-tag">${item.type}</div><div class="card-controls"><div class="expand-toggle" onclick="this.closest('.card').querySelector('.details-box').classList.toggle('show')"><i class="fas fa-plus"></i></div><div class="icon-btn delete" onclick="delItinItem(${idx},${i})"><i class="fas fa-trash"></i></div></div><div class="card-header"><div class="time-badge">${item.time}</div><div class="card-title">${item.title}</div><div class="card-desc">${item.desc}</div></div>${(item.type==='transport'&&item.details)?`<div class="transport-info"><i class="fas fa-info-circle"></i>${item.details}</div>`:''}${meta}<div class="details-box">${(item.details&&item.type!=='transport')?`<p style="color:#5D4037;margin-bottom:10px;">${item.details}</p>`:''}<div class="action-buttons"><a href="https://www.google.com/maps/search/?api=1&query=${item.location}" target="_blank" class="btn btn-map"><i class="fas fa-map-marker-alt"></i> MAP</a>${linkBtn}</div></div></div>`;
-        });
-    }
-    function addItemToDay() {
-        const t=document.getElementById('new-title').value; if(!t) return;
-        currentItinerary[currentDayIndex].items.push({
-            time: document.getElementById('new-time').value||"TBD", type: document.getElementById('new-type').value,
-            title: t, desc: document.getElementById('new-desc').value, location: document.getElementById('new-loc').value,
-            duration: document.getElementById('new-duration').value, cost: document.getElementById('new-cost').value, details:""
-        });
-        localStorage.setItem('mark_trip_itinerary_v21', JSON.stringify(currentItinerary));
-        renderDay(currentDayIndex);
-        document.querySelectorAll('.add-item-form input').forEach(i=>i.value='');
-    }
-    function delItinItem(d,i) { if(confirm('Delete?')) { currentItinerary[d].items.splice(i,1); localStorage.setItem('mark_trip_itinerary_v21', JSON.stringify(currentItinerary)); renderDay(d); } }
-
-    /* --- FOOD LOGIC --- */
-    function renderFoodList() {
-        const type = document.getElementById('food-filter').value;
-        const list = type === 'paris' ? parisFood : koestlachFood;
-        const container = document.getElementById('food-list-container');
-        container.innerHTML = '';
-
-        list.forEach(item => {
-            container.innerHTML += `
-            <div class="card type-food">
-                <div class="card-tag">${item.type}</div>
-                <div class="card-controls">
-                    <div class="expand-toggle" onclick="addFoodToPlan('${item.name}')"><i class="fas fa-plus"></i></div>
-                </div>
-                <div class="card-header">
-                    <div class="time-badge">${item.area}</div>
-                    <div class="card-title">${item.name}</div>
-                    <div class="card-desc">${item.note}</div>
-                </div>
-                <div class="card-meta-row">
-                    <div class="meta-item"><i class="fas fa-clock"></i> ${item.time}</div>
-                    <div class="meta-item"><i class="fas fa-coins"></i> ${item.price}</div>
-                </div>
-                <div class="details-box show">
-                    <div class="action-buttons">
-                        <a href="https://www.google.com/maps/search/?api=1&query=${item.loc}" target="_blank" class="btn btn-map"><i class="fas fa-map-marker-alt"></i> MAP</a>
-                    </div>
-                </div>
-            </div>`;
-        });
-    }
-
-    function addFoodToPlan(name) {
-        if(confirm(`Add "${name}" to current plan day?`)) {
-            currentItinerary[currentDayIndex].items.push({
-                time: "Meal", type: "food", title: name, desc: "Added from Food List", location: name, details: "", duration: "2h", cost: "?"
-            });
-            localStorage.setItem('mark_trip_itinerary_v21', JSON.stringify(currentItinerary));
-            alert("Added!");
-        }
-    }
-
-    /* --- Bookings Logic --- */
-    function getBookings() { return localStorage.getItem('mark_trip_bookings_v21') ? JSON.parse(localStorage.getItem('mark_trip_bookings_v21')) : defaultBookings; }
-    function saveBookings(d) { localStorage.setItem('mark_trip_bookings_v21', JSON.stringify(d)); } 
-    
-    function renderBookings() {
-        const list = getBookings();
-        const con = document.getElementById('booking-list'); con.innerHTML = '';
-        let total = 0; const rate = parseFloat(document.getElementById('bk-rate').value)||35;
-        list.forEach((item, idx) => {
-            total += parseInt(item.price||0);
-            let eur = (item.price/rate).toFixed(2);
-            let imgHtml = item.image ? `<div class="bk-image-container"><img src="${item.image}"><div class="remove-img-btn" onclick="removeBkImage(${idx})"><i class="fas fa-times"></i></div></div>` : '';
-            
-            con.innerHTML += `
-            <div class="booking-item type-${item.type} ${item.checked?'checked':''}">
-                <div style="display:flex;gap:12px;">
-                    <input type="checkbox" style="width:20px;height:20px;accent-color:#1E5638;" ${item.checked?'checked':''} onchange="toggleBk(${idx})">
-                    <div style="flex:1;">
-                        <div style="font-family:var(--font-header);font-size:0.7rem;color:#888;">${item.type}</div>
-                        <div style="font-weight:700;color:#1E5638;" class="bk-name">${item.name}</div>
-                        <div style="font-size:0.85rem;color:#6D7248;" class="bk-note">${item.note}</div>
-                    </div>
-                </div>
-                <div class="dual-input-row">
-                    <div class="currency-input-group"><span class="currency-label">EUR €</span><input type="number" id="eur-${idx}" class="bk-input" value="${eur}" oninput="handleBkInput(${idx},'eur',this.value)"></div>
-                    <div style="color:#D7CCC8;">↔</div>
-                    <div class="currency-input-group"><span class="currency-label">NT$</span><input type="number" id="twd-${idx}" class="bk-input" value="${item.price}" oninput="handleBkInput(${idx},'twd',this.value)"></div>
-                </div>
-                ${imgHtml}
-                <div class="bk-actions-row">
-                    <input type="file" id="file-${idx}" style="display:none" accept="image/*" onchange="uploadBkImage(${idx}, this)">
-                    <div class="icon-btn photo" onclick="document.getElementById('file-${idx}').click()"><i class="fas fa-camera"></i></div>
-                    <div class="icon-btn delete" onclick="delBk(${idx})"><i class="fas fa-trash"></i></div>
-                </div>
-            </div>`;
-        });
-        updateTotalBudget(total, rate);
-    }
-    function updateTotalBudget(totalTwd, rate) {
-        document.getElementById('total-budget').innerHTML = `NT$ ${totalTwd.toLocaleString()}<br><span style="font-size:1.3rem;opacity:0.9;">€ ${(totalTwd/rate).toFixed(2)}</span>`;
-    }
-    function handleBkInput(idx, type, val) {
-        const list = getBookings(); const rate = parseFloat(document.getElementById('bk-rate').value)||35;
-        let twd;
-        if(type==='eur') { twd = Math.round(val*rate); document.getElementById(`twd-${idx}`).value = twd; }
-        else { twd = parseInt(val)||0; document.getElementById(`eur-${idx}`).value = (twd/rate).toFixed(2); }
-        list[idx].price = twd;
-        saveBookings(list); 
-        let newTotal = list.reduce((acc, curr) => acc + parseInt(curr.price||0), 0);
-        updateTotalBudget(newTotal, rate);
-    }
-    function toggleBk(i) { let l=getBookings(); l[i].checked=!l[i].checked; saveBookings(l); renderBookings(); }
-    function addBooking() { let l=getBookings(); l.push({type:document.getElementById('new-bk-type').value, name:document.getElementById('new-bk-name').value, price:0, checked:false, image:''}); saveBookings(l); renderBookings(); }
-    function delBk(i) { if(confirm('Del?')) { let l=getBookings(); l.splice(i,1); saveBookings(l); renderBookings(); } }
-    
-    function uploadBkImage(idx, input) {
-        const file = input.files[0];
-        if(!file) return;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            let list = getBookings();
-            list[idx].image = e.target.result;
-            saveBookings(list);
-            renderBookings();
-        };
-        reader.readAsDataURL(file);
-    }
-    function removeBkImage(idx) {
-        if(confirm("Remove photo?")) {
-            let list = getBookings();
-            list[idx].image = '';
-            saveBookings(list);
-            renderBookings();
-        }
-    }
-
-    /* --- Checklist Logic --- */
-    function getCheck() { return localStorage.getItem('mark_trip_checklist_v21') ? JSON.parse(localStorage.getItem('mark_trip_checklist_v21')) : defaultChecklist; }
-    function saveCheck(d) { localStorage.setItem('mark_trip_checklist_v21', JSON.stringify(d)); renderChecklist(); }
-    function renderChecklist() {
-        const list = getCheck(); const con = document.getElementById('checklist-container'); con.innerHTML = '';
-        list.forEach((cat, cIdx) => {
-            let items = '';
-            cat.items.forEach((it, iIdx) => {
-                items += `<div class="check-item ${it.checked?'checked':''}" onclick="toggleCheck(${cIdx},${iIdx})"><div class="check-left"><div class="custom-checkbox"><i class="fas fa-check" style="display:${it.checked?'block':'none'}"></i></div><span>${it.name}</span></div><i class="fas fa-trash" style="color:#DDD;" onclick="delCheckItem(event,${cIdx},${iIdx})"></i></div>`;
-            });
-            con.innerHTML += `<div class="check-category-card"><div class="check-category-header">${cat.cat}</div>${items}</div>`;
-        });
-    }
-    function toggleCheck(c, i) { let l=getCheck(); l[c].items[i].checked=!l[c].items[i].checked; saveCheck(l); }
-    function addChecklistItem() { 
-        let l=getCheck(); let catName=document.getElementById('new-check-cat').value; let val=document.getElementById('new-check-item').value;
-        let cat = l.find(c=>c.cat===catName); if(cat && val) { cat.items.push({name:val, checked:false}); saveCheck(l); document.getElementById('new-check-item').value=''; }
-    }
-    function delCheckItem(e, c, i) { e.stopPropagation(); if(confirm('Del?')) { let l=getCheck(); l[c].items.splice(i,1); saveCheck(l); } }
-
-    /* --- Money --- */
-    function convert(src) {
-        const eur = document.getElementById('conv-eur'), twd = document.getElementById('conv-twd'), rate = document.getElementById('conv-rate').value;
-        if(src==='eur') twd.value = Math.round(eur.value*rate);
-        if(src==='twd') eur.value = (twd.value/rate).toFixed(2);
-    }
-    function renderExpenses() {
-        let exps = JSON.parse(localStorage.getItem('mark_trip_expenses_v21'))||[];
-        const list = document.getElementById('expense-list'); list.innerHTML = '';
+    function renderBudget() {
+        const list = document.getElementById('budgetList');
+        const totalElem = document.getElementById('totalAmount');
+        list.innerHTML = '';
         let total = 0;
-        exps.sort((a,b)=>new Date(b.date)-new Date(a.date));
-        let grouped = exps.reduce((acc, curr) => {
-            const d = curr.date || 'Undated'; if(!acc[d]) acc[d] = {t:0, i:[]};
-            acc[d].i.push(curr); acc[d].t += parseFloat(curr.amount); return acc;
-        }, {});
-        Object.keys(grouped).forEach(d => {
-            let g = grouped[d];
-            let html = `<div class="daily-group"><div class="daily-header">${d} • €${g.t.toFixed(2)}</div>`;
-            g.i.forEach(e => {
-                total+=parseFloat(e.amount);
-                const oIdx = exps.indexOf(e);
-                html += `<div class="expense-item"><span>${e.name}</span><span>€${e.amount} <i class="fas fa-trash" onclick="delExp(${oIdx})"></i></span></div>`;
-            });
-            list.innerHTML += html + '</div>';
+        myBudget.forEach((item, index) => {
+            total += item.price;
+            list.innerHTML += `<li class="budget-item"><span>${item.name}</span><span>TWD ${item.price.toLocaleString()} <i class="fas fa-times-circle" style="color:#ffcccc; margin-left:8px;" onclick="deleteBudget(${index})"></i></span></li>`;
         });
-        document.getElementById('expense-total').innerText = '€'+total.toFixed(2);
-    }
-    function addExpense() { 
-        let l = JSON.parse(localStorage.getItem('mark_trip_expenses_v21'))||[]; 
-        l.push({date:document.getElementById('exp-date').value, name:document.getElementById('exp-name').value, amount:document.getElementById('exp-amt').value});
-        localStorage.setItem('mark_trip_expenses_v21', JSON.stringify(l)); renderExpenses();
-    }
-    function delExp(i) { let l=JSON.parse(localStorage.getItem('mark_trip_expenses_v21')); l.splice(i,1); localStorage.setItem('mark_trip_expenses_v21', JSON.stringify(l)); renderExpenses(); }
-
-    function switchView(id, btn) {
-        document.querySelectorAll('.section-view').forEach(e => e.classList.remove('active'));
-        document.getElementById('view-'+id).classList.add('active');
-        document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById('app-header').style.display = (id === 'home') ? 'none' : 'block';
+        totalElem.innerText = 'TWD ' + total.toLocaleString();
     }
 
-    window.onload = init;
+    function addBudgetItem() {
+        const name = document.getElementById('budgetName').value;
+        const price = parseInt(document.getElementById('budgetPrice').value);
+        if(name && price) {
+            myBudget.push({ name: name, price: price });
+            document.getElementById('budgetName').value = '';
+            document.getElementById('budgetPrice').value = '';
+            renderBudget();
+        }
+    }
+
+    function deleteBudget(idx) { myBudget.splice(idx, 1); renderBudget(); }
+
+    let currentLoc = 'Taipei';
+    function switchLocation(l) {
+        currentLoc = l;
+        document.querySelectorAll('.tier-1 button').forEach(btn => btn.classList.toggle('active', btn.innerText === l));
+        renderDates();
+    }
+
+    function renderDates() {
+        const dTabs = document.getElementById('dateTabs');
+        dTabs.innerHTML = '';
+        const dates = Object.keys(itineraryData[currentLoc]);
+        dates.forEach((d, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'date-btn' + (i === 0 ? ' active' : '');
+            btn.innerText = d;
+            btn.onclick = () => {
+                document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderItinerary(d);
+            };
+            dTabs.appendChild(btn);
+        });
+        renderItinerary(dates[0]);
+    }
+
+    function renderItinerary(d) {
+        const cont = document.getElementById('itineraryContent');
+        const data = itineraryData[currentLoc][d];
+        cont.innerHTML = `
+            <div class="weather-banner"><i class="fas ${data.icon}"></i> 預估天氣：<span class="temp-val">${data.temp}</span></div>
+            <div class="direction-box"><strong>💡 行前指引：</strong>${data.direction}</div>
+        `;
+        data.events.forEach(item => {
+            cont.innerHTML += `<div class="card ${item.type || ''}">
+                <button class="delete-btn" onclick="this.parentElement.remove()"><i class="fas fa-trash-alt"></i></button>
+                <div style="font-size:12px; color:#666;"><i class="far fa-clock"></i> ${item.time || '全天'}</div>
+                <div style="font-weight:bold; margin:5px 0; font-size:16px;">${item.title}</div>
+                ${item.note ? `<div style="font-size:13px; color:var(--vibrant-red); font-weight:bold;">${item.note}</div>`:''}
+                ${item.location ? `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.location)}" class="map-btn" target="_blank"><i class="fas fa-location-arrow"></i> 導航</a>`:''}
+            </div>`;
+        });
+    }
+    renderDates(); renderBudget();
 </script>
 </body>
 </html>
