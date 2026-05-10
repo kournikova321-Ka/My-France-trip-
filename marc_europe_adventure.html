@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marc's Europe Adventure 2025</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<style>
+:root{--pk:#FF8EB2;--rd:#FF4D31;--tl:#00B4A8;--yw:#FFF200;--bg:#FAF9F6}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);padding-bottom:80px;color:#333;font-family:'Hiragino Sans','PingFang TC',sans-serif;font-size:14px}
+.clk{background:#222;color:#fff;padding:8px 16px;display:flex;justify-content:space-around;font-size:11px;position:sticky;top:0;z-index:1001}
+header{background:var(--pk);padding:28px 20px 20px;text-align:center;border-bottom:5px solid var(--rd)}
+h1{color:white;font-size:18px;text-transform:uppercase;letter-spacing:2px;text-shadow:2px 2px var(--rd)}
+.subt{color:rgba(255,255,255,0.8);font-size:11px;margin-top:4px}
+.nav-wrap{position:sticky;top:30px;z-index:100;background:white;border-bottom:1px solid #eee}
+.t1{display:flex;overflow-x:auto;background:var(--rd);padding:10px 0;scrollbar-width:none}
+.t1::-webkit-scrollbar{display:none}
+.t1 button{flex:0 0 auto;background:none;border:none;color:white;padding:6px 16px;font-weight:800;font-size:12px;opacity:.6;cursor:pointer;white-space:nowrap}
+.t1 button.active{opacity:1;border-bottom:3px solid var(--yw)}
+.t2{display:flex;overflow-x:auto;background:white;padding:10px 6px;scrollbar-width:none;gap:6px}
+.t2::-webkit-scrollbar{display:none}
+.dbtn{background:#f0f0f0;border:none;border-radius:20px;padding:5px 13px;font-size:11px;white-space:nowrap;cursor:pointer}
+.dbtn.active{background:var(--tl);color:white}
+.sec{display:none;padding:16px}
+.sec.active{display:block}
+.card{background:white;border-radius:0 16px 16px 0;padding:16px;margin-bottom:12px;box-shadow:0 4px 12px rgba(0,0,0,0.06);border:1px solid #f0f0f0;position:relative}
+.card.tp{border-left:6px solid var(--rd)}
+.card.ac{border-left:6px solid var(--pk)}
+.card.act{border-left:6px solid var(--tl)}
+.card.food{border-left:6px solid #f9a825}
+.tip-box{background:#fff8e1;border-left:4px solid #ffa726;border-radius:0 10px 10px 0;padding:10px 12px;margin-top:8px;font-size:12px;color:#6d4c00;line-height:1.6}
+.tip-title{font-weight:bold;font-size:11px;color:#e65100;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.del{position:absolute;top:10px;right:10px;color:#ddd;font-size:16px;cursor:pointer;background:none;border:none}
+.mapbtn{text-decoration:none;display:block;text-align:center;padding:9px;background:var(--tl);color:white;border-radius:10px;font-weight:bold;margin-top:8px;font-size:12px}
+.totcard{background:var(--rd);color:white;padding:24px;border-radius:20px;text-align:center;margin-bottom:20px}
+.bnav{position:fixed;bottom:0;width:100%;background:white;display:flex;padding:10px 0;border-top:1px solid #eee;z-index:1000}
+.ni{border:none;background:none;font-size:10px;color:#aaa;text-align:center;flex:1;cursor:pointer}
+.ni.active{color:var(--rd);font-weight:bold}
+.ni i{font-size:18px;display:block;margin-bottom:3px}
+.sec-title{font-size:13px;font-weight:bold;color:#999;text-transform:uppercase;letter-spacing:1px;margin:16px 0 8px}
+input,select{width:100%;padding:10px;margin-bottom:8px;border:1px solid #ddd;border-radius:8px;font-size:13px;font-family:inherit}
+.addbtn{width:100%;padding:13px;background:var(--tl);color:white;border:none;border-radius:10px;font-weight:bold;cursor:pointer;font-family:inherit}
+.addrow{border:2px dashed #ddd;background:none;width:100%;border-radius:12px;padding:12px;color:#aaa;font-weight:bold;margin-top:8px;cursor:pointer;font-family:inherit}
+.fbadge{display:inline-block;background:#e8f5e9;color:#2e7d32;font-size:10px;padding:2px 8px;border-radius:10px;margin-top:4px;font-weight:bold}
+.info-card{background:white;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 4px 12px rgba(0,0,0,0.06);border:1px solid #f0f0f0}
+.info-card.tp{border-left:6px solid var(--rd);border-radius:0 16px 16px 0}
+.info-card.ac{border-left:6px solid var(--pk);border-radius:0 16px 16px 0}
+</style>
+</head>
+<body>
+
+<div class="clk">
+  <div>TAIPEI: <span id="tp">--:--</span></div>
+  <div>EUROPE: <span id="eu">--:--</span></div>
+  <div id="cntdwn" style="color:var(--yw)">載入中...</div>
+</div>
+
+<header>
+  <h1>Marc's Europe Adventure</h1>
+  <div class="subt">5/21 – 6/3 · 2025 · Paris · La Rochelle · Bordeaux · Alsace · Rigi</div>
+</header>
+
+<!-- ITINERARY PAGE -->
+<div id="pg-itinerary" class="sec active">
+  <div class="nav-wrap">
+    <div class="t1" id="locTabs">
+      <button onclick="switchLoc('Taipei')" id="btn-Taipei">✈️ Taipei</button>
+      <button onclick="switchLoc('La Rochelle')" id="btn-La Rochelle">🌊 La Rochelle</button>
+      <button onclick="switchLoc('Bordeaux')" id="btn-Bordeaux">🍷 Bordeaux</button>
+      <button onclick="switchLoc('Kœstlach')" id="btn-Kœstlach">🌿 Kœstlach</button>
+      <button onclick="switchLoc('Paris')" id="btn-Paris">🗼 Paris</button>
+    </div>
+    <div class="t2" id="dateTabs"></div>
+  </div>
+  <div id="itiCont" style="margin-top:14px"></div>
+  <button class="addrow" onclick="addEv()">+ 新增行程</button>
+</div>
+
+<!-- BUDGET PAGE -->
+<div id="pg-budget" class="sec">
+  <div class="totcard">
+    <p style="font-size:11px;opacity:.8">目前總花費 (TWD)</p>
+    <h2 id="totalAmt" style="font-size:28px">$ 0</h2>
+    <div id="splitInfo" style="font-size:11px;opacity:.8;margin-top:6px"></div>
+  </div>
+  <div class="info-card">
+    <input type="text" id="bName" placeholder="項目名稱">
+    <input type="number" id="bPrice" placeholder="金額 (TWD)">
+    <select id="bBuyer"><option value="Marc">Marc 支付</option><option value="Katia">Katia 支付</option></select>
+    <select id="bCat">
+      <option value="transport">交通</option>
+      <option value="accommodation">住宿</option>
+      <option value="food">餐飲</option>
+      <option value="activity">活動</option>
+      <option value="other">其他</option>
+    </select>
+    <button class="addbtn" onclick="addBudget()">新增預算項目</button>
+  </div>
+  <ul id="bList" style="list-style:none"></ul>
+</div>
+
+<!-- INFO PAGE -->
+<div id="pg-info" class="sec">
+  <div class="sec-title">✈️ 航班資訊</div>
+  <div class="info-card tp">
+    <strong>長榮航空 BR087 去程</strong>
+    <div style="color:#555;margin-top:4px;font-size:13px">5/21 23:30 桃園 T2 → 5/22 07:00 CDG T1</div>
+    <div style="color:#888;font-size:12px">飛行約 13.5 小時</div>
+  </div>
+  <div class="info-card tp">
+    <strong>長榮航空 BR088 回程</strong>
+    <div style="color:#555;margin-top:4px;font-size:13px">6/03 11:20 CDG T1 → 6/04 07:00 桃園 T2</div>
+  </div>
+  <div class="info-card tp">
+    <strong>EasyJet BOD → BSL</strong>
+    <div style="color:#555;margin-top:4px;font-size:13px">5/27 10:40 Bordeaux → Basel (BSL)</div>
+  </div>
+
+  <div class="sec-title">🏠 住宿地址</div>
+  <div class="info-card ac">
+    <strong>La Rochelle — Lily 家</strong>
+    <div style="color:#555;font-size:13px;margin-top:4px">11 Bis Rue Louise Pinchon, La Rochelle</div>
+    <div style="color:#888;font-size:11px">5/22–5/25</div>
+    <a href="https://www.google.com/maps/search/?api=1&query=11+Bis+Rue+Louise+Pinchon+La+Rochelle" class="mapbtn" target="_blank">📍 導航</a>
+  </div>
+  <div class="info-card ac">
+    <strong>Bordeaux — JOST Hotel</strong>
+    <div style="color:#555;font-size:13px;margin-top:4px">Bordeaux（確切地址待確認）</div>
+    <div style="color:#888;font-size:11px">5/25–5/27</div>
+  </div>
+  <div class="info-card ac">
+    <strong>Kœstlach — Chang-yu 家</strong>
+    <div style="color:#555;font-size:13px;margin-top:4px">10 Rue du Chalet, Kœstlach</div>
+    <div style="color:#888;font-size:11px">5/27–5/31</div>
+    <a href="https://www.google.com/maps/search/?api=1&query=10+Rue+du+Chalet+Koestlach" class="mapbtn" target="_blank">📍 導航</a>
+  </div>
+  <div class="info-card ac">
+    <strong>Paris — Hôtel Le Walt</strong>
+    <div style="color:#555;font-size:13px;margin-top:4px">37 Av. de la Motte-Picquet, 75007 Paris</div>
+    <div style="color:#888;font-size:11px">5/31–6/03（分兩段訂）</div>
+    <a href="https://www.google.com/maps/search/?api=1&query=37+Avenue+de+la+Motte-Picquet+Paris" class="mapbtn" target="_blank">📍 導航</a>
+  </div>
+
+  <div class="sec-title">📞 緊急聯絡</div>
+  <div class="info-card">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px">
+      <div><div style="color:#999;font-size:11px">法國緊急</div><div style="font-weight:bold;font-size:18px">112</div></div>
+      <div><div style="color:#999;font-size:11px">警察</div><div style="font-weight:bold;font-size:18px">17</div></div>
+      <div><div style="color:#999;font-size:11px">救護車</div><div style="font-weight:bold;font-size:18px">15</div></div>
+      <div><div style="color:#999;font-size:11px">台灣外館（法國）</div><div style="font-weight:bold">+33 1 44 39 88 30</div></div>
+    </div>
+  </div>
+
+  <div class="sec-title">🧳 行前確認清單</div>
+  <div class="info-card" id="checkCard"></div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bnav">
+  <button class="ni active" onclick="showPg('itinerary',this)"><i class="fas fa-map"></i>PLAN</button>
+  <button class="ni" onclick="showPg('budget',this)"><i class="fas fa-wallet"></i>BUDGET</button>
+  <button class="ni" onclick="showPg('info',this)"><i class="fas fa-info-circle"></i>INFO</button>
+</div>
+
+<script>
+const defaultBudget=[
+  {name:'長榮機票',price:120000,buyer:'Marc',cat:'transport'},
+  {name:'EasyJet BOD-BSL',price:6356,buyer:'Marc',cat:'transport'},
+  {name:'TGV Paris-LR',price:9251,buyer:'Katia',cat:'transport'},
+  {name:'Train LR-Bordeaux',price:2472,buyer:'Katia',cat:'transport'},
+  {name:'TGV Basel-Paris',price:8764,buyer:'Katia',cat:'transport'},
+  {name:'JOST Hotel',price:8773,buyer:'Katia',cat:'accommodation'},
+  {name:'Hôtel Le Walt (Stay 1)',price:17881,buyer:'Katia',cat:'accommodation'},
+  {name:'Hôtel Le Walt (Stay 2)',price:37812,buyer:'Katia',cat:'accommodation'}
+];
+
+const defaultIti={
+  'Taipei':{
+    '5/21':{dir:'20:30 報到，23:30 起飛',ev:[
+      {t:'20:30',title:'桃園機場辦理登機',loc:'Taiwan Taoyuan International Airport',type:'tp'},
+      {t:'23:30',title:'長榮 BR087 起飛',loc:'Taoyuan Terminal 2',type:'tp'}
+    ]}
+  },
+  'La Rochelle':{
+    '5/22':{dir:'抵達巴黎，搭 TGV 前往拉羅謝爾',ev:[
+      {t:'07:00',title:'抵達 CDG T1',loc:'Charles de Gaulle Airport',type:'tp'},
+      {t:'09:00',title:'TGV 往 La Rochelle',loc:'Paris Montparnasse',type:'tp'},
+      {t:'12:00',title:'抵達，Lily 接機',loc:'La Rochelle Ville',type:'tp'}
+    ]},
+    '5/23':{dir:'舊港 & 海灘日',ev:[
+      {t:'10:00',title:'漫步 Vieux-Port 舊港',loc:'Vieux-Port de La Rochelle',type:'act'},
+      {t:'12:30',title:'午餐：海鮮市場',loc:'Marché Central La Rochelle',type:'food'},
+      {t:'14:30',title:'探訪聖尼古拉塔',loc:'Tour Saint-Nicolas La Rochelle',type:'act'},
+      {t:'17:00',title:'Les Minimes 海灘放鬆',loc:'Plage des Minimes La Rochelle',type:'act'}
+    ]},
+    '5/24':{dir:'Île de Ré 島外探索',ev:[
+      {t:'09:30',title:'Île de Ré 騎自行車',loc:'Île de Ré France',type:'act'},
+      {t:'13:00',title:'午餐：Ré 島小館',loc:'Saint-Martin-de-Ré',type:'food'},
+      {t:'16:00',title:'回程，Aquarium 參觀',loc:'Aquarium La Rochelle',type:'act'}
+    ]},
+    '5/25':{dir:'前往波爾多',ev:[
+      {t:'11:00',title:'道別 Lily，前往車站',loc:'La Rochelle Ville',type:'tp'},
+      {t:'13:35',title:'高鐵往波爾多',loc:'La Rochelle Ville Gare',type:'tp'},
+      {t:'15:10',title:'抵達波爾多 Check-in',loc:'Bordeaux Saint-Jean',type:'tp'}
+    ]}
+  },
+  'Bordeaux':{
+    '5/26':{dir:'沙丘 & 葡萄酒',ev:[
+      {t:'09:00',title:'Dune du Pilat 攻頂',loc:'Dune du Pilat France',type:'act'},
+      {t:'12:30',title:'Arcachon 生蠔午餐',loc:'Arcachon France',type:'food'},
+      {t:'15:00',title:'Saint-Émilion 酒莊參觀',loc:'Saint-Émilion France',type:'act'},
+      {t:'19:00',title:'波爾多市區晚餐',loc:'Place du Parlement Bordeaux',type:'food'}
+    ]},
+    '5/27':{dir:'飛往巴塞爾',ev:[
+      {t:'07:00',title:'前往機場 Check-in',loc:'Bordeaux-Mérignac Airport',type:'tp'},
+      {t:'10:40',title:'EasyJet 飛 Basel',loc:'Bordeaux Airport',type:'tp'},
+      {t:'12:30',title:'抵達 EuroAirport Basel',loc:'EuroAirport Basel Mulhouse Freiburg',type:'tp'}
+    ]}
+  },
+  'Kœstlach':{
+    '5/27':{dir:'抵達 Chang-yu 家',ev:[
+      {t:'14:00',title:'抵達 Kœstlach',loc:'10 Rue du Chalet Koestlach',type:'ac'},
+      {t:'19:00',title:'家庭晚餐',loc:'Kœstlach France',type:'food'}
+    ]},
+    '5/28':{dir:'阿爾薩斯小鎮巡禮',ev:[
+      {t:'09:30',title:'Colmar 老城區漫步',loc:'Colmar Alsace France',type:'act'},
+      {t:'12:00',title:'傳統 Winstub 午餐',loc:'Colmar France',type:'food'},
+      {t:'14:30',title:'Riquewihr 葡萄酒小鎮',loc:'Riquewihr Alsace France',type:'act'},
+      {t:'17:00',title:'Eguisheim 晚霞散步',loc:'Eguisheim France',type:'act'}
+    ]},
+    '5/29':{dir:'⛰️ 朋友帶隊 — Rigi 皇后山全日行',ev:[
+      {t:'07:00',title:'早起出發前往 Luzern',loc:'Lucerne Switzerland',type:'tp',friend:'朋友帶隊',tips:'⏰ 建議 6:30 起床準備！行程較長，早出發很重要。'},
+      {t:'09:00',title:'Vitznau 搭齒軌火車上 Rigi Kulm',loc:'Rigi Kulm Switzerland',type:'act',friend:'朋友帶隊',tips:'🎟️ 建議買 Swiss Travel Pass Day Add-on 或提前購票｜穿防風外套，山頂約 10–15°C，需防曬。'},
+      {t:'11:00',title:'Rigi Kulm 頂峰（1797m）觀景',loc:'Rigi Kulm 6356 Weggis',type:'act',friend:'朋友帶隊',tips:'📸 可眺望阿爾卑斯山、琉森湖全景。天氣好時視野絕佳！'},
+      {t:'13:00',title:'山頂餐廳午餐',loc:'Hotel Restaurant Rigi Kulm',type:'food',tips:'🍽️ 山頂餐廳價格偏高，可自備輕食補充。'},
+      {t:'15:00',title:'健行下山至 Rigi Kaltbad',loc:'Rigi Kaltbad Switzerland',type:'act',friend:'朋友帶隊',tips:'🥾 步道約 1.5–2 小時，輕鬆路段。穿舒適走路鞋即可。'},
+      {t:'17:30',title:'搭纜車回 Weggis，渡輪回 Luzern',loc:'Weggis Switzerland',type:'tp',tips:'⛴️ Weggis → Luzern 渡輪約 35 分鐘，風景絕美！'}
+    ]},
+    '5/30':{dir:'前往巴黎',ev:[
+      {t:'09:00',title:'告別早餐',loc:'Kœstlach France',type:'food'},
+      {t:'11:00',title:'前往巴塞爾車站',loc:'Basel SBB',type:'tp'},
+      {t:'13:22',title:'TGV Basel → Paris Est',loc:'Basel SBB',type:'tp'},
+      {t:'16:30',title:'抵達巴黎，Check-in Le Walt',loc:'37 Av. de la Motte-Picquet Paris',type:'ac'}
+    ]}
+  },
+  'Paris':{
+    '5/31':{dir:'艾菲爾鐵塔 & 左岸',ev:[
+      {t:'09:30',title:'咖啡早餐：Café de Flore',loc:'Café de Flore Paris',type:'food'},
+      {t:'11:00',title:'艾菲爾鐵塔（預訂頂層）',loc:'Eiffel Tower Paris',type:'act',tips:'🎟️ 務必提前在官網購票！現場幾乎無散票。'},
+      {t:'14:00',title:'塞納河遊船 Bateaux',loc:'Port de la Bourdonnais Paris',type:'act'},
+      {t:'15:30',title:'杜樂麗花園 Angelina 熱可可',loc:'Angelina Paris Tuileries',type:'food'}
+    ]},
+    '6/01':{dir:'🎨 羅浮宮藝術日 — 確定行程',ev:[
+      {t:'08:30',title:'提早出發，搭地鐵 Palais Royal 站',loc:'Palais Royal Musée du Louvre Metro Paris',type:'tp',tips:'🚇 搭 M1/M7 至 Palais Royal - Musée du Louvre 站。08:45 前抵達最佳，避開人潮。'},
+      {t:'09:00',title:'羅浮宮開門入場',loc:'Musée du Louvre Paris',type:'act',tips:'✅ 已確認 9:30 入場｜🎟️ 攜帶訂票確認信（電子或紙本）｜走黎塞留入口（Richelieu Wing）排隊最短｜📱 下載 Louvre 官方 App 有中文導覽地圖。'},
+      {t:'09:30',title:'蒙娜麗莎 & 維納斯 — 德農館',loc:'Denon Wing Louvre Paris',type:'act',tips:'🖼️ 蒙娜麗莎在 Salle 711（Denon 2F）。人很多，建議 10:00 前進館先衝第一波。勝利女神在 Denon 1F 樓梯頂。'},
+      {t:'12:00',title:'館內 Café Marly 午餐',loc:'Café Marly Paris',type:'food',tips:'☕ Café Marly 面向玻璃金字塔，風景極好！建議提前訂位或 11:45 前入座。'},
+      {t:'14:00',title:'奧賽美術館（印象派）',loc:'Musée d\'Orsay Paris',type:'act',tips:'🚶 從羅浮宮步行至奧賽約 20 分鐘，或搭 RER C。館內有梵谷、莫內、雷諾瓦。'},
+      {t:'18:30',title:'聖日耳曼大道購物',loc:'Boulevard Saint-Germain Paris',type:'act'}
+    ]},
+    '6/02':{dir:'瑪黑區 & 龐畢度',ev:[
+      {t:'10:30',title:'瑪黑區設計店巡禮',loc:'Le Marais Paris',type:'act'},
+      {t:'13:00',title:'孚日廣場午餐',loc:'Place des Vosges Paris',type:'food'},
+      {t:'15:00',title:'龐畢度中心當代藝術',loc:'Centre Pompidou Paris',type:'act',tips:'🎟️ 建議提前線上購票。注意：週二休館！'},
+      {t:'17:30',title:'塞納河畔漫步至新橋',loc:'Pont Neuf Paris',type:'act'},
+      {t:'19:30',title:'左岸餐廳晚餐',loc:'Saint-Germain-des-Prés Paris',type:'food'}
+    ]},
+    '6/03':{dir:'最後早晨，回台灣',ev:[
+      {t:'07:00',title:'飯店退房',loc:'Hôtel Le Walt Paris',type:'ac'},
+      {t:'08:00',title:'前往 CDG T1',loc:'Charles de Gaulle Airport',type:'tp'},
+      {t:'11:20',title:'長榮 BR088 回台灣',loc:'CDG Terminal 1',type:'tp'}
+    ]}
+  }
+};
+
+const checks=[
+  '護照有效期 > 6個月','簽證/免簽確認','旅遊保險','歐元現金',
+  '信用卡告知銀行出國','國際電話漫遊開通','充電器/轉接頭 (Type C)',
+  '藥品（腸胃/感冒/止痛）','防風外套（Rigi 山頂用）','航班電子票列印/截圖',
+  '所有訂房確認信','Google Maps 離線地圖下載','羅浮宮門票確認信','Rigi 票券確認'
+];
+
+let budget = JSON.parse(localStorage.getItem('mb_marc25')) || JSON.parse(JSON.stringify(defaultBudget));
+let iti = JSON.parse(localStorage.getItem('mi_marc25')) || JSON.parse(JSON.stringify(defaultIti));
+let curLoc = 'Taipei', curDate = '';
+
+function updateClock() {
+  const n = new Date();
+  document.getElementById('tp').innerText = n.toLocaleTimeString('zh-TW',{timeZone:'Asia/Taipei',hour12:false,hour:'2-digit',minute:'2-digit'});
+  document.getElementById('eu').innerText = n.toLocaleTimeString('zh-TW',{timeZone:'Europe/Paris',hour12:false,hour:'2-digit',minute:'2-digit'});
+  const dep = new Date('2025-05-21T23:30:00+08:00');
+  const diff = dep - n;
+  if (diff > 0) {
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    document.getElementById('cntdwn').innerText = '出發倒數 ' + d + '天' + h + '時';
+  } else {
+    document.getElementById('cntdwn').innerText = '旅途中 🇫🇷';
+  }
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+function showPg(p, btn) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
+  document.getElementById('pg-' + p).classList.add('active');
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('active'));
+  btn.classList.add('active');
+  if (p === 'budget') renderBudget();
+  if (p === 'info') renderChecks();
+}
+
+function renderChecks() {
+  const saved = JSON.parse(localStorage.getItem('chk_marc25')) || {};
+  const el = document.getElementById('checkCard');
+  const done = Object.values(saved).filter(Boolean).length;
+  el.innerHTML = '<div style="font-weight:bold;margin-bottom:6px">行前打包確認</div><div style="font-size:12px;color:#999;margin-bottom:10px">已完成 ' + done + ' / ' + checks.length + ' 項</div>';
+  checks.forEach((c, i) => {
+    const chk = saved[i] || false;
+    el.innerHTML += '<label style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #f5f5f5;cursor:pointer">' +
+      '<input type="checkbox"' + (chk ? ' checked' : '') + ' onchange="toggleCheck(' + i + ',this.checked)" style="width:auto;padding:0;margin:0;cursor:pointer">' +
+      '<span style="font-size:13px;' + (chk ? 'text-decoration:line-through;color:#bbb' : '') + '">' + c + '</span></label>';
+  });
+}
+
+function toggleCheck(i, v) {
+  const s = JSON.parse(localStorage.getItem('chk_marc25')) || {};
+  s[i] = v;
+  localStorage.setItem('chk_marc25', JSON.stringify(s));
+  renderChecks();
+}
+
+function renderBudget() {
+  const list = document.getElementById('bList');
+  const tot = document.getElementById('totalAmt');
+  const split = document.getElementById('splitInfo');
+  list.innerHTML = '';
+  let total = 0, marc = 0, katia = 0;
+  const catColor = {transport:'#ef5350',accommodation:'#ec407a',food:'#ffa726',activity:'#26a69a',other:'#78909c'};
+  const catLabel = {transport:'交通',accommodation:'住宿',food:'餐飲',activity:'活動',other:'其他'};
+  budget.forEach((item, idx) => {
+    total += item.price;
+    if (item.buyer === 'Marc') marc += item.price; else katia += item.price;
+    list.innerHTML += '<li style="padding:12px 16px;background:white;margin-bottom:8px;border-radius:0 12px 12px 0;display:flex;justify-content:space-between;align-items:center;border-left:4px solid ' + (catColor[item.cat] || '#ccc') + ';box-shadow:0 2px 6px rgba(0,0,0,0.05)">' +
+      '<div><div style="font-size:13px">' + item.name + '</div>' +
+      '<div style="font-size:10px;color:' + (item.buyer === 'Marc' ? '#2196F3' : '#E91E63') + '">' + item.buyer + ' · <span style="color:' + (catColor[item.cat] || '#888') + '">' + (catLabel[item.cat] || '其他') + '</span></div></div>' +
+      '<div style="font-weight:bold;font-size:13px">$' + item.price.toLocaleString() + ' <button onclick="delBudget(' + idx + ')" style="background:none;border:none;color:#ddd;cursor:pointer;font-size:14px">✕</button></div></li>';
+  });
+  tot.innerText = '$ ' + total.toLocaleString();
+  split.innerText = 'Marc: $' + marc.toLocaleString() + '  |  Katia: $' + katia.toLocaleString();
+}
+
+function addBudget() {
+  const n = document.getElementById('bName').value.trim();
+  const p = parseInt(document.getElementById('bPrice').value);
+  const b = document.getElementById('bBuyer').value;
+  const c = document.getElementById('bCat').value;
+  if (n && p) {
+    budget.push({name:n, price:p, buyer:b, cat:c});
+    localStorage.setItem('mb_marc25', JSON.stringify(budget));
+    renderBudget();
+    document.getElementById('bName').value = '';
+    document.getElementById('bPrice').value = '';
+  }
+}
+
+function delBudget(i) {
+  if (confirm('刪除「' + budget[i].name + '」？')) {
+    budget.splice(i, 1);
+    localStorage.setItem('mb_marc25', JSON.stringify(budget));
+    renderBudget();
+  }
+}
+
+function switchLoc(loc) {
+  curLoc = loc;
+  document.querySelectorAll('.t1 button').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + loc).classList.add('active');
+  renderDates();
+}
+
+function renderDates() {
+  const dt = document.getElementById('dateTabs');
+  dt.innerHTML = '';
+  const dates = Object.keys(iti[curLoc]);
+  curDate = dates[0];
+  dates.forEach((d, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'dbtn' + (i === 0 ? ' active' : '');
+    btn.innerText = d;
+    btn.onclick = () => {
+      document.querySelectorAll('.dbtn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      curDate = d;
+      renderIti();
+    };
+    dt.appendChild(btn);
+  });
+  renderIti();
+}
+
+function renderIti() {
+  const cont = document.getElementById('itiCont');
+  const data = iti[curLoc][curDate];
+  let html = '<div style="font-size:12px;color:#999;margin-bottom:10px;padding:0 4px">' + (data.dir || '') + '</div><div id="sortList">';
+  data.ev.forEach((ev, idx) => {
+    const cls = ev.type || 'act';
+    const fbadge = ev.friend ? '<div class="fbadge">👥 ' + ev.friend + '</div>' : '';
+    const tipHtml = ev.tips ? '<div class="tip-box"><div class="tip-title">提醒</div>' + ev.tips + '</div>' : '';
+    html += '<div class="card ' + cls + '" data-id="' + idx + '" style="cursor:grab">' +
+      '<button class="del" onclick="delEv(' + idx + ')">✕</button>' +
+      '<div style="font-size:10px;color:#aaa">' + (ev.t || '全天') + '</div>' +
+      '<div style="font-weight:bold;margin:4px 0;padding-right:20px">' + ev.title + '</div>' +
+      fbadge + tipHtml +
+      '<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(ev.loc || ev.title) + '" class="mapbtn" target="_blank">📍 導航</a>' +
+      '</div>';
+  });
+  html += '</div>';
+  cont.innerHTML = html;
+  try {
+    new Sortable(document.getElementById('sortList'), {
+      animation: 150,
+      onEnd: function() {
+        const nev = [];
+        document.querySelectorAll('#sortList .card').forEach(el => {
+          nev.push(data.ev[parseInt(el.getAttribute('data-id'))]);
+        });
+        iti[curLoc][curDate].ev = nev;
+        localStorage.setItem('mi_marc25', JSON.stringify(iti));
+        renderIti();
+      }
+    });
+  } catch(e) {}
+}
+
+function addEv() {
+  const title = prompt('新增行程名稱：');
+  if (!title) return;
+  const time = prompt('時間（如 14:00，可留空）：') || '待定';
+  const loc = prompt('地點（可留空，用於導航）：') || title;
+  iti[curLoc][curDate].ev.push({t:time, title:title, loc:loc, type:'act'});
+  localStorage.setItem('mi_marc25', JSON.stringify(iti));
+  renderIti();
+}
+
+function delEv(i) {
+  iti[curLoc][curDate].ev.splice(i, 1);
+  localStorage.setItem('mi_marc25', JSON.stringify(iti));
+  renderIti();
+}
+
+switchLoc('Taipei');
+renderBudget();
+</script>
+</body>
+</html>
